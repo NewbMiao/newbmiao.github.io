@@ -2,9 +2,100 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.newbmiao.com/2020/03/18/opa-func-and-virtual-doc.html</loc>
+    
+    <lastmod>2020-03-19T09:48:59.605Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/03/13/opa-quick-start.html</loc>
+    
+    <lastmod>2020-03-19T08:34:59.136Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/03/14/how-to-use-opa-cli-elegantly.html</loc>
+    
+    <lastmod>2020-03-19T08:34:59.133Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/02/10/dig101-golang-struct-memory-align.html</loc>
+    
+    <lastmod>2020-03-11T10:37:36.500Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.newbmiao.com/2020/01/18/dig101-golang-string.html</loc>
     
-    <lastmod>2020-01-22T09:25:27.308Z</lastmod>
+    <lastmod>2020-03-02T04:45:40.831Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/book/index.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.447Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/02/18/tips-use-gdb-elegantly.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.446Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/add-ons/index.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.446Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/02/15/tips-convert-doc-table-to-excel.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.445Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/01/07/dig101-golang-slice.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.445Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/02/04/dig101-golang-map.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.444Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/02/26/dig101-golang-interface.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.444Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/01/03/dig101-golang-for-range.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.443Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2020/02/29/dig101-golang-interface-de-virtualize.html</loc>
+    
+    <lastmod>2020-03-02T04:45:04.443Z</lastmod>
     
   </url>
   
@@ -16,14 +107,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/book/index.html</loc>
-    
-    <lastmod>2020-01-21T08:29:23.621Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.newbmiao.com/demo/iframe-tabs.html</loc>
+    <loc>http://blog.newbmiao.com/demo/index.html</loc>
     
     <lastmod>2020-01-21T08:29:23.621Z</lastmod>
     
@@ -37,14 +121,14 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/demo/index.html</loc>
+    <loc>http://blog.newbmiao.com/demo/iframe-tabs.html</loc>
     
     <lastmod>2020-01-21T08:29:23.621Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/10/25/jQuery-code-record.html</loc>
+    <loc>http://blog.newbmiao.com/2015/07/31/school-company-data-crawling.html</loc>
     
     <lastmod>2020-01-21T08:29:23.620Z</lastmod>
     
@@ -58,7 +142,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/07/31/school-company-data-crawling.html</loc>
+    <loc>http://blog.newbmiao.com/2015/10/25/jQuery-code-record.html</loc>
     
     <lastmod>2020-01-21T08:29:23.620Z</lastmod>
     
@@ -72,23 +156,9 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/add-ons/index.html</loc>
-    
-    <lastmod>2020-01-21T08:29:23.620Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.newbmiao.com/add-ons/weather.html</loc>
     
     <lastmod>2020-01-21T08:29:23.620Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.newbmiao.com/2015/09/01/use-fastcgi_finish_request-speed-up-your-page.html</loc>
-    
-    <lastmod>2020-01-21T08:29:23.619Z</lastmod>
     
   </url>
   
@@ -114,6 +184,13 @@
   </url>
   
   <url>
+    <loc>http://blog.newbmiao.com/2015/09/01/use-fastcgi_finish_request-speed-up-your-page.html</loc>
+    
+    <lastmod>2020-01-21T08:29:23.619Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.newbmiao.com/2015/12/04/xdebug-remote-debug-with-phpstorm-and-vagrant.html</loc>
     
     <lastmod>2020-01-21T08:29:23.619Z</lastmod>
@@ -121,14 +198,14 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/06/17/use-phpdoc-to-render-api-document.html</loc>
+    <loc>http://blog.newbmiao.com/2015/01/11/php-jump-out-of-the-frameset.html</loc>
     
     <lastmod>2020-01-21T08:29:23.618Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/01/11/php-jump-out-of-the-frameset.html</loc>
+    <loc>http://blog.newbmiao.com/2015/06/17/use-phpdoc-to-render-api-document.html</loc>
     
     <lastmod>2020-01-21T08:29:23.618Z</lastmod>
     
@@ -191,14 +268,14 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2017/02/17/auto-wrap-chinese-use-imagick-and-upload-image-by-base64-encode-str.html</loc>
+    <loc>http://blog.newbmiao.com/2015/09/25/remember-once-mysql-optimize-operations.html</loc>
     
     <lastmod>2020-01-21T08:29:23.617Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/25/remember-once-mysql-optimize-operations.html</loc>
+    <loc>http://blog.newbmiao.com/2017/02/17/auto-wrap-chinese-use-imagick-and-upload-image-by-base64-encode-str.html</loc>
     
     <lastmod>2020-01-21T08:29:23.617Z</lastmod>
     
@@ -212,7 +289,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2016/03/15/mac-tool.html</loc>
+    <loc>http://blog.newbmiao.com/2015/11/20/how-to-update-apps-apple-id.html</loc>
     
     <lastmod>2020-01-21T08:29:23.616Z</lastmod>
     
@@ -226,7 +303,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/11/20/how-to-update-apps-apple-id.html</loc>
+    <loc>http://blog.newbmiao.com/2016/03/15/mac-tool.html</loc>
     
     <lastmod>2020-01-21T08:29:23.616Z</lastmod>
     
@@ -268,13 +345,6 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-bash.html</loc>
-    
-    <lastmod>2020-01-21T08:29:23.615Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
     
     <lastmod>2020-01-21T08:29:23.615Z</lastmod>
@@ -283,6 +353,13 @@
   
   <url>
     <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-ACL.html</loc>
+    
+    <lastmod>2020-01-21T08:29:23.615Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-bash.html</loc>
     
     <lastmod>2020-01-21T08:29:23.615Z</lastmod>
     
@@ -317,13 +394,6 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/02/28/random-element-of-array-js.html</loc>
-    
-    <lastmod>2020-01-21T08:29:23.614Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.newbmiao.com/2015/03/28/maintainable-javascript-note.html</loc>
     
     <lastmod>2020-01-21T08:29:23.614Z</lastmod>
@@ -331,7 +401,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/23/some-code-when-use-jquery-fileupload.html</loc>
+    <loc>http://blog.newbmiao.com/2015/02/28/random-element-of-array-js.html</loc>
     
     <lastmod>2020-01-21T08:29:23.614Z</lastmod>
     
@@ -345,9 +415,9 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/27/up-up-in-mid-autumn-day.html</loc>
+    <loc>http://blog.newbmiao.com/2015/09/23/some-code-when-use-jquery-fileupload.html</loc>
     
-    <lastmod>2020-01-21T08:29:23.613Z</lastmod>
+    <lastmod>2020-01-21T08:29:23.614Z</lastmod>
     
   </url>
   
@@ -359,7 +429,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/02/22/html5-drag-api2-chrome-drag-to-downloa.html</loc>
+    <loc>http://blog.newbmiao.com/2015/09/27/up-up-in-mid-autumn-day.html</loc>
     
     <lastmod>2020-01-21T08:29:23.613Z</lastmod>
     
@@ -373,7 +443,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/01/jquery-detach.html</loc>
+    <loc>http://blog.newbmiao.com/2015/02/22/html5-drag-api2-chrome-drag-to-downloa.html</loc>
     
     <lastmod>2020-01-21T08:29:23.613Z</lastmod>
     
@@ -387,16 +457,16 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
+    <loc>http://blog.newbmiao.com/2015/09/01/jquery-detach.html</loc>
     
     <lastmod>2020-01-21T08:29:23.613Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2018/03/05/go-value-in-heap-and-stack.html</loc>
+    <loc>http://blog.newbmiao.com/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
     
-    <lastmod>2020-01-21T08:29:23.612Z</lastmod>
+    <lastmod>2020-01-21T08:29:23.613Z</lastmod>
     
   </url>
   
@@ -409,6 +479,13 @@
   
   <url>
     <loc>http://blog.newbmiao.com/2018/03/15/go-value-layout-in-memory.html</loc>
+    
+    <lastmod>2020-01-21T08:29:23.612Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.newbmiao.com/2018/03/05/go-value-in-heap-and-stack.html</loc>
     
     <lastmod>2020-01-21T08:29:23.612Z</lastmod>
     
@@ -443,21 +520,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2020/01/03/dig101-golang-for-range.html</loc>
-    
-    <lastmod>2020-01-21T08:29:23.611Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.newbmiao.com/2020/01/07/dig101-golang-slice.html</loc>
-    
-    <lastmod>2020-01-21T08:29:23.611Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.newbmiao.com/2015/06/16/hexo-on-your-github.html</loc>
+    <loc>http://blog.newbmiao.com/2019/10/18/terraform-aws-provider-headfirst.html</loc>
     
     <lastmod>2020-01-21T08:29:23.610Z</lastmod>
     
@@ -478,7 +541,7 @@
   </url>
   
   <url>
-    <loc>http://blog.newbmiao.com/2019/10/18/terraform-aws-provider-headfirst.html</loc>
+    <loc>http://blog.newbmiao.com/2015/06/16/hexo-on-your-github.html</loc>
     
     <lastmod>2020-01-21T08:29:23.610Z</lastmod>
     
