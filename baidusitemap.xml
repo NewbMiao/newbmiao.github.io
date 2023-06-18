@@ -9,19 +9,19 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/06/16/hexo-on-your-github.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
     <loc>http://blog.newbmiao.com/2015/08/18/hexo-with-gitcafe-and-github.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/10/25/jQuery-code-record.html</loc>
+    <loc>http://blog.newbmiao.com/2015/06/16/hexo-on-your-github.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
     <loc>http://blog.newbmiao.com/2015/10/14/jquery-tabs-with-iframe.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2015/10/25/jQuery-code-record.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -45,11 +45,11 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2021/11/21/cache-rust-dependencies-with-docker-build.html</loc>
+    <loc>http://blog.newbmiao.com/2015/02/28/regex-notes.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/02/28/regex-notes.html</loc>
+    <loc>http://blog.newbmiao.com/2021/11/21/cache-rust-dependencies-with-docker-build.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -57,11 +57,11 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/02/18/tips-use-gdb-elegantly.html</loc>
+    <loc>http://blog.newbmiao.com/2020/02/15/tips-convert-doc-table-to-excel.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/02/15/tips-convert-doc-table-to-excel.html</loc>
+    <loc>http://blog.newbmiao.com/2020/02/18/tips-use-gdb-elegantly.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -69,19 +69,19 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/01/11/php-jump-out-of-the-frameset.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
     <loc>http://blog.newbmiao.com/2015/06/17/use-phpdoc-to-render-api-document.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2016/11/08/some-misuse-of-php.html</loc>
+    <loc>http://blog.newbmiao.com/2015/01/11/php-jump-out-of-the-frameset.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
     <loc>http://blog.newbmiao.com/2015/03/08/php-assignment-and-reference.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2016/11/08/some-misuse-of-php.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -93,6 +93,10 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
+    <loc>http://blog.newbmiao.com/2015/10/25/how-to-use-php-signal.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
     <loc>http://blog.newbmiao.com/2017/03/14/laradock-in-action.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
@@ -101,19 +105,7 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/10/25/how-to-use-php-signal.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
     <loc>http://blog.newbmiao.com/2017/12/08/mysql-compare-version-string.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/08/01/use-limit-subquery-in-mysql.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/09/25/remember-once-mysql-optimize-operations.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -121,7 +113,7 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/04/16/opa-bundle.html</loc>
+    <loc>http://blog.newbmiao.com/2015/09/25/remember-once-mysql-optimize-operations.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -129,11 +121,19 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/03/14/how-to-use-opa-cli-elegantly.html</loc>
+    <loc>http://blog.newbmiao.com/2015/08/01/use-limit-subquery-in-mysql.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2020/04/16/opa-bundle.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
     <loc>http://blog.newbmiao.com/2020/03/18/opa-func-and-virtual-doc.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2020/03/14/how-to-use-opa-cli-elegantly.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -145,11 +145,11 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2016/03/15/mac-tool.html</loc>
+    <loc>http://blog.newbmiao.com/2015/11/28/shadowsocks-polipo-vps.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/11/28/shadowsocks-polipo-vps.html</loc>
+    <loc>http://blog.newbmiao.com/2016/03/15/mac-tool.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -157,15 +157,19 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
+    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-bash.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-process.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
     <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-basis.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-bash.html</loc>
+    <loc>http://blog.newbmiao.com/2015/09/16/Niaoge-Linux-Desktop-Guide-notes-daemon.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -177,31 +181,7 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-process.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/09/16/Niaoge-Linux-Desktop-Guide-notes-daemon.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/02/28/js-function-closure.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2016/08/17/how-to-call-a-function-with-unsure-number-params.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/03/28/maintainable-javascript-note.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/02/28/js-data-structure.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.newbmiao.com/2015/02/28/random-element-of-array-js.html</loc>
+    <loc>http://blog.newbmiao.com/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -213,19 +193,23 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/01/jquery-detach.html</loc>
+    <loc>http://blog.newbmiao.com/2015/02/28/js-function-closure.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/09/23/some-code-when-use-jquery-fileupload.html</loc>
+    <loc>http://blog.newbmiao.com/2016/08/17/how-to-call-a-function-with-unsure-number-params.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2016/11/08/jquery-multi-async-manage-note.html</loc>
+    <loc>http://blog.newbmiao.com/2015/02/28/js-data-structure.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
+    <loc>http://blog.newbmiao.com/2015/02/28/random-element-of-array-js.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2015/03/28/maintainable-javascript-note.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -233,7 +217,19 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/04/17/the-drama-of-updating-protobuf-go.html</loc>
+    <loc>http://blog.newbmiao.com/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2016/11/08/jquery-multi-async-manage-note.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2015/09/23/some-code-when-use-jquery-fileupload.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2015/09/01/jquery-detach.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -246,6 +242,10 @@
   </url>
   <url>
     <loc>http://blog.newbmiao.com/2018/08/20/go-source-analysis-of-memory-alloc.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2020/04/17/the-drama-of-updating-protobuf-go.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -273,11 +273,11 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/02/10/dig101-golang-struct-memory-align.html</loc>
+    <loc>http://blog.newbmiao.com/2020/01/18/dig101-golang-string.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/01/18/dig101-golang-string.html</loc>
+    <loc>http://blog.newbmiao.com/2020/02/10/dig101-golang-struct-memory-align.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -285,11 +285,11 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/05/22/how-to-modify-a-pointer-of-go-inside.html</loc>
+    <loc>http://blog.newbmiao.com/2021/08/07/one-8-bytes-optimization.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2021/08/07/one-8-bytes-optimization.html</loc>
+    <loc>http://blog.newbmiao.com/2020/05/22/how-to-modify-a-pointer-of-go-inside.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -305,10 +305,6 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/02/29/dig101-golang-interface-de-virtualize.html</loc>
-    <lastmod>2023-06-18</lastmod>
-  </url>
-  <url>
     <loc>http://blog.newbmiao.com/2021/08/19/2-way-of-or-done-pattern.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
@@ -317,7 +313,11 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/02/26/dig101-golang-interface.html</loc>
+    <loc>http://blog.newbmiao.com/2020/02/29/dig101-golang-interface-de-virtualize.html</loc>
+    <lastmod>2023-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.newbmiao.com/2020/02/04/dig101-golang-map.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -325,7 +325,7 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2020/02/04/dig101-golang-map.html</loc>
+    <loc>http://blog.newbmiao.com/2020/02/26/dig101-golang-interface.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
@@ -337,11 +337,11 @@
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/07/18/typecho-to-hexo.html</loc>
+    <loc>http://blog.newbmiao.com/2015/10/16/gearman-beginer-guide.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
-    <loc>http://blog.newbmiao.com/2015/10/16/gearman-beginer-guide.html</loc>
+    <loc>http://blog.newbmiao.com/2015/07/18/typecho-to-hexo.html</loc>
     <lastmod>2023-06-18</lastmod>
   </url>
   <url>
