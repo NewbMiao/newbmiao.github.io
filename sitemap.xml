@@ -4,7 +4,7 @@
   <url>
     <loc>http://blog.newbmiao.com/2023/06/18/auth-manage-via-keycloak.html</loc>
     
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -859,7 +859,7 @@
 
   <url>
     <loc>http://blog.newbmiao.com/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -867,686 +867,686 @@
   
   <url>
     <loc>http://blog.newbmiao.com/tags/terraform/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/aws/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/provider/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/go/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/happens-before/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/slice/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/panic/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/hexo/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/blog/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/gitcafe/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/protobuf/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/protoc-gen-go/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/protoc-gen-go-grpc/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/mac/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/shadowsocks/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/tool/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/gearman/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/software/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/mysql/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/OPA/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/comprehensions/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/limit/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/bundle/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/virtual-document/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/Rego/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/test/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/profile/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/benchmark/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/vim/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/redis/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/linux/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/imgick/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/json/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/blob/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/phpdoc/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/php/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/git/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/target/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/js/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/reference/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/function/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/php-fpm/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/apache/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/regex/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/concurrency/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/rust/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/docker/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/journal/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/html5/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/drag/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/chrome/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/oauth2/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/OIDC/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/axum/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/keycloak/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/token-exchange/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/google-idp/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/javascript-program-solution/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/random/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/maintainable-javascript/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/summary/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/authentication/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/authorization/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/jquery/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/iframe/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/closure/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/cors/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/doc/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/excel/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/AppleScript/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/dropbox/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/gdb/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/or-channel-pattern/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/for-range/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/de-virtualize/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/interface/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/map/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/reflect/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/string/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/append/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/struct/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/memory-align/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/mutex/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/memory-reordering/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/atomic/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/memory/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/dereference/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/cond/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/sema/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/notes/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/CI/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/pcntl/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/signal/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/laradock/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/jquery-timepicker-addon/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/xdebug/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/ajax/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/tags/promise/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -1555,280 +1555,280 @@
   
   <url>
     <loc>http://blog.newbmiao.com/categories/devops/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/go/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/devops/terraform/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/blog/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/go/notes/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/mac/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/gearman/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/mysql/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/OPA/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/blog/hexo/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/redis/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/php/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/git/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/mac/shadowsocks/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/mac/tool/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/rust/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/journal/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/html5/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/web/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/js/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/mysql/optimize/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/summary/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/tech/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/tips/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/blog/dropbox/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/php/regex/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/rust/OIDC/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/web/notes/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/tech/OIDC/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/web/practice/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/rust/OIDC/oauth2/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/tech/OIDC/oauth2/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/go/dig101/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/go/insight/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/linux/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/php/CI/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/linux/notes/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/php/signal/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/php/tool/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://blog.newbmiao.com/categories/js/jquery/</loc>
-    <lastmod>2023-06-18</lastmod>
+    <lastmod>2023-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
