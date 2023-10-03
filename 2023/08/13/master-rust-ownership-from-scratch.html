@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>掌握Rust：从零开始的所有权之旅 | 菜鸟Miao</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google-site-verification" content="q90Bd4BGjQuSBoXdzK6CUCB8mMUeCEO6MKbaCQS773E" >  
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust, ownership, borrow" />
+  
+  
+  <meta name="description" content="掌握Rust：从零开始的所有权之旅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="掌握Rust：从零开始的所有权之旅">
+<meta property="og:url" content="http://blog.newbmiao.com/2023/08/13/master-rust-ownership-from-scratch.html">
+<meta property="og:site_name" content="菜鸟Miao">
+<meta property="og:description" content="掌握Rust：从零开始的所有权之旅">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-13T14:25:08.000Z">
+<meta property="article:modified_time" content="2023-08-22T02:55:23.061Z">
+<meta property="article:author" content="菜鸟Miao">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content=" ownership">
+<meta property="article:tag" content=" borrow">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
+  
+  
+    <link rel="icon"   href="//media.newbmiao.com/blog/asset/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="//media.newbmiao.com/blog/asset/css/style.css" type="text/css">
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟Miao</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories/tips/">Tips</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/dig101/">Dig101</a>
+        
+          <a class="main-nav-link" href="/categories/OPA/">OPA</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+	  
+	
+        <div id="search-form">
+                <input type="text" class="st-default-search-input search-form-input" style="outline: none;width: 110px;">
+        </div>
+	
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-master-rust-ownership-from-scratch" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/08/13/master-rust-ownership-from-scratch.html" class="article-date">
+  <time datetime="2023-08-13T14:25:08.000Z" itemprop="datePublished">2023-08-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      掌握Rust：从零开始的所有权之旅
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <div id="toc" class="toc-article">
+         <h3>文章目录</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#移动？拷贝？"><span class="toc-number">1.</span> <span class="toc-text">移动？拷贝？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#作用域和销毁"><span class="toc-number">2.</span> <span class="toc-text">作用域和销毁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#借用"><span class="toc-number">3.</span> <span class="toc-text">借用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改"><span class="toc-number">4.</span> <span class="toc-text">修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可变借用"><span class="toc-number">5.</span> <span class="toc-text">可变借用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#所有权原则"><span class="toc-number">6.</span> <span class="toc-text">所有权原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内部可变性"><span class="toc-number">7.</span> <span class="toc-text">内部可变性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生命周期"><span class="toc-number">8.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">9.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+        
+        <p>所有权是 <code>Rust</code> 很有意思的一个语言特性，但对于初学者却是一个比较有挑战的内容。</p>
+<p>今天尝试用代码示例来聊聊 <code>Rust</code> 的所有权是什么，以及为什么要有所有权。希望能给初学的朋友一点帮助。</p>
+<blockquote>
+<p>Tips：文中代码有相应注释，建议可以先不用纠结细节，关注整体。后边可以再挨个去研究具体代码细节</p>
+</blockquote>
+<!-- **文章目录** -->
+<!-- [TOC] -->
+<a id="more"></a>
+
+<h2 id="移动？拷贝？"><a href="#移动？拷贝？" class="headerlink" title="移动？拷贝？"></a>移动？拷贝？</h2><p>先来试试常规的赋值语句在<code>Rust</code>有什么样的表现</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">println!</span>(<span class="string">"start"</span>);</span><br><span class="line"><span class="comment">// code 1:</span></span><br><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> _b = a;</span><br><span class="line"><span class="keyword">let</span> _c = a;</span><br><span class="line"></span><br><span class="line"><span class="comment">// code 2:</span></span><br><span class="line"><span class="keyword">let</span> d = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line"><span class="keyword">let</span> _e = d;</span><br><span class="line"><span class="keyword">let</span> _f = d;</span><br></pre></td></tr></table></figure>
+
+<p>结果是</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">error[E0382]: <span class="keyword">use</span> of moved value: `d`</span><br><span class="line">  --&gt; src/main.rs:<span class="number">12</span>:<span class="number">10</span></span><br><span class="line">   |</span><br><span class="line"><span class="number">10</span> | <span class="keyword">let</span> d = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line">   |     - move occurs because `d` has type `String`, which does not implement the `Copy` trait</span><br><span class="line"><span class="number">11</span> | <span class="keyword">let</span> _e = d;</span><br><span class="line">   |          - value moved here</span><br><span class="line"><span class="number">12</span> | <span class="keyword">let</span> _f = d;</span><br><span class="line">   |          ^ value used here after <span class="keyword">move</span></span><br><span class="line">   |</span><br><span class="line">help: consider cloning the value <span class="keyword">if</span> the performance cost is acceptable</span><br><span class="line">   |</span><br><span class="line"><span class="number">11</span> | <span class="keyword">let</span> _e = d.clone();</span><br><span class="line">   |           ++++++++</span><br></pre></td></tr></table></figure>
+
+<p>为什么 <code>code 2</code> 出错了？ <code>code 1</code> 没有？</p>
+<p>看起来都是初始化赋值操作，分别将数字 <code>a</code> 和字符串 <code>d</code> <strong>多次赋值</strong>给别的变量<br>为什么字符串的赋值失败了。</p>
+<p>这里要引出 <code>Rust</code> 世界里对<strong>值拷贝</strong>和<strong>所有</strong>的区分</p>
+<p>对于一切变量，当把他传递给别的变量或函数，如果他可以拷贝（<code>Copy</code>）就复制一份；否则就将值的所有权移动（<code>Move</code>）过去。</p>
+<p>这里<code>a</code>是数字，数字是可以拷贝的，所以 <code>code 1</code> 是可以编译通过的。<br>而<code>d</code>是字符串，字符串是不可以拷贝的，第一次赋值就将所有权move给了<code>_e</code>，只能<code>move</code>一次，所以 <code>code 2</code> 编译不通过。</p>
+<p>为什么要拷贝或移动？先剧透下 <code>Rust</code> 没有内存垃圾回收器（<code>GC</code>），它对内存的管理就是依赖所有权，谁持有（<code>Own</code>）变量，谁可以在变量需要销毁时释放内存。</p>
+<p>我们拿代码看看它如何销毁变量</p>
+<h2 id="作用域和销毁"><a href="#作用域和销毁" class="headerlink" title="作用域和销毁"></a>作用域和销毁</h2><p>这里我们关注在何时销毁的</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 因为孤儿原则，包装原生string类型，来支持添加drop trait实现，来观察销毁</span></span><br><span class="line"><span class="meta">#[derive(Debug)]</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyString</span></span>(<span class="built_in">String</span>);</span><br><span class="line"><span class="keyword">impl</span> MyString &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">from</span></span>(name: &amp;<span class="built_in">str</span>) -&gt; <span class="keyword">Self</span> &#123;</span><br><span class="line">        MyString(<span class="built_in">String</span>::from(name))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyData</span></span> &#123;</span><br><span class="line">    data: MyString,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 销毁时打印字符串</span></span><br><span class="line"><span class="keyword">impl</span> <span class="built_in">Drop</span> <span class="keyword">for</span> MyString &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">drop</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"Dropping MyString with value: &#123;:?&#125;"</span>, <span class="keyword">self</span>.<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 销毁时打印包含字符串的结构体</span></span><br><span class="line"><span class="keyword">impl</span> <span class="built_in">Drop</span> <span class="keyword">for</span> MyData &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">drop</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"Dropping MyData with value: &#123;:?&#125;"</span>, <span class="keyword">self</span>.data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> _ = MyData &#123;</span><br><span class="line">            data: MyString::from(<span class="string">"not used"</span>),</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">let</span> _wrapper = MyData &#123;</span><br><span class="line">            data: MyString::from(<span class="string">"used as variable"</span>),</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"End of the scope inside main."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"End of the scope."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果是：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Dropping MyData with value: MyString(<span class="string">"not used"</span>)</span><br><span class="line">Dropping MyString with value: <span class="string">"not used"</span></span><br><span class="line">End of the scope inside main.</span><br><span class="line">Dropping MyData with value: MyString(<span class="string">"used as variable"</span>)</span><br><span class="line">Dropping MyString with value: <span class="string">"used as variable"</span></span><br><span class="line">End of the scope.</span><br></pre></td></tr></table></figure>
+
+<p>代码分了两个作用域（<code>Scope</code>）</p>
+<blockquote>
+<p>Tips: 其实有多个，每个<code>let</code>也可以看做是一个作用域，这里为了方便理解，只分了两个</p>
+</blockquote>
+<ul>
+<li><p>main函数自身的<code>scope</code></p>
+</li>
+<li><p>main函数内的<code>scope</code></p>
+<p>  在此作用域内<code>_</code>变量的结构体及包含的字符串就销毁了。<br>  这里<code>let _</code>代表这个变量被忽略，也无法再被别人使用，所以当即销毁</p>
+<p>  离开此作用域时，局部变量<code>_wrapper</code>也被销毁</p>
+</li>
+</ul>
+<p>结合之前字符串不能多次移动，这里就展示<code>Rust</code>对内存管理的两个原则：</p>
+<ul>
+<li><strong>值只能有一个所有者，当离开作用域，值将被丢弃</strong>。</li>
+<li><strong>所有权可以转移</strong></li>
+</ul>
+<p>嗯，这么搞确实很利于内存管理。</p>
+<p>那要只是想引用一个变量，不想移动怎么办？（毕竟移动只能一次）</p>
+<h2 id="借用"><a href="#借用" class="headerlink" title="借用"></a>借用</h2><p>先来看看常规的“引用”</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">println!</span>(<span class="string">"start"</span>);</span><br><span class="line"><span class="keyword">let</span> a = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line"><span class="keyword">let</span> d = &amp;a;</span><br><span class="line"><span class="comment">// 等效于</span></span><br><span class="line"><span class="comment">// let ref d = a;</span></span><br><span class="line"><span class="keyword">let</span> _e = d;</span><br><span class="line"><span class="keyword">let</span> _f = d;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码是可以编译通过的</p>
+<blockquote>
+<p>Tips，<code>Rust</code>在编译阶段就能分析出很多代码问题，这也是为什么前边的错误里没有打印“start”，因为编译就失败了</p>
+</blockquote>
+<p><code>Rust</code>里对“引用”有细分，这里叫借用（<code>Borrow</code>），至于为什么，我们后边讲</p>
+<p>从目前的代码看，如果一个变量借用了字符串变量，这个借用是可以赋值给多个变量的。</p>
+<p>这样对于不需要<code>Move</code>整个字符串，只是要借用值来说，使用确实方便多了，那借用什么时候回收呢？</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 增加一个借用结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyDataRef</span></span>&lt;<span class="symbol">'a</span>&gt; &#123;</span><br><span class="line">    reference: &amp;<span class="symbol">'a</span> MyData,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对应的drop trait实现</span></span><br><span class="line"><span class="keyword">impl</span> <span class="built_in">Drop</span> <span class="keyword">for</span> MyDataRef&lt;<span class="symbol">'_</span>&gt; &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">drop</span></span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"Dropping MyDataRef"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> a = MyData &#123;</span><br><span class="line">            data: MyString::from(<span class="string">"used as variable"</span>),</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">let</span> b = MyDataRef &#123; reference: &amp;a &#125;;</span><br><span class="line">        <span class="keyword">let</span> c = MyDataRef &#123; reference: &amp;a &#125;;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"End of the scope inside main."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"End of the scope."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果是：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">End of the scope inside main.</span><br><span class="line">Dropping MyDataRef</span><br><span class="line">Dropping MyDataRef</span><br><span class="line">Dropping MyData with value: MyString(<span class="string">"used as variable"</span>)</span><br><span class="line">Dropping MyString with value: <span class="string">"used as variable"</span></span><br><span class="line">End of the scope.</span><br></pre></td></tr></table></figure>
+
+<p>在销毁借用的变量前，先销毁了所有的借用。哈哈，你可以有多个借用（准确说是<strong>不可变借用</strong>（<code>immutable borrow</code>），后边在展开），但销毁变量时，所有借用都会被一起销毁，这样保证你不是借用一个已经销毁的变量（<code>use after free</code>）</p>
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><p>到这里我们都没有修改过一个变量</p>
+<p><code>Rust</code>能像别的语言这样赋值修改么？</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> d = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line">d = <span class="built_in">String</span>::from(<span class="string">"world"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果是不行</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">error[E0384]: cannot assign twice to immutable variable `d`</span><br><span class="line">  --&gt; src/main.rs:<span class="number">33</span>:<span class="number">5</span></span><br><span class="line">   |</span><br><span class="line"><span class="number">32</span> |     <span class="keyword">let</span> d = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line">   |         -</span><br><span class="line">   |         |</span><br><span class="line">   |         first assignment to `d`</span><br><span class="line">   |         help: consider making this binding mutable: `<span class="keyword">mut</span> d`</span><br><span class="line"><span class="number">33</span> |     d = <span class="built_in">String</span>::from(<span class="string">"world"</span>);</span><br><span class="line">   |     ^ cannot assign twice to immutable variable</span><br></pre></td></tr></table></figure>
+
+<p><code>Rust</code>对读取和修改是有区分的，像错误提示那样</p>
+<p>需要<code>mut</code>关键字来声明变量可修改</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> d = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line">d = <span class="built_in">String</span>::from(<span class="string">"world"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>那对应的销毁时什么样的呢？</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> wrapper = MyData &#123;</span><br><span class="line">            data: MyString::from(<span class="string">"used as mut variable1"</span>),</span><br><span class="line">        &#125;;</span><br><span class="line">        wrapper.data = MyString::from(<span class="string">"used as mut variable2"</span>);</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"[Mutable] End of the scope inside main."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"End of the scope."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果是</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Dropping MyString with value: <span class="string">"used as mut variable1"</span></span><br><span class="line">[Mutable] End of the scope inside main.</span><br><span class="line">Dropping MyData with value: MyString(<span class="string">"used as mut variable2"</span>)</span><br><span class="line">Dropping MyString with value: <span class="string">"used as mut variable2"</span></span><br><span class="line">End of the scope.</span><br></pre></td></tr></table></figure>
+
+<p>基本和之前不可变（<code>immutable</code>）变量销毁类似，唯一不同是赋值后，赋值前的值要被销毁，内存的管理很是细致啊。</p>
+<p>现在说了借用，说了可变，我们可以来看看前边提到借用是有区分的：还有一个可变借用（<code>mutable borrow</code>）</p>
+<h2 id="可变借用"><a href="#可变借用" class="headerlink" title="可变借用"></a>可变借用</h2><p>对于可变变量，是可以有对应的可变借用的</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> d = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line"><span class="keyword">let</span> g = &amp;<span class="keyword">mut</span> d;</span><br><span class="line">*g = <span class="string">"world"</span>.to_string();</span><br></pre></td></tr></table></figure>
+
+<p>那如果同时有可变借用和不可变借用，下边的代码可以么？</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> d = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line">    <span class="keyword">let</span> e = &amp;d;</span><br><span class="line">    <span class="keyword">let</span> f = &amp;d;</span><br><span class="line">    <span class="keyword">let</span> g = &amp;<span class="keyword">mut</span> d;</span><br><span class="line">    *g = <span class="string">"world"</span>.to_string();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;f&#125;"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>答案是不可以</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">error[E0502]: cannot borrow `d` <span class="keyword">as</span> mutable because it is also borrowed <span class="keyword">as</span> immutable</span><br><span class="line"> --&gt; src/main.rs:<span class="number">5</span>:<span class="number">13</span></span><br><span class="line">  |</span><br><span class="line"><span class="number">4</span> |     <span class="keyword">let</span> f = &amp;d;</span><br><span class="line">  |             -- immutable borrow occurs here</span><br><span class="line"><span class="number">5</span> |     <span class="keyword">let</span> g = &amp;<span class="keyword">mut</span> d;</span><br><span class="line">  |             ^^^^^^ mutable borrow occurs here</span><br><span class="line"><span class="number">6</span> |     *g = <span class="string">"world"</span>.to_string();</span><br><span class="line"><span class="number">7</span> |     <span class="built_in">println!</span>(<span class="string">"&#123;f&#125;"</span>);</span><br><span class="line">  |               --- immutable borrow later used here</span><br></pre></td></tr></table></figure>
+
+<p>编译器明确告诉我们，可变借用的时候不能同时有不可变借用。</p>
+<p>为什么，如果拿<strong>读写互斥锁</strong>来类比，就很好理解了，我有可变借用，就像拿到写锁，这个时候是不允许有读锁的，不然我修改和你读取不一致怎么办。</p>
+<p>这是就得出了所有权里借用的规则：</p>
+<ul>
+<li><strong>不可变借用可以有多个</strong></li>
+<li><strong>可变借用同一时间只能有一个，且和不可变借用互斥</strong></li>
+</ul>
+<h2 id="所有权原则"><a href="#所有权原则" class="headerlink" title="所有权原则"></a>所有权原则</h2><p>到此，所有权的三条原则就全部出来了</p>
+<ul>
+<li>值有且只有一个所有者, 且所有者离开作用域时, 值将被丢弃</li>
+<li>所有权可转移</li>
+<li>借用<ul>
+<li>不可变借用可以有多个</li>
+<li>可变借用同一时间只能有一个</li>
+</ul>
+</li>
+</ul>
+<p>这些规则，规范了对于一个变量谁持有，离开作用域是否可以释放，变量的修改和借用有什么样要求，避免释放后的内存被借用，也防止修改和读取的内容不一致有<code>race condition</code>的问题。</p>
+<p>最厉害的是这些都是编译阶段就分析保证了的，提前暴露了问题，不然等到代码上线了遇到问题再crash，追查起来就滞后太久了。</p>
+<p>到这所有权就结束了么？还没有，快了，再耐着性子往下看</p>
+<h2 id="内部可变性"><a href="#内部可变性" class="headerlink" title="内部可变性"></a>内部可变性</h2><p>目前为止，一个借用要么是只读的要么是可写的，限制都很严格，万一我想需要写的时候再可写，平时只要一个只读的借用就可以，能搞定么？</p>
+<p>能！</p>
+<p>Rust提供了<code>Cell</code>（针对实现<code>Copy</code>的简单类型）<br>和<code>RefCell</code>(针对任何类型，运行时做借用检查)<br><code>Arc</code>（多线程安全的引用计数类型）等类型，来支持内部可变性。<br><code>Mutex</code>和<code>RwLock</code>也是内部可变性的一种实现，只不过是在多线程场景下的。</p>
+<blockquote>
+<p>Tips: 本质上可以理解为对读写互斥的不同粒度下的封装，不需要显式声明可变借用，但内部有可变的能力</p>
+</blockquote>
+<p>以<code>RefCell</code>为例，来看看内部可变性</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::cell::RefCell;</span><br><span class="line"><span class="keyword">let</span> value = RefCell::new(<span class="number">5</span>);</span><br><span class="line"><span class="comment">// Mutate the value using an immutable reference</span></span><br><span class="line"><span class="comment">// 读取</span></span><br><span class="line"><span class="keyword">let</span> borrowed = value.borrow();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"Before mutation: &#123;&#125;"</span>, *borrowed);</span><br><span class="line"><span class="built_in">drop</span>(borrowed);</span><br><span class="line"><span class="comment">// Interior mutation</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 修改</span></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> borrowed_mut = value.borrow_mut();</span><br><span class="line">    *borrowed_mut += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 读取</span></span><br><span class="line"><span class="keyword">let</span> borrowed = value.borrow();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"After mutation: &#123;&#125;"</span>, *borrowed);</span><br></pre></td></tr></table></figure>
+
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p>终于到了最后一个话题，生命周期</p>
+<p>下边一段简单的字符串切片的长度比较函数</p>
+<p>你能想到它为什么编译不通过么？</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">longest</span></span>(str1:  &amp;<span class="built_in">str</span>, str2: &amp;<span class="built_in">str</span>) -&gt; &amp;<span class="built_in">str</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> str1.len() &gt; str2.len() &#123;</span><br><span class="line">        str1</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        str2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> str1 = <span class="string">"hello"</span>;</span><br><span class="line">    <span class="keyword">let</span> str2 = <span class="string">"world！"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> result = longest(str1, str2);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"The longest string is: &#123;&#125;"</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>错误是：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">error[E0106]: missing lifetime specifier</span><br><span class="line"> --&gt; src/main.rs:<span class="number">1</span>:<span class="number">39</span></span><br><span class="line">  |</span><br><span class="line"><span class="number">1</span> | <span class="function"><span class="keyword">fn</span> <span class="title">longest</span></span>(str1: &amp;<span class="built_in">str</span>, str2: &amp;<span class="built_in">str</span>) -&gt; &amp;<span class="built_in">str</span> &#123;</span><br><span class="line">  |                  ----        ----     ^ expected named lifetime parameter</span><br><span class="line">  |</span><br><span class="line">  = help: this function<span class="symbol">'s</span> <span class="keyword">return</span> <span class="class"><span class="keyword">type</span> <span class="title">contains</span></span> a borrowed value, but the signature does not say whether it is borrowed from `str1` or `str2`</span><br><span class="line">help: consider introducing a named lifetime parameter</span><br><span class="line">  |</span><br><span class="line"><span class="number">1</span> | <span class="function"><span class="keyword">fn</span> <span class="title">longest</span></span>&lt;<span class="symbol">'a</span>&gt;(str1: &amp;<span class="symbol">'a</span> <span class="built_in">str</span>, str2: &amp;<span class="symbol">'a</span> <span class="built_in">str</span>) -&gt; &amp;<span class="symbol">'a</span> <span class="built_in">str</span> &#123;</span><br><span class="line">  |           ++++        ++             ++          ++</span><br></pre></td></tr></table></figure>
+
+<p>编译器再一次友好的提示我们，函数入参两个借用，返回值一个借用，无法确定返回值是用了哪个入参的生命周期。</p>
+<p>一个新的概念出现了：<strong>生命周期</strong></p>
+<p>生命周期是<code>Rust</code>用来标注引用存活周期，借此标识变量的借用与作用域是否合法，即借用是否在作用域内还有效，毕竟不能悬空指针（<code>dangling pointer</code>， 借用一个失效的内存地址）啊。</p>
+<p>就像这里，函数返回一个借用，那返回的借用是否在作用域内合法，和入参的两个引用的关系是什么，靠的就是生命周期标注。如果入参和出参都是一个生命周期，即出参的借用在入参的借用作用域内，只要入参的生命周期合法，那出参的就是合法的。不然如果出参用了只是借用函数内部变量的生命周期，那函数返回后，函数内部变量就被销毁了，出参就是悬空指针了。</p>
+<p>你可以简单理解为给借用多增加了一个参数，用来标识其借用在一个<code>scope</code>内使用是否合法。</p>
+<blockquote>
+<p>题外话，其实你如果了解<code>Golang</code>的逃逸分析，比如当函数内部变量需要返回给函数外部继续使用，其实是要扩大内部变量的作用域（即内部变量的生命周期），不能只依靠当前函数栈来保存变量，就会把它逃逸到堆上。 它做的其实也是变量的生命周期分析，用增加堆的内存开销来避免悬空指针。<br>只不过那是在gc基础上一种优化，而<code>Rust</code>则是在编译期就能通过生命周期标注就能确定借用是否合法。<br>对于想把内部变量返回给外部使用的情况，<code>Rust</code>也提供了<code>Box</code>来支持，这里就不展开了。</p>
+</blockquote>
+<p><strong>那是不是每个借用都要标注?</strong></p>
+<p>也不是，rust默认会对所有借用自动标注，只有出现冲突无法自动标注的时候才需要程序员手动标注。如果感兴趣的话，可以深入看下<a href="https://doc.rust-lang.org/nomicon/subtyping.html" target="_blank" rel="noopener">Subtyping and Variance</a>，了解下生命周期的一些约束。</p>
+<p>最后我们看下下边编译不通过的代码，从编译期的报错你就应该能明白，为什么要生命周期标注了，它对于让编译期做借用的作用域合法性检查很有用。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">get_longest</span></span>&lt;<span class="symbol">'a</span>&gt;(str1: &amp;<span class="symbol">'a</span> <span class="built_in">str</span>, str2: &amp;<span class="symbol">'a</span> <span class="built_in">str</span>) -&gt; &amp;<span class="symbol">'a</span> <span class="built_in">str</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> str1.len() &gt; str2.len() &#123;</span><br><span class="line">        str1</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        str2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> result;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> str1 = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line">        <span class="keyword">let</span> str2 = <span class="string">"world!"</span>;</span><br><span class="line">        result = get_longest(str1.as_str(), str2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"The longest string is: &#123;&#125;"</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>错误是：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">error[E0597]: `str1` does not live long enough</span><br><span class="line">  --&gt; src/main.rs:<span class="number">15</span>:<span class="number">30</span></span><br><span class="line">   |</span><br><span class="line"><span class="number">13</span> |         <span class="keyword">let</span> str1 = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line">   |             ---- binding `str1` declared here</span><br><span class="line"><span class="number">14</span> |         <span class="keyword">let</span> str2 = <span class="string">"world!"</span>;</span><br><span class="line"><span class="number">15</span> |         result = get_longest(str1.as_str(), str2);</span><br><span class="line">   |                              ^^^^^^^^^^^^^ borrowed value does not live long enough</span><br><span class="line"><span class="number">16</span> |     &#125;</span><br><span class="line">   |     - `str1` dropped here <span class="keyword">while</span> still borrowed</span><br><span class="line"><span class="number">17</span> |</span><br><span class="line"><span class="number">18</span> |     <span class="built_in">println!</span>(<span class="string">"The longest string is: &#123;&#125;"</span>, result);</span><br><span class="line">   |                                           ------ borrow later used here</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>好了，收个尾吧：</p>
+<ul>
+<li>所有权关注的是值的拥有和管理</li>
+<li>借用检查器在编译时保证借用的有效性和安全性</li>
+<li>生命周期关注的是借用的有效范围和引用的合法性</li>
+</ul>
+<p>他们配合在一起，构建起了<code>Rust</code>强大的内存管理能力。避免了内存泄漏和悬空指针的问题，也避免了<code>GC</code>带来的性能问题。</p>
+<p>怎么样？是不是感觉<code>Rust</code>的所有权设计还挺有意思的？一个所有权把内存管理的清晰又明了！</p>
+<p>欢迎有问题的朋友留言讨论。</p>
+<!-- ---
+
+文章首发公众号：newbmiao
+
+推荐阅读：[OPA系列](http://blog.newbmiao.com/categories/OPA/)
+
+[Dig101-Go系列](http://blog.newbmiao.com/categories/go/dig101/)
+
+![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	如有疑问，请文末留言交流或邮件：<a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a>
+  <img src="http://media.newbmiao.com/qrcode/newbmiao_white_all.jpg" width="50%"  style="min-width:250px;margin:0px;" title="newbmiao"/>
+  本文链接 : <a href="http://blog.newbmiao.com/2023/08/13/master-rust-ownership-from-scratch.html" title="http:&#x2F;&#x2F;blog.newbmiao.com&#x2F;2023&#x2F;08&#x2F;13&#x2F;master-rust-ownership-from-scratch.html" target="_blank" rel="noopener">http:&#x2F;&#x2F;blog.newbmiao.com&#x2F;2023&#x2F;08&#x2F;13&#x2F;master-rust-ownership-from-scratch.html</a>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      
+        <a data-url="http://blog.newbmiao.com/2023/08/13/master-rust-ownership-from-scratch.html" data-id="clna356320049qaypc6920spm" class="article-share-link">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/borrow/" rel="tag">borrow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lifetime/" rel="tag">lifetime</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ownership/" rel="tag">ownership</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust/" rel="tag">rust</a></li></ul>
+
+            
+	<span id="busuanzi_container_page_pv" style="color:#999">
+ 	 <i class="fa fa-eye"></i> <span id="busuanzi_value_page_pv"> <i class="fa fa-spinner fa-spin"></i></span>次阅读
+       </span>
+       
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;最近更新 ：<time datetime="2023-08-22T02:55:23.061Z" itemprop="dateModify">2023-08-22</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/10/03/rust-cell-and-refcell.html">聊聊Rust的Cell和RefCell</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/13/master-rust-ownership-from-scratch.html">掌握Rust：从零开始的所有权之旅</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/12/seeing-code-as-debt-not-value.html">代码是负债，而不是资产</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/18/auth-manage-via-keycloak.html">深入解读-如何用keycloak管理external auth</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/21/cache-rust-dependencies-with-docker-build.html">如何在docker中缓存加速Rust依赖构建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/OPA/">OPA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/dropbox/">dropbox</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/hexo/">hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/">devops</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/devops/terraform/">terraform</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/gearman/">gearman</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/dig101/">dig101</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/insight/">insight</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/notes/">notes</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/html5/">html5</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/journal/">journal</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/js/jquery/">jquery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/notes/">notes</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mac/shadowsocks/">shadowsocks</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/tool/">tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/optimize/">optimize</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/php/CI/">CI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/regex/">regex</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/signal/">signal</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/tool/">tool</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/rust/OIDC/">OIDC</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/rust/OIDC/oauth2/">oauth2</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/summary/">summary</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/OIDC/">OIDC</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/OIDC/oauth2/">oauth2</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/software-engineering/">software-engineering</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/tips/">tips</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web/notes/">notes</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/practice/">practice</a><span class="category-list-count">4</span></li></ul></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hexo/" style="font-size: 18px; color: #2b93ec">hexo</a> <a href="/tags/blog/" style="font-size: 19.5px; color: #3294e3">blog</a> <a href="/tags/terraform/" style="font-size: 16.5px; color: #2591f6">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/provider/" style="font-size: 15px; color: #1e90ff">provider</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/panic/" style="font-size: 15px; color: #1e90ff">panic</a> <a href="/tags/slice/" style="font-size: 16.5px; color: #2591f6">slice</a> <a href="/tags/html5/" style="font-size: 16.5px; color: #2591f6">html5</a> <a href="/tags/drag/" style="font-size: 16.5px; color: #2591f6">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/protoc-gen-go/" style="font-size: 15px; color: #1e90ff">protoc-gen-go</a> <a href="/tags/protoc-gen-go-grpc/" style="font-size: 15px; color: #1e90ff">protoc-gen-go-grpc</a> <a href="/tags/js/" style="font-size: 28.5px; color: #599daa">js</a> <a href="/tags/gitcafe/" style="font-size: 15px; color: #1e90ff">gitcafe</a> <a href="/tags/javascript-program-solution/" style="font-size: 18px; color: #2b93ec">javascript-program-solution</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/maintainable-javascript/" style="font-size: 15px; color: #1e90ff">maintainable-javascript</a> <a href="/tags/journal/" style="font-size: 16.5px; color: #2591f6">journal</a> <a href="/tags/mac/" style="font-size: 18px; color: #2b93ec">mac</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/git/" style="font-size: 15px; color: #1e90ff">git</a> <a href="/tags/linux/" style="font-size: 25.5px; color: #4c9abd">linux</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/mysql/" style="font-size: 19.5px; color: #3294e3">mysql</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/OPA/" style="font-size: 22.5px; color: #3f97d0">OPA</a> <a href="/tags/comprehensions/" style="font-size: 15px; color: #1e90ff">comprehensions</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/virtual-document/" style="font-size: 15px; color: #1e90ff">virtual-document</a> <a href="/tags/test/" style="font-size: 15px; color: #1e90ff">test</a> <a href="/tags/profile/" style="font-size: 15px; color: #1e90ff">profile</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/Rego/" style="font-size: 16.5px; color: #2591f6">Rego</a> <a href="/tags/phpdoc/" style="font-size: 15px; color: #1e90ff">phpdoc</a> <a href="/tags/php/" style="font-size: 27px; color: #529bb3">php</a> <a href="/tags/target/" style="font-size: 15px; color: #1e90ff">target</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/function/" style="font-size: 15px; color: #1e90ff">function</a> <a href="/tags/apache/" style="font-size: 15px; color: #1e90ff">apache</a> <a href="/tags/php-fpm/" style="font-size: 15px; color: #1e90ff">php-fpm</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/rust/" style="font-size: 19.5px; color: #3294e3">rust</a> <a href="/tags/ownership/" style="font-size: 15px; color: #1e90ff">ownership</a> <a href="/tags/borrow/" style="font-size: 15px; color: #1e90ff">borrow</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/docker/" style="font-size: 18px; color: #2b93ec">docker</a> <a href="/tags/keycloak/" style="font-size: 16.5px; color: #2591f6">keycloak</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/oauth2/" style="font-size: 16.5px; color: #2591f6">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.5px; color: #2591f6">OIDC</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/google-idp/" style="font-size: 15px; color: #1e90ff">google-idp</a> <a href="/tags/thoughts/" style="font-size: 15px; color: #1e90ff">thoughts</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/jquery/" style="font-size: 21px; color: #3896d9">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/doc/" style="font-size: 15px; color: #1e90ff">doc</a> <a href="/tags/excel/" style="font-size: 15px; color: #1e90ff">excel</a> <a href="/tags/AppleScript/" style="font-size: 15px; color: #1e90ff">AppleScript</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/closure/" style="font-size: 15px; color: #1e90ff">closure</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/de-virtualize/" style="font-size: 15px; color: #1e90ff">de-virtualize</a> <a href="/tags/interface/" style="font-size: 16.5px; color: #2591f6">interface</a> <a href="/tags/or-channel-pattern/" style="font-size: 16.5px; color: #2591f6">or-channel-pattern</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/string/" style="font-size: 15px; color: #1e90ff">string</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/reflect/" style="font-size: 16.5px; color: #2591f6">reflect</a> <a href="/tags/mutex/" style="font-size: 16.5px; color: #2591f6">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/atomic/" style="font-size: 15px; color: #1e90ff">atomic</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/sema/" style="font-size: 15px; color: #1e90ff">sema</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/jquery-timepicker-addon/" style="font-size: 15px; color: #1e90ff">jquery-timepicker-addon</a> <a href="/tags/ajax/" style="font-size: 15px; color: #1e90ff">ajax</a> <a href="/tags/promise/" style="font-size: 15px; color: #1e90ff">promise</a> <a href="/tags/notes/" style="font-size: 24px; color: #4598c6">notes</a> <a href="/tags/xdebug/" style="font-size: 15px; color: #1e90ff">xdebug</a> <a href="/tags/pcntl/" style="font-size: 15px; color: #1e90ff">pcntl</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a> <a href="/tags/laradock/" style="font-size: 15px; color: #1e90ff">laradock</a> <a href="/tags/CI/" style="font-size: 15px; color: #1e90ff">CI</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a>
+    </div>
+  </div>
+
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://xargin.com/" target="_blank">Xargin</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.ihuxu.com/" target="_blank">胡小旭</a>
+          </li>
+        
+          <li>
+            <a href="https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=fcf4ba011299bad5a39b10c0b16c9fbd&from=console" target="_blank">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title">文章目录</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+<script src="//media.newbmiao.com/blog/asset/js/toc.js" ></script>
+
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 菜鸟Miao<br>
+     <p>
+     <span id="busuanzi_container_site_uv">
+  	您是本站第<span id="busuanzi_value_site_uv"> <i class="fa fa-spinner fa-spin"></i></span>个访问者
+     </span>
+     <span id="busuanzi_container_site_pv">
+        /本站总访问量<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i> </span>次
+     </span>
+     </p>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+      .
+      备案号：<a href="http://www.beian.miit.gov.cn" target="_blank" >京ICP备15015526号</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories/tips/" class="mobile-nav-link">Tips</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/dig101/" class="mobile-nav-link">Dig101</a>
+  
+    <a href="/categories/OPA/" class="mobile-nav-link">OPA</a>
+  
+</nav>
+  <script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+
+
+<link rel="stylesheet" href="//media.newbmiao.com/blog/asset/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="//media.newbmiao.com/blog/asset/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="//media.newbmiao.com/blog/asset/js/script.js"></script>
+
+
+
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','bqAniPPC1T7RV4MomxcE','2.0.0');
+</script>
+
+
+
+</div>
+</body>
+</html>
+

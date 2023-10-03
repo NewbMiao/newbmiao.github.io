@@ -1,1 +1,39 @@
-<html><head><meta charset="utf-8"><link rel="stylesheet" href="style.css"><body><script src="wasm_exec.js"></script><script src="pako_inflate.min.js"></script><script>window.addEventListener("DOMContentLoaded",async()=>{var e=new Go,a=window.pako;let n=a.ungzip(await(await fetch("/add-ons/main.wasm.gz")).arrayBuffer());31===n[0]&&139===n[1]&&(n=a.ungzip(n)),a=await WebAssembly.instantiate(n,e.importObject).catch(e=>{console.error(e)}),document.getElementById("loading").remove(),e.run(a.instance)})</script><p id="loading">Loading...</p></body><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml"></head></html>
+
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css">
+
+<body>
+    <script src="wasm_exec.js"></script>
+    <script src="pako_inflate.min.js"></script>
+    <script>
+        window.addEventListener("DOMContentLoaded", async () => {
+            const go = new Go();
+            const url = "/add-ons/main.wasm.gz";
+            const pako = window.pako;
+            let wasm = pako.ungzip(await (await fetch(url)).arrayBuffer());
+
+
+            if (wasm[0] === 0x1f && wasm[1] === 0x8b) {
+                wasm = pako.ungzip(wasm);
+            }
+
+            const result = await WebAssembly.instantiate(wasm, go.importObject)
+                .catch((err) => {
+                    console.error(err);
+                });
+            document.getElementById("loading").remove();
+            go.run(result.instance);
+        });
+    </script>
+    <p id="loading">Loading...</p>
+</body>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
+</head>
+
+</html>
+
+
