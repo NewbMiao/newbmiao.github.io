@@ -126,13 +126,13 @@
     
       <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
     
-      <category term="keycloak" scheme="http://blog.newbmiao.com/tags/keycloak/"/>
-    
       <category term="oauth2" scheme="http://blog.newbmiao.com/tags/oauth2/"/>
     
       <category term="OIDC" scheme="http://blog.newbmiao.com/tags/OIDC/"/>
     
       <category term="axum" scheme="http://blog.newbmiao.com/tags/axum/"/>
+    
+      <category term="keycloak" scheme="http://blog.newbmiao.com/tags/keycloak/"/>
     
       <category term="token-exchange" scheme="http://blog.newbmiao.com/tags/token-exchange/"/>
     
@@ -188,15 +188,15 @@
       <category term="oauth2" scheme="http://blog.newbmiao.com/categories/tech/OIDC/oauth2/"/>
     
     
+      <category term="oauth2" scheme="http://blog.newbmiao.com/tags/oauth2/"/>
+    
+      <category term="OIDC" scheme="http://blog.newbmiao.com/tags/OIDC/"/>
+    
       <category term="keycloak" scheme="http://blog.newbmiao.com/tags/keycloak/"/>
     
       <category term="authentication" scheme="http://blog.newbmiao.com/tags/authentication/"/>
     
       <category term="authorization" scheme="http://blog.newbmiao.com/tags/authorization/"/>
-    
-      <category term="oauth2" scheme="http://blog.newbmiao.com/tags/oauth2/"/>
-    
-      <category term="OIDC" scheme="http://blog.newbmiao.com/tags/OIDC/"/>
     
   </entry>
   
