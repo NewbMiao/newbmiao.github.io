@@ -2,12 +2,12 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>菜鸟Miao</title>
   <icon>https://www.gravatar.com/avatar/644a62fb3ee1c60061ebca1d0996b0ae</icon>
-  <subtitle>start from a newb...</subtitle>
+  <subtitle>start from a newb...(博客地址永久迁移为 https://newbmiao.github.io)</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://blog.newbmiao.com/"/>
-  <updated>2023-11-12T12:12:32.296Z</updated>
-  <id>http://blog.newbmiao.com/</id>
+  <link href="https://newbmiao.github.io/"/>
+  <updated>2023-11-20T04:54:54.043Z</updated>
+  <id>https://newbmiao.github.io/</id>
   
   <author>
     <name>菜鸟Miao</name>
@@ -17,11 +17,59 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>博客地址已迁移到newbmiao.github.io</title>
+    <link href="https://newbmiao.github.io/2023/11/20/blog-migrate-hostname.html"/>
+    <id>https://newbmiao.github.io/2023/11/20/blog-migrate-hostname.html</id>
+    <published>2023-11-20T04:49:22.000Z</published>
+    <updated>2023-11-20T04:54:54.043Z</updated>
+    
+    <content type="html"><![CDATA[<!-- **文章目录** --><!-- [TOC] --><p>·<br>声明：博客地址已迁移到 <a href="https://newbmiao.github.io">https://newbmiao.github.io</a>, 原域名<del>blog.newbmiao.com</del>已不再使用。</p><a id="more"></a><!-- ---文章首发公众号：newbmiao![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->·]]></content>
+    
+    <summary type="html">
+    
+      newbmiao.github.io
+    
+    </summary>
+    
+    
+      <category term="blog" scheme="https://newbmiao.github.io/categories/blog/"/>
+    
+    
+      <category term="migrate" scheme="https://newbmiao.github.io/tags/migrate/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Rust并发控制之Condvar</title>
+    <link href="https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html"/>
+    <id>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</id>
+    <published>2023-11-18T11:44:31.000Z</published>
+    <updated>2023-11-20T02:27:04.673Z</updated>
+    
+    <content type="html"><![CDATA[<!-- **文章目录** --><!-- [TOC] --><p>上次提到的<a href="https://mp.weixin.qq.com/s/X4hIhzggiv-nv4vAxvX6Rw" target="_blank" rel="noopener">Barrier</a>用到了Rust的condvar和mutex，今天来看下condvar的用法。</p><a id="more"></a><p>condvar即condition variable（条件变量），是一种线程同步的方式，用于线程间的通信。它可以阻塞（wait）线程，期间不消耗CPU，直到某个时间发生唤醒（notify）线程。</p><p>代码举例来说：</p><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::&#123;Arc, Condvar, Mutex&#125;;</span><br><span class="line"><span class="keyword">use</span> std::thread;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> pair = Arc::new((Mutex::new(<span class="literal">false</span>), Condvar::new()));</span><br><span class="line">    <span class="keyword">let</span> pair2 = Arc::clone(&amp;pair);</span><br><span class="line"></span><br><span class="line">    thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        <span class="keyword">let</span> (lock, cvar) = &amp;*pair2;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> started = lock.lock().unwrap();</span><br><span class="line">        *started = <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">// We notify the condvar that the value has changed.</span></span><br><span class="line">        cvar.notify_one();</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Wait for the thread to start up.</span></span><br><span class="line">    <span class="keyword">let</span> (lock, cvar) = &amp;*pair;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> started = lock.lock().unwrap();</span><br><span class="line">    <span class="keyword">while</span> !*started &#123;</span><br><span class="line">        started = cvar.wait(started).unwrap();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>代码中，创建一个线程在修改started变量后唤醒等待的线程。main中等待的的线程会一直阻塞（wait）直到started的值被修改。</p><p>其中wait会需要一个锁的MutexGuard来配合，wait会自动释放锁，并阻塞当前线程，直到被唤醒时重新获取锁，并返回锁的MutexGuard，来获取锁当前保护的值</p><blockquote><p>Tips: MutexGuard实现了销毁时自动释放锁和可以通过解引用（deref）到它保护的值</p></blockquote><p>这里有两个有意思的点：</p><ul><li>为什么要和mutex一起使用？</li><li>为什么唤醒时要检查条件是否满足？</li></ul><p>这个要从condvar唤醒的机制说起。</p><h2 id="唤醒顺序不保证"><a href="#唤醒顺序不保证" class="headerlink" title="唤醒顺序不保证"></a>唤醒顺序不保证</h2><p>先来看下唤醒的顺序，我们起两批同样数目的线程，一批线程每个线程会修改一次变量并唤醒一个另一批等待的线程，为了观测唤醒顺序，代码如下：</p><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::&#123;Arc, Condvar, Mutex&#125;;</span><br><span class="line"><span class="keyword">use</span> std::thread::&#123;<span class="keyword">self</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SharedData</span></span> &#123;</span><br><span class="line">    counter: Mutex&lt;<span class="built_in">usize</span>&gt;,</span><br><span class="line">    condvar: Condvar,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> shared_data = Arc::new(SharedData &#123;</span><br><span class="line">        counter: Mutex::new(<span class="number">0</span>),</span><br><span class="line">        condvar: Condvar::new(),</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> thread_num = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> workers = <span class="built_in">Vec</span>::new();</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> waits = <span class="built_in">Vec</span>::new();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..thread_num &#123;</span><br><span class="line">        do_wait(i, Arc::clone(&amp;shared_data), &amp;<span class="keyword">mut</span> waits);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..thread_num &#123;</span><br><span class="line">        do_work(i, Arc::clone(&amp;shared_data), &amp;<span class="keyword">mut</span> workers)</span><br><span class="line">    &#125;</span><br><span class="line">    waits.into_iter().for_each(|w| w.join().unwrap());</span><br><span class="line">    workers.into_iter().for_each(|w| w.join().unwrap());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">do_work</span></span>(i: <span class="built_in">i32</span>, data: Arc&lt;SharedData&gt;, workers: &amp;<span class="keyword">mut</span> <span class="built_in">Vec</span>&lt;thread::JoinHandle&lt;()&gt;&gt;) &#123;</span><br><span class="line">    workers.push(thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        <span class="keyword">let</span> SharedData &#123; counter, condvar &#125; = &amp;*data;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> data = counter.lock().unwrap();</span><br><span class="line">        *data += <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"Woker thread &#123;&#125; before notify: Counter &#123;&#125;"</span>, i, data);</span><br><span class="line">        condvar.notify_one();</span><br><span class="line">    &#125;));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">do_wait</span></span>(i: <span class="built_in">i32</span>, data: Arc&lt;SharedData&gt;, waits: &amp;<span class="keyword">mut</span> <span class="built_in">Vec</span>&lt;thread::JoinHandle&lt;()&gt;&gt;) &#123;</span><br><span class="line">    waits.push(thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        <span class="keyword">let</span> SharedData &#123; counter, condvar &#125; = &amp;*data;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> data = counter.lock().unwrap();</span><br><span class="line">        data = condvar.wait(data).unwrap();</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"   Wait thread &#123;&#125; after wake up: Counter &#123;&#125;"</span>, i, data);</span><br><span class="line">    &#125;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>运行结果不唯一，比如如下结果，五次修改触发了五次唤醒，但是wait唤醒顺序不一定是按照worker修改顺序（而修改顺序是符合预期的，因为是加锁保证的）：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Woker thread 0 before notify: Counter 1</span><br><span class="line">Woker thread 4 before notify: Counter 2</span><br><span class="line">Woker thread 2 before notify: Counter 3</span><br><span class="line">   Wait thread 1 after wake up: Counter 3</span><br><span class="line">   Wait thread 3 after wake up: Counter 3</span><br><span class="line">Woker thread 3 before notify: Counter 4</span><br><span class="line">   Wait thread 0 after wake up: Counter 4</span><br><span class="line">Woker thread 1 before notify: Counter 5</span><br><span class="line">   Wait thread 4 after wake up: Counter 5</span><br><span class="line">   Wait thread 2 after wake up: Counter 5</span><br></pre></td></tr></table></figure><p>甚至有可能是唤醒次数少于五次，导致有些线程一直阻塞，比如如下结果，只有四次唤醒，导致有1个线程一直阻塞：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Woker thread 1 before notify: Counter 1</span><br><span class="line">   Wait thread 2 after wake up: Counter 1</span><br><span class="line">Woker thread 3 before notify: Counter 2</span><br><span class="line">Woker thread 0 before notify: Counter 3</span><br><span class="line">   Wait thread 4 after wake up: Counter 3</span><br><span class="line">Woker thread 4 before notify: Counter 4</span><br><span class="line">   Wait thread 3 after wake up: Counter 4</span><br><span class="line">   Wait thread 1 after wake up: Counter 4</span><br><span class="line">Woker thread 2 before notify: Counter 5</span><br><span class="line"><span class="comment"># 有一个线程一直阻塞在这里</span></span><br></pre></td></tr></table></figure><p>为什么顺序不保证呢？condvar实现是基于操作系统的条件变量实现，顺序取决于操作系统调度时当前可唤醒的线程是哪个，要保证唤醒顺序需要额外的开销，而这个开销是不必要的，因为唤醒顺序对于线程间的通信是没有意义的，所以底层实现并不保证唤醒顺序。<a href="https://www.reddit.com/r/C_Programming/comments/12itrvd/condition_variables_wakeup_ordering/" target="_blank" rel="noopener">这里</a>有相关讨论</p><p>所以多个线程等待同一条件变量时，notify_one唤醒和等待也不是一定是一对一的调用，每次唤醒也不能保证都是不同的等待线程。</p><p>至于为什么会有线程一直阻塞的情况，是因为唤醒次数少于等待次数，导致有些线程一直阻塞。<br>因为是多线程并发构建的notify_one和wait，存在调用notify_one时没有线程在等待的可能，导致唤醒次数少于等待次数的情况。</p><h2 id="虚假唤醒"><a href="#虚假唤醒" class="headerlink" title="虚假唤醒"></a>虚假唤醒</h2><p>还有就是虚假唤醒，即wait返回时，条件由于并发原因已经不满足，还可能因为唤醒并不是由于显示的notify调用，这个听起来很奇怪，但不是一个bug，是底层操作系统实现导致的，具体看看<a href="https://en.wikipedia.org/wiki/Spurious_wakeup" target="_blank" rel="noopener">wiki</a>上的说明吧。</p><p>综上这两点，condvar唤醒时是需要重新检查条件是否依旧满足，而且需要和mutex一起使用，来确保条件值获取的并发安全。</p><p>除此condvar还有一些方便的方法，比如提供了</p><ul><li>notify_all来广播唤醒所有等待的线程；</li><li>wait_while可以根据条件等待条件直到满足；</li><li>wait_timeout只等待一段时间如果不能及时被唤醒。</li></ul><p>官方文档都有例子，就不展开了。</p><p>关于condvar比较实际的例子有WaitGroup，不需要像Barrier一样初始化时指定线程数量，而是在运行时动态增加线程数量，在<a href="https://github.com/crossbeam-rs/crossbeam/blob/master/crossbeam-utils/src/sync/wait_group.rs" target="_blank" rel="noopener">crossbeam-utils</a>中有实现，代码很精炼，感兴趣可以看下</p><!-- ---文章首发公众号：newbmiao![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->]]></content>
+    
+    <summary type="html">
+    
+      Rust并发控制之Condvar
+    
+    </summary>
+    
+    
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
+    
+    
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
+    
+      <category term="condvar" scheme="https://newbmiao.github.io/tags/condvar/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Rust并发控制之Barrier</title>
-    <link href="http://blog.newbmiao.com/2023/11/12/rust-sync-barrier.html"/>
-    <id>http://blog.newbmiao.com/2023/11/12/rust-sync-barrier.html</id>
+    <link href="https://newbmiao.github.io/2023/11/12/rust-sync-barrier.html"/>
+    <id>https://newbmiao.github.io/2023/11/12/rust-sync-barrier.html</id>
     <published>2023-11-12T11:44:31.000Z</published>
-    <updated>2023-11-12T12:12:32.296Z</updated>
+    <updated>2023-11-20T02:27:04.673Z</updated>
     
     <content type="html"><![CDATA[<!-- **文章目录** --><!-- [TOC] --><p>Rust有很多种控制并发的方式，Barrier（屏障）是其中一种用来同步多线程计算的方式。</p><p>今天拿代码来简单看下。</p><a id="more"></a><p>比如我们要多线程计算，期望所有线程都计算完毕再输出最终结果。常规多线程代码示例可以用线程join来等待</p><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::&#123;Arc, Mutex&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> numthreads = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">let</span> my_mutex = Arc::new(Mutex::new(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> handlers = <span class="built_in">Vec</span>::with_capacity(numthreads);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="number">0</span>..numthreads &#123;</span><br><span class="line">        <span class="keyword">let</span> my_lock = my_mutex.clone();</span><br><span class="line">        handlers.push(std::thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> guard = my_lock.lock().unwrap();</span><br><span class="line">            *guard += <span class="number">1</span>;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> handler <span class="keyword">in</span> handlers &#123;</span><br><span class="line">        handler.join().unwrap();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> answer = &#123; *my_mutex.lock().unwrap() &#125;;</span><br><span class="line">    <span class="built_in">assert_eq!</span>(answer, numthreads);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>而如果用Barrier，我们可以这么写：</p><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::&#123;Arc, Barrier, Mutex&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> numthreads = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">let</span> my_mutex = Arc::new(Mutex::new(<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// We use a barrier to ensure the readout happens after all writing</span></span><br><span class="line">    <span class="keyword">let</span> barrier = Arc::new(Barrier::new(numthreads + <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..numthreads &#123;</span><br><span class="line">        <span class="keyword">let</span> my_barrier = barrier.clone();</span><br><span class="line">        <span class="keyword">let</span> my_lock = my_mutex.clone();</span><br><span class="line">        std::thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> guard = my_lock.lock().unwrap();</span><br><span class="line">            *guard += <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Release the lock to prevent a deadlock</span></span><br><span class="line">            <span class="built_in">drop</span>(guard);</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"thread &#123;&#125; is ready"</span>, i);</span><br><span class="line">            <span class="comment">// Blocks the current thread until all threads have rendezvoused here.</span></span><br><span class="line">            my_barrier.wait();</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"thread &#123;&#125; is done"</span>, i)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// A barrier will block `n`-1 threads which call [`wait()`] and then wake</span></span><br><span class="line">    <span class="comment">// up all threads at once when the `n`th thread calls [`wait()`].</span></span><br><span class="line">    barrier.wait();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> answer = &#123; *my_mutex.lock().unwrap() &#125;;</span><br><span class="line">    <span class="built_in">assert_eq!</span>(answer, numthreads);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>Barrier可以用wait来控制n个线程的同步，数量需要提前指明。<br>当调用wait时，如果不是第n个，就会一直阻塞当前线程，直到第n个wait调用，才能进行后续操作。</p><p>这种机制就像在多个线程中插入了一道屏障，当所有线程都执行到这里时，才能解除屏障继续向后执行。</p><p>当然这样实现相较于第一种，在线程数量大的时候也是会有比较明显的性能开销的，底层是使用condvar+mutex来实现的。这种组合也是一种有意思的并发控制方式，下次我们再聊聊它们。</p><!-- ---文章首发公众号：newbmiao![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->]]></content>
     
@@ -32,19 +80,19 @@
     </summary>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/categories/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
-      <category term="barrier" scheme="http://blog.newbmiao.com/tags/barrier/"/>
+      <category term="barrier" scheme="https://newbmiao.github.io/tags/barrier/"/>
     
   </entry>
   
   <entry>
     <title>聊聊Rust的并发约束：Send和Sync</title>
-    <link href="http://blog.newbmiao.com/2023/10/11/rust-send-and-sync-trait.html"/>
-    <id>http://blog.newbmiao.com/2023/10/11/rust-send-and-sync-trait.html</id>
+    <link href="https://newbmiao.github.io/2023/10/11/rust-send-and-sync-trait.html"/>
+    <id>https://newbmiao.github.io/2023/10/11/rust-send-and-sync-trait.html</id>
     <published>2023-10-11T09:17:22.000Z</published>
     <updated>2023-11-12T12:12:32.287Z</updated>
     
@@ -57,21 +105,21 @@
     </summary>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/categories/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
-      <category term="send" scheme="http://blog.newbmiao.com/tags/send/"/>
+      <category term="send" scheme="https://newbmiao.github.io/tags/send/"/>
     
-      <category term="sync" scheme="http://blog.newbmiao.com/tags/sync/"/>
+      <category term="sync" scheme="https://newbmiao.github.io/tags/sync/"/>
     
   </entry>
   
   <entry>
     <title>聊聊共享所有权之Rc和Arc</title>
-    <link href="http://blog.newbmiao.com/2023/10/07/ownership-of-rc-and-arc.html"/>
-    <id>http://blog.newbmiao.com/2023/10/07/ownership-of-rc-and-arc.html</id>
+    <link href="https://newbmiao.github.io/2023/10/07/ownership-of-rc-and-arc.html"/>
+    <id>https://newbmiao.github.io/2023/10/07/ownership-of-rc-and-arc.html</id>
     <published>2023-10-07T11:44:05.000Z</published>
     <updated>2023-10-11T08:59:17.704Z</updated>
     
@@ -84,23 +132,23 @@
     </summary>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/categories/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
-      <category term="ownership" scheme="http://blog.newbmiao.com/tags/ownership/"/>
+      <category term="ownership" scheme="https://newbmiao.github.io/tags/ownership/"/>
     
-      <category term="rc" scheme="http://blog.newbmiao.com/tags/rc/"/>
+      <category term="rc" scheme="https://newbmiao.github.io/tags/rc/"/>
     
-      <category term="arc" scheme="http://blog.newbmiao.com/tags/arc/"/>
+      <category term="arc" scheme="https://newbmiao.github.io/tags/arc/"/>
     
   </entry>
   
   <entry>
     <title>聊聊Rust的Cell和RefCell</title>
-    <link href="http://blog.newbmiao.com/2023/10/03/rust-cell-and-refcell.html"/>
-    <id>http://blog.newbmiao.com/2023/10/03/rust-cell-and-refcell.html</id>
+    <link href="https://newbmiao.github.io/2023/10/03/rust-cell-and-refcell.html"/>
+    <id>https://newbmiao.github.io/2023/10/03/rust-cell-and-refcell.html</id>
     <published>2023-10-03T08:53:52.000Z</published>
     <updated>2023-10-03T09:01:13.724Z</updated>
     
@@ -113,21 +161,21 @@
     </summary>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/categories/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
-      <category term="cell" scheme="http://blog.newbmiao.com/tags/cell/"/>
+      <category term="cell" scheme="https://newbmiao.github.io/tags/cell/"/>
     
-      <category term="refcell" scheme="http://blog.newbmiao.com/tags/refcell/"/>
+      <category term="refcell" scheme="https://newbmiao.github.io/tags/refcell/"/>
     
   </entry>
   
   <entry>
     <title>掌握Rust：从零开始的所有权之旅</title>
-    <link href="http://blog.newbmiao.com/2023/08/13/master-rust-ownership-from-scratch.html"/>
-    <id>http://blog.newbmiao.com/2023/08/13/master-rust-ownership-from-scratch.html</id>
+    <link href="https://newbmiao.github.io/2023/08/13/master-rust-ownership-from-scratch.html"/>
+    <id>https://newbmiao.github.io/2023/08/13/master-rust-ownership-from-scratch.html</id>
     <published>2023-08-13T14:25:08.000Z</published>
     <updated>2023-08-22T02:55:23.061Z</updated>
     
@@ -140,23 +188,23 @@
     </summary>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/categories/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
-      <category term="ownership" scheme="http://blog.newbmiao.com/tags/ownership/"/>
+      <category term="ownership" scheme="https://newbmiao.github.io/tags/ownership/"/>
     
-      <category term="borrow" scheme="http://blog.newbmiao.com/tags/borrow/"/>
+      <category term="borrow" scheme="https://newbmiao.github.io/tags/borrow/"/>
     
-      <category term="lifetime" scheme="http://blog.newbmiao.com/tags/lifetime/"/>
+      <category term="lifetime" scheme="https://newbmiao.github.io/tags/lifetime/"/>
     
   </entry>
   
   <entry>
     <title>代码是负债，而不是资产</title>
-    <link href="http://blog.newbmiao.com/2023/08/12/seeing-code-as-debt-not-value.html"/>
-    <id>http://blog.newbmiao.com/2023/08/12/seeing-code-as-debt-not-value.html</id>
+    <link href="https://newbmiao.github.io/2023/08/12/seeing-code-as-debt-not-value.html"/>
+    <id>https://newbmiao.github.io/2023/08/12/seeing-code-as-debt-not-value.html</id>
     <published>2023-08-12T10:19:54.000Z</published>
     <updated>2023-08-22T02:55:23.062Z</updated>
     
@@ -169,21 +217,21 @@
     </summary>
     
     
-      <category term="thoughts" scheme="http://blog.newbmiao.com/categories/thoughts/"/>
+      <category term="thoughts" scheme="https://newbmiao.github.io/categories/thoughts/"/>
     
-      <category term="software-engineering" scheme="http://blog.newbmiao.com/categories/thoughts/software-engineering/"/>
+      <category term="software-engineering" scheme="https://newbmiao.github.io/categories/thoughts/software-engineering/"/>
     
     
-      <category term="thoughts" scheme="http://blog.newbmiao.com/tags/thoughts/"/>
+      <category term="thoughts" scheme="https://newbmiao.github.io/tags/thoughts/"/>
     
-      <category term="software-engineering" scheme="http://blog.newbmiao.com/tags/software-engineering/"/>
+      <category term="software-engineering" scheme="https://newbmiao.github.io/tags/software-engineering/"/>
     
   </entry>
   
   <entry>
     <title>深入解读-如何用keycloak管理external auth</title>
-    <link href="http://blog.newbmiao.com/2023/06/18/auth-manage-via-keycloak.html"/>
-    <id>http://blog.newbmiao.com/2023/06/18/auth-manage-via-keycloak.html</id>
+    <link href="https://newbmiao.github.io/2023/06/18/auth-manage-via-keycloak.html"/>
+    <id>https://newbmiao.github.io/2023/06/18/auth-manage-via-keycloak.html</id>
     <published>2023-06-18T14:10:20.000Z</published>
     <updated>2023-08-22T02:56:08.831Z</updated>
     
@@ -196,35 +244,35 @@
     </summary>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/categories/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
     
-      <category term="OIDC" scheme="http://blog.newbmiao.com/categories/rust/OIDC/"/>
+      <category term="OIDC" scheme="https://newbmiao.github.io/categories/rust/OIDC/"/>
     
-      <category term="oauth2" scheme="http://blog.newbmiao.com/categories/rust/OIDC/oauth2/"/>
+      <category term="oauth2" scheme="https://newbmiao.github.io/categories/rust/OIDC/oauth2/"/>
     
     
-      <category term="terraform" scheme="http://blog.newbmiao.com/tags/terraform/"/>
+      <category term="terraform" scheme="https://newbmiao.github.io/tags/terraform/"/>
     
-      <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
-      <category term="oauth2" scheme="http://blog.newbmiao.com/tags/oauth2/"/>
+      <category term="oauth2" scheme="https://newbmiao.github.io/tags/oauth2/"/>
     
-      <category term="OIDC" scheme="http://blog.newbmiao.com/tags/OIDC/"/>
+      <category term="OIDC" scheme="https://newbmiao.github.io/tags/OIDC/"/>
     
-      <category term="axum" scheme="http://blog.newbmiao.com/tags/axum/"/>
+      <category term="axum" scheme="https://newbmiao.github.io/tags/axum/"/>
     
-      <category term="keycloak" scheme="http://blog.newbmiao.com/tags/keycloak/"/>
+      <category term="keycloak" scheme="https://newbmiao.github.io/tags/keycloak/"/>
     
-      <category term="token-exchange" scheme="http://blog.newbmiao.com/tags/token-exchange/"/>
+      <category term="token-exchange" scheme="https://newbmiao.github.io/tags/token-exchange/"/>
     
-      <category term="google-idp" scheme="http://blog.newbmiao.com/tags/google-idp/"/>
+      <category term="google-idp" scheme="https://newbmiao.github.io/tags/google-idp/"/>
     
   </entry>
   
   <entry>
     <title>如何在docker中缓存加速Rust依赖构建</title>
-    <link href="http://blog.newbmiao.com/2021/11/21/cache-rust-dependencies-with-docker-build.html"/>
-    <id>http://blog.newbmiao.com/2021/11/21/cache-rust-dependencies-with-docker-build.html</id>
+    <link href="https://newbmiao.github.io/2021/11/21/cache-rust-dependencies-with-docker-build.html"/>
+    <id>https://newbmiao.github.io/2021/11/21/cache-rust-dependencies-with-docker-build.html</id>
     <published>2021-11-21T09:14:23.000Z</published>
     <updated>2023-06-18T00:52:29.957Z</updated>
     
@@ -237,19 +285,19 @@
     </summary>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/categories/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/categories/rust/"/>
     
     
-      <category term="rust" scheme="http://blog.newbmiao.com/tags/rust/"/>
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
-      <category term="docker" scheme="http://blog.newbmiao.com/tags/docker/"/>
+      <category term="docker" scheme="https://newbmiao.github.io/tags/docker/"/>
     
   </entry>
   
   <entry>
     <title>简单聊聊鉴权背后的那些技术</title>
-    <link href="http://blog.newbmiao.com/2021/09/19/tech-behind-authentication.html"/>
-    <id>http://blog.newbmiao.com/2021/09/19/tech-behind-authentication.html</id>
+    <link href="https://newbmiao.github.io/2021/09/19/tech-behind-authentication.html"/>
+    <id>https://newbmiao.github.io/2021/09/19/tech-behind-authentication.html</id>
     <published>2021-09-19T15:00:09.000Z</published>
     <updated>2023-06-18T15:04:08.040Z</updated>
     
@@ -262,29 +310,29 @@
     </summary>
     
     
-      <category term="tech" scheme="http://blog.newbmiao.com/categories/tech/"/>
+      <category term="tech" scheme="https://newbmiao.github.io/categories/tech/"/>
     
-      <category term="OIDC" scheme="http://blog.newbmiao.com/categories/tech/OIDC/"/>
+      <category term="OIDC" scheme="https://newbmiao.github.io/categories/tech/OIDC/"/>
     
-      <category term="oauth2" scheme="http://blog.newbmiao.com/categories/tech/OIDC/oauth2/"/>
+      <category term="oauth2" scheme="https://newbmiao.github.io/categories/tech/OIDC/oauth2/"/>
     
     
-      <category term="oauth2" scheme="http://blog.newbmiao.com/tags/oauth2/"/>
+      <category term="oauth2" scheme="https://newbmiao.github.io/tags/oauth2/"/>
     
-      <category term="OIDC" scheme="http://blog.newbmiao.com/tags/OIDC/"/>
+      <category term="OIDC" scheme="https://newbmiao.github.io/tags/OIDC/"/>
     
-      <category term="keycloak" scheme="http://blog.newbmiao.com/tags/keycloak/"/>
+      <category term="keycloak" scheme="https://newbmiao.github.io/tags/keycloak/"/>
     
-      <category term="authentication" scheme="http://blog.newbmiao.com/tags/authentication/"/>
+      <category term="authentication" scheme="https://newbmiao.github.io/tags/authentication/"/>
     
-      <category term="authorization" scheme="http://blog.newbmiao.com/tags/authorization/"/>
+      <category term="authorization" scheme="https://newbmiao.github.io/tags/authorization/"/>
     
   </entry>
   
   <entry>
     <title>二分递归版or-channel模式的问题</title>
-    <link href="http://blog.newbmiao.com/2021/08/22/recursive-ordone-issue.html"/>
-    <id>http://blog.newbmiao.com/2021/08/22/recursive-ordone-issue.html</id>
+    <link href="https://newbmiao.github.io/2021/08/22/recursive-ordone-issue.html"/>
+    <id>https://newbmiao.github.io/2021/08/22/recursive-ordone-issue.html</id>
     <published>2021-08-22T13:04:19.000Z</published>
     <updated>2023-06-18T00:52:29.951Z</updated>
     
@@ -297,21 +345,21 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
-      <category term="dig101" scheme="http://blog.newbmiao.com/categories/go/dig101/"/>
+      <category term="dig101" scheme="https://newbmiao.github.io/categories/go/dig101/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="or-channel-pattern" scheme="http://blog.newbmiao.com/tags/or-channel-pattern/"/>
+      <category term="or-channel-pattern" scheme="https://newbmiao.github.io/tags/or-channel-pattern/"/>
     
   </entry>
   
   <entry>
     <title>or-channel模式的两种实现</title>
-    <link href="http://blog.newbmiao.com/2021/08/19/2-way-of-or-done-pattern.html"/>
-    <id>http://blog.newbmiao.com/2021/08/19/2-way-of-or-done-pattern.html</id>
+    <link href="https://newbmiao.github.io/2021/08/19/2-way-of-or-done-pattern.html"/>
+    <id>https://newbmiao.github.io/2021/08/19/2-way-of-or-done-pattern.html</id>
     <published>2021-08-19T14:08:01.000Z</published>
     <updated>2023-06-18T00:52:29.950Z</updated>
     
@@ -324,21 +372,21 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
-      <category term="dig101" scheme="http://blog.newbmiao.com/categories/go/dig101/"/>
+      <category term="dig101" scheme="https://newbmiao.github.io/categories/go/dig101/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="or-channel-pattern" scheme="http://blog.newbmiao.com/tags/or-channel-pattern/"/>
+      <category term="or-channel-pattern" scheme="https://newbmiao.github.io/tags/or-channel-pattern/"/>
     
   </entry>
   
   <entry>
     <title>举例来学cond原语</title>
-    <link href="http://blog.newbmiao.com/2021/08/09/one-example-to-learn-cond.html"/>
-    <id>http://blog.newbmiao.com/2021/08/09/one-example-to-learn-cond.html</id>
+    <link href="https://newbmiao.github.io/2021/08/09/one-example-to-learn-cond.html"/>
+    <id>https://newbmiao.github.io/2021/08/09/one-example-to-learn-cond.html</id>
     <published>2021-08-09T13:04:19.000Z</published>
     <updated>2023-06-18T00:52:29.951Z</updated>
     
@@ -351,21 +399,21 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
-      <category term="dig101" scheme="http://blog.newbmiao.com/categories/go/dig101/"/>
+      <category term="dig101" scheme="https://newbmiao.github.io/categories/go/dig101/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="cond" scheme="http://blog.newbmiao.com/tags/cond/"/>
+      <category term="cond" scheme="https://newbmiao.github.io/tags/cond/"/>
     
   </entry>
   
   <entry>
     <title>一个8bytes的内存优化</title>
-    <link href="http://blog.newbmiao.com/2021/08/07/one-8-bytes-optimization.html"/>
-    <id>http://blog.newbmiao.com/2021/08/07/one-8-bytes-optimization.html</id>
+    <link href="https://newbmiao.github.io/2021/08/07/one-8-bytes-optimization.html"/>
+    <id>https://newbmiao.github.io/2021/08/07/one-8-bytes-optimization.html</id>
     <published>2021-08-07T07:36:13.000Z</published>
     <updated>2023-06-18T00:52:29.951Z</updated>
     
@@ -378,21 +426,21 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
-      <category term="dig101" scheme="http://blog.newbmiao.com/categories/go/dig101/"/>
+      <category term="dig101" scheme="https://newbmiao.github.io/categories/go/dig101/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="memory" scheme="http://blog.newbmiao.com/tags/memory/"/>
+      <category term="memory" scheme="https://newbmiao.github.io/tags/memory/"/>
     
   </entry>
   
   <entry>
     <title>2020年回顾</title>
-    <link href="http://blog.newbmiao.com/2021/01/02/summary-of-2020.html"/>
-    <id>http://blog.newbmiao.com/2021/01/02/summary-of-2020.html</id>
+    <link href="https://newbmiao.github.io/2021/01/02/summary-of-2020.html"/>
+    <id>https://newbmiao.github.io/2021/01/02/summary-of-2020.html</id>
     <published>2021-01-02T09:23:34.000Z</published>
     <updated>2023-06-18T00:52:29.957Z</updated>
     
@@ -406,17 +454,17 @@
     </summary>
     
     
-      <category term="summary" scheme="http://blog.newbmiao.com/categories/summary/"/>
+      <category term="summary" scheme="https://newbmiao.github.io/categories/summary/"/>
     
     
-      <category term="summary" scheme="http://blog.newbmiao.com/tags/summary/"/>
+      <category term="summary" scheme="https://newbmiao.github.io/tags/summary/"/>
     
   </entry>
   
   <entry>
     <title>Dig101-Go之深入理解mutex</title>
-    <link href="http://blog.newbmiao.com/2020/07/01/dig101-golang-understanding-mutex.html"/>
-    <id>http://blog.newbmiao.com/2020/07/01/dig101-golang-understanding-mutex.html</id>
+    <link href="https://newbmiao.github.io/2020/07/01/dig101-golang-understanding-mutex.html"/>
+    <id>https://newbmiao.github.io/2020/07/01/dig101-golang-understanding-mutex.html</id>
     <published>2020-06-30T23:38:33.000Z</published>
     <updated>2023-06-18T00:52:29.951Z</updated>
     
@@ -429,25 +477,25 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
-      <category term="dig101" scheme="http://blog.newbmiao.com/categories/go/dig101/"/>
+      <category term="dig101" scheme="https://newbmiao.github.io/categories/go/dig101/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="mutex" scheme="http://blog.newbmiao.com/tags/mutex/"/>
+      <category term="mutex" scheme="https://newbmiao.github.io/tags/mutex/"/>
     
-      <category term="memory-reordering" scheme="http://blog.newbmiao.com/tags/memory-reordering/"/>
+      <category term="memory-reordering" scheme="https://newbmiao.github.io/tags/memory-reordering/"/>
     
-      <category term="atomic" scheme="http://blog.newbmiao.com/tags/atomic/"/>
+      <category term="atomic" scheme="https://newbmiao.github.io/tags/atomic/"/>
     
   </entry>
   
   <entry>
     <title>Go之如何操作结构体的非导出字段</title>
-    <link href="http://blog.newbmiao.com/2020/06/13/dig101-golang-reflect-handle-unexport-field.html"/>
-    <id>http://blog.newbmiao.com/2020/06/13/dig101-golang-reflect-handle-unexport-field.html</id>
+    <link href="https://newbmiao.github.io/2020/06/13/dig101-golang-reflect-handle-unexport-field.html"/>
+    <id>https://newbmiao.github.io/2020/06/13/dig101-golang-reflect-handle-unexport-field.html</id>
     <published>2020-06-13T14:42:03.000Z</published>
     <updated>2023-06-18T00:52:29.950Z</updated>
     
@@ -460,21 +508,21 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
-      <category term="dig101" scheme="http://blog.newbmiao.com/categories/go/dig101/"/>
+      <category term="dig101" scheme="https://newbmiao.github.io/categories/go/dig101/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="reflect" scheme="http://blog.newbmiao.com/tags/reflect/"/>
+      <category term="reflect" scheme="https://newbmiao.github.io/tags/reflect/"/>
     
   </entry>
   
   <entry>
     <title>Dig101-Go之如何在函数内修改指针指向</title>
-    <link href="http://blog.newbmiao.com/2020/05/22/how-to-modify-a-pointer-of-go-inside.html"/>
-    <id>http://blog.newbmiao.com/2020/05/22/how-to-modify-a-pointer-of-go-inside.html</id>
+    <link href="https://newbmiao.github.io/2020/05/22/how-to-modify-a-pointer-of-go-inside.html"/>
+    <id>https://newbmiao.github.io/2020/05/22/how-to-modify-a-pointer-of-go-inside.html</id>
     <published>2020-05-22T13:51:32.000Z</published>
     <updated>2023-06-18T00:52:29.951Z</updated>
     
@@ -487,23 +535,23 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
-      <category term="dig101" scheme="http://blog.newbmiao.com/categories/go/dig101/"/>
+      <category term="dig101" scheme="https://newbmiao.github.io/categories/go/dig101/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="reflect" scheme="http://blog.newbmiao.com/tags/reflect/"/>
+      <category term="reflect" scheme="https://newbmiao.github.io/tags/reflect/"/>
     
-      <category term="dereference" scheme="http://blog.newbmiao.com/tags/dereference/"/>
+      <category term="dereference" scheme="https://newbmiao.github.io/tags/dereference/"/>
     
   </entry>
   
   <entry>
     <title>记一次奇妙的go-protobuf包升级之旅</title>
-    <link href="http://blog.newbmiao.com/2020/04/17/the-drama-of-updating-protobuf-go.html"/>
-    <id>http://blog.newbmiao.com/2020/04/17/the-drama-of-updating-protobuf-go.html</id>
+    <link href="https://newbmiao.github.io/2020/04/17/the-drama-of-updating-protobuf-go.html"/>
+    <id>https://newbmiao.github.io/2020/04/17/the-drama-of-updating-protobuf-go.html</id>
     <published>2020-04-17T14:58:00.000Z</published>
     <updated>2023-06-18T00:52:29.952Z</updated>
     
@@ -516,70 +564,16 @@
     </summary>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/categories/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/categories/go/"/>
     
     
-      <category term="go" scheme="http://blog.newbmiao.com/tags/go/"/>
+      <category term="go" scheme="https://newbmiao.github.io/tags/go/"/>
     
-      <category term="protobuf" scheme="http://blog.newbmiao.com/tags/protobuf/"/>
+      <category term="protobuf" scheme="https://newbmiao.github.io/tags/protobuf/"/>
     
-      <category term="protoc-gen-go" scheme="http://blog.newbmiao.com/tags/protoc-gen-go/"/>
+      <category term="protoc-gen-go" scheme="https://newbmiao.github.io/tags/protoc-gen-go/"/>
     
-      <category term="protoc-gen-go-grpc" scheme="http://blog.newbmiao.com/tags/protoc-gen-go-grpc/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OPA进阶-分布式利器Bundle</title>
-    <link href="http://blog.newbmiao.com/2020/04/16/opa-bundle.html"/>
-    <id>http://blog.newbmiao.com/2020/04/16/opa-bundle.html</id>
-    <published>2020-04-16T11:57:40.000Z</published>
-    <updated>2023-06-18T00:52:29.955Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Bundle</code>是<code>OPA</code>管理<code>policy</code>和<code>data</code>的一种方式。</p><p><code>OPA</code>实现的轻量级策略引擎，一开始就是为了云原生环境的<code>service</code>提供解耦的策略服务，分布式是必然要考虑的问题。</p><p>在<code>Bundle api</code>的设计中，其实就全面考虑并体现了在分布式应用中如何更好的解耦策略引擎的管理。</p><p>比如：</p><ul><li>如何做集中配置管理</li><li>如何动态更新策略</li><li>如何监控策略引擎节点的状态以及决策日志收集</li></ul><p>有了这些功能，再加上其高效的策略描述语言<code>Rego</code>，<code>OPA</code>才真正称得上是<strong>云原生时代的通用策略引擎</strong>。</p><p>本文将带大家简单梳理一遍<code>Bundle</code>的组织方式、管理api、及监控方式。</p><p>考虑到一次性过完不易消化，文末会提供一个直接可实操的<code>docker-compose</code>版本的<code>demo</code>，将全面覆盖本文细节</p><p>建议大家看完本文，本机运行去体验一下，会有更直观的理解。</p><!-- **文章目录** --><!-- [TOC] --><a id="more"></a><h2 id="Bundle-文件组织方式"><a href="#Bundle-文件组织方式" class="headerlink" title="Bundle 文件组织方式"></a>Bundle 文件组织方式</h2><p>下面我们先来看下<code>Bundle</code>的文件组织方式</p><p>在<code>Bundle</code>下的<code>data</code>,只能被识别<code>data.json</code>和<code>data.yaml</code>的文件, 而其上边的目录会作为其数据前缀</p><p>如下边<code>roles/data.json</code> (<code>bundle/example</code>作为一个<code>bundle</code>)，会将<code>data.json</code>的数据挂在<code>data.roles</code>节点下</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd bundle/example</span><br><span class="line">tree -a</span><br><span class="line">.</span><br><span class="line">├── .manifest</span><br><span class="line">├── bindings</span><br><span class="line">│   └── data.json</span><br><span class="line">├── main.rego</span><br><span class="line">├── rbac.rego</span><br><span class="line">└── roles</span><br><span class="line">    └── data.json</span><br></pre></td></tr></table></figure><p>其中<code>.manifest</code>文件是<code>Bundle</code>的一个可选的元数据（<code>metadata</code>）配置文件</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat .manifest</span><br><span class="line">&#123;</span><br><span class="line">  "revision" : "9f160bcd446bf50b1b17b570c322198a68d8e106",</span><br><span class="line">  "roots": ["roles", "bindings","rbac","system"]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>它的作用是声明<code>Bundle</code>的版本<code>revision</code>及其下的路径前缀（<code>roots: path prefix</code>）</p><p><code>roots</code>不仅规定了<code>Bundle</code>应该有的路径前缀；在用<code>Bundle api</code>（后边会提到）更新文件时，也会按其规定的路径前缀来更新文件</p><p>然后<code>bundle</code>也支持<code>tarball</code>格式加载到<code>server</code></p><p>例如<code>opa run -b</code>的方式指定<code>Bundle</code></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd bundle/example</span><br><span class="line">tar -czf bundle.tar.gz .</span><br><span class="line">opa run -b bundle.tar.gz</span><br></pre></td></tr></table></figure><blockquote><p>Tips: 关于如何在交互式命令行里传递<code>input</code>。<br>之前非bundle使用<br><code>opa run  quick-start  repl.input:quick-start/input.json</code><br>到bundle格式时，就需要构建 <strong><code>repl/input/data.json</code></strong> 文件格式作为输入</p></blockquote><p>具体可以用时参考文档<a href="https://www.openpolicyagent.org/docs/latest/management/#bundle-file-format" target="_blank" rel="noopener">bundle-file-format</a></p><h2 id="opa-server-api"><a href="#opa-server-api" class="headerlink" title="opa server api"></a>opa server api</h2><p>在了解<code>Bundle</code>支持的管理api前，我们先看下<a href="https://www.openpolicyagent.org/docs/latest/rest-api/" target="_blank" rel="noopener">opa server api</a></p><p>主要api如下：</p><table><thead><tr><th>type</th><th>用途</th></tr></thead><tbody><tr><td>Data api</td><td>查询文档（能被输出的规则、虚拟文档等）</td></tr><tr><td>Policy api</td><td>查询策略</td></tr><tr><td>Query api</td><td>执行命令</td></tr><tr><td>Compile api</td><td>执行部分查询计算（<code>partial evaluate query</code>）</td></tr><tr><td>Health api</td><td>健康检查</td></tr><tr><td>Metric api</td><td>指标统计（<code>prometheus</code>格式)</td></tr></tbody></table><p>下面我们以文档查询（<code>Data</code>）api为例尝试下：</p><p>我们先用之前<code>quick-start</code>的代码起一个<code>opa sever</code></p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opa run --server quick-start</span><br></pre></td></tr></table></figure><p>(注意：<code>opa server api</code>的路径前缀为<code>/v1/</code>, 对应的，查询api路径前缀为<code>/v1/data/</code>,)</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 构造input输出请求</span></span><br><span class="line">cat &lt;&lt;EOF &gt; v1-data-input.json</span><br><span class="line">&#123;</span><br><span class="line">    "input": $(cat quick-start/input.json)</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询 example_rbac</span></span><br><span class="line">curl -s  http://0.0.0.0:8181/v1/data/example_rbac?pretty=true -d @v1-data-input.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  "result": &#123;</span><br><span class="line">    "allow": true,</span><br><span class="line">    "role_has_permission": [</span><br><span class="line">      "widget-reader"</span><br><span class="line">    ],</span><br><span class="line">    "user_has_role": [</span><br><span class="line">      "widget-reader"</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>Tips：不指定路径时，默认路径为<code>data.system.main</code>，这时输入不需要包裹在<code>input</code> key内。<br>也可以使用<code>--set</code> 和 <code>--set-file</code> 可以覆盖配置文件中的配置<br><code>opa run --server --set=default_decision=example_rbac/allow/  quick-start</code><br><code>curl -s  http://0.0.0.0:8181/ -d @quick-start/input.json</code></p></blockquote><p>而且Data查询也支持组合参数如<code>explain</code>,<code>metrics</code>,<code>provenance</code>等，详细查看文档，这里就不展开了。</p><h2 id="Bundle-管理api"><a href="#Bundle-管理api" class="headerlink" title="Bundle 管理api"></a>Bundle 管理api</h2><p><code>Bundle</code>为了在分布式系统中更好的展现OPA的威力，提供了四种Api：</p><ul><li>Bundles<br>用于策略分发，可以定时轮训更新<code>Bundle</code>包</li><li>Decision Logs<br>定期上传日志包，支持按大小分片，开启后会有日志id，决策日志可追溯</li><li>Status<br>定期上传服务状态，包含<code>metrics</code>等信息</li><li>Discovery<br>服务发现，可以用于集中管理<code>OPA</code>的<code>Bundle</code>配置，各个节点下载定期同步配置后，按配置去更新<code>Bundle</code></li></ul><p>如下图：</p><p><img src="http://media.newbmiao.com/opa/bundle.png" alt="management api"></p><p>这里举个带注释<code>Bundle</code>的四种接口配置例子</p><p>（先扫一遍留个印象，具体使用时查看文档，后边会提供可实操的代码）</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># opa/config-bundle.yaml</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="comment"># 定义服务，支持多个</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">example_bundle</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">http://demo-server:8888/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">labels:</span></span><br><span class="line">  <span class="attr">app:</span> <span class="string">myapp</span></span><br><span class="line"></span><br><span class="line"><span class="attr">bundles:</span></span><br><span class="line">  <span class="comment"># 定义bundle, 支持多个</span></span><br><span class="line">  <span class="attr">authz:</span></span><br><span class="line">    <span class="comment"># bundle所处的服务</span></span><br><span class="line">    <span class="attr">service:</span> <span class="string">example_bundle</span></span><br><span class="line">    <span class="comment"># 这里指从resource处更新bundle文件包，即：</span></span><br><span class="line">    <span class="comment"># http://demo-server:8888/bundle/rbac.tar.gz</span></span><br><span class="line">    <span class="attr">resource:</span> <span class="string">bundle/rbac.tar.gz</span></span><br><span class="line">    <span class="attr">polling:</span></span><br><span class="line">      <span class="comment"># 300~600s间更新一次</span></span><br><span class="line">      <span class="attr">min_delay_seconds:</span> <span class="number">300</span></span><br><span class="line">      <span class="attr">max_delay_seconds:</span> <span class="number">600</span></span><br><span class="line"></span><br><span class="line"><span class="attr">decision_logs:</span></span><br><span class="line">  <span class="attr">service:</span> <span class="string">example_bundle</span></span><br><span class="line">  <span class="comment"># partition_name为区分上传地址,会跟到 /logs 后, 即：</span></span><br><span class="line">  <span class="comment"># http://demo-server:8888/logs/bundle</span></span><br><span class="line">  <span class="comment"># 注意上传的是gzip日志文件</span></span><br><span class="line">  <span class="attr">partition_name:</span> <span class="string">bundle</span></span><br><span class="line">  <span class="attr">reporting:</span></span><br><span class="line">    <span class="attr">min_delay_seconds:</span> <span class="number">30</span></span><br><span class="line">    <span class="attr">max_delay_seconds:</span> <span class="number">60</span></span><br><span class="line"></span><br><span class="line"><span class="attr">status:</span></span><br><span class="line">  <span class="attr">service:</span> <span class="string">example_bundle</span></span><br><span class="line">  <span class="comment"># 即 http://demo-server:8888/status/bundle</span></span><br><span class="line">  <span class="attr">partition_name:</span> <span class="string">bundle</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认查询路径</span></span><br><span class="line"><span class="attr">default_decision:</span> <span class="string">rbac/allow</span></span><br></pre></td></tr></table></figure><h2 id="Bundle-集成方式"><a href="#Bundle-集成方式" class="headerlink" title="Bundle 集成方式"></a>Bundle 集成方式</h2><p>这里我们简单过下集成方式</p><h3 id="opa-server-方式"><a href="#opa-server-方式" class="headerlink" title="opa server 方式"></a>opa server 方式</h3><p>运行方式很简单如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opa run -s -a 0.0.0.0:8181 -c opa/config-bundle.yaml</span><br></pre></td></tr></table></figure><p>运行后，opa server会根据配置自动拉取<code>Bundle</code>包：<code>rbac.tar.gz</code></p><p>下载成功后启动策略服务。同时定期上传决策日志和状态给服务端（即：<code>demo-server:8888</code>）</p><h3 id="go-lib-方式"><a href="#go-lib-方式" class="headerlink" title="go lib 方式"></a>go lib 方式</h3><p>使用lib <code>github.com/open-policy-agent/opa/rego</code>集成</p><p>关键代码举例如下：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构建查询，PrepareForEval可重用</span></span><br><span class="line"><span class="keyword">var</span> err error</span><br><span class="line">query, err := rego.New(</span><br><span class="line">    rego.LoadBundle(<span class="string">"./rbac.tar.gz"</span>),</span><br><span class="line">    rego.Query(<span class="string">"x = data.rbac.allow"</span>),</span><br><span class="line">).PrepareForEval(context.Background())</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行查询</span></span><br><span class="line">results, err := query.Eval(context.Background(), rego.EvalInput(input))</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Fatalln(<span class="string">"Opa eval error:"</span>, err)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">len</span>(results) == <span class="number">0</span> &#123;</span><br><span class="line">    fmt.Fatalln(<span class="string">"Opa eval error: no result"</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fmt.Println(<span class="string">"Opa result:"</span>, results[<span class="number">0</span>].Expressions[<span class="number">0</span>].Value)</span><br></pre></td></tr></table></figure><p>具体组织方式官方推荐的有下边<strong>集中式</strong>和<strong>分布式</strong>这两种：</p><p><img src="http://media.newbmiao.com/opa/host-local.png" alt="host-local"></p><p><img src="http://media.newbmiao.com/opa/distributed-enforcement.png" alt="distributed-enforcement"></p><p>推荐感兴趣的同学再去看下官方go集成的demo: <a href="https://github.com/open-policy-agent/example-api-authz-go" target="_blank" rel="noopener">example-api-authz-go</a></p><h2 id="Bundle-的监控"><a href="#Bundle-的监控" class="headerlink" title="Bundle 的监控"></a>Bundle 的监控</h2><p>opa server 支持<code>metrics</code>, 而且是<code>prometheus</code>格式的</p><p>所以配合<code>prometheus</code>可以直接进行对其数据指标的监控，如下图：</p><p><img src="http://media.newbmiao.com/opa/prometheus.png" alt="prometheus"></p><p>再配合<code>grafana</code>的<code>dashbord</code>可以更好的展示<code>metrics</code>数据，如下图：</p><p><img src="http://media.newbmiao.com/opa/grafana.png" alt="grafana"></p><h2 id="Bundle-in-action"><a href="#Bundle-in-action" class="headerlink" title="Bundle in action"></a>Bundle in action</h2><p>上边说这么多，不实际试一下怎么知道<code>Bundle</code>究竟如何呢？</p><p>这里提供一个<code>docker-compose</code>版的demo给大家去本地验证尝试</p><p>里边提供了三种<code>Bundle</code>版本：</p><ul><li>opa-bundle</li><li>opa-discovery</li><li>demo-sever (go lib集成)</li></ul><p>也提供了两种版本的<code>monitor</code></p><ul><li>slim version</li><li>advance version</li></ul><p>代码见：<a href="https://github.com/NewbMiao/opa-koans/tree/master/bundle" target="_blank" rel="noopener">NewbMiao/opa-koans/bundle</a></p><p>里边有详细的操作文档，有问题可以在Repo里提issue</p><p>这个Repo包含了这一系列的<code>OPA</code>教程，欢迎感兴趣的同学 <strong><code>star</code></strong> 关注！</p><p>同时我在知乎也建了一个<a href="https://www.zhihu.com/club/1225433566832132096" target="_blank" rel="noopener">OPA技术圈</a>，也欢迎大家参与讨论。</p><p>好了，到此，<code>OPA</code>的基本教程就结束了。后边再抽空结合官方的例子写些实战教程吧。</p><hr><p>最后附上一个Repo中验证Bundle的过程，大家也可以从这里开始尝试哦</p><p><img src="http://media.newbmiao.com/opa/bundleVerify.gif" alt="scripts/bundleVerify.sh"></p><!-- ---文章首发公众号：newbmiao推荐阅读：[OPA系列](http://blog.newbmiao.com/categories/OPA/)[Dig101-Go系列](http://mp.weixin.qq.com/mp/homepage?__biz=MzUxNzA2NzEzNw==&hid=3&sn=6ded611e164ec49132752fdbdaac552f&scene=18#wechat_redirect)![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->]]></content>
-    
-    <summary type="html">
-    
-      OPA进阶-分布式利器Bundle
-    
-    </summary>
-    
-    
-      <category term="OPA" scheme="http://blog.newbmiao.com/categories/OPA/"/>
-    
-    
-      <category term="OPA" scheme="http://blog.newbmiao.com/tags/OPA/"/>
-    
-      <category term="bundle" scheme="http://blog.newbmiao.com/tags/bundle/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OPA进阶-测试、性能分析和基准测试</title>
-    <link href="http://blog.newbmiao.com/2020/04/05/opa-test-profile-and-benchmark.html"/>
-    <id>http://blog.newbmiao.com/2020/04/05/opa-test-profile-and-benchmark.html</id>
-    <published>2020-04-05T09:48:30.000Z</published>
-    <updated>2023-06-18T00:52:29.955Z</updated>
-    
-    <content type="html"><![CDATA[<!-- **文章目录** --><!-- [TOC] --><p>本文来讲讲<code>OPA</code>的测试（<code>test</code>）、性能分析（<code>profile</code>）和（<code>benchmark</code>）</p><p>掌握他们，对于保证策略代码的质量和决策效率有很大的帮助</p><a id="more"></a><h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p><code>OPA</code>的测试很简单。</p><p>所有<code>test_</code>前缀的的规则（<code>rule</code>）都是测试。</p><blockquote><p>Tips: 虽然是测试，但其本质上其仍是规则，仍然可以被查询。<br>另外建议文件名遵循<code>_test.rego</code>后缀加以区分</p></blockquote><p>这里拿<code>quick-start</code>的测试例子来看下：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> example_rbac_test</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> data.example_rbac</span><br><span class="line"></span><br><span class="line">test_not_allow &#123;</span><br><span class="line">    not example_rbac.allow with input as &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test_allow &#123;</span><br><span class="line">  example_rbac.allow with input as &#123;</span><br><span class="line">    <span class="string">"action"</span>: &#123;</span><br><span class="line">      <span class="string">"operation"</span>: <span class="string">"read"</span>,</span><br><span class="line">      <span class="string">"resource"</span>: <span class="string">"widgets"</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"subject"</span>: &#123;<span class="string">"user"</span>: <span class="string">"inspector-alice"</span>&#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>就这样即覆盖了<code>allow</code>规则的全部测试用例。</p><p>注意这里<code>with</code>起到了数据模拟的作用（<code>data mocking</code>）</p><blockquote><p>Tips: 函数不可用<code>with</code>替换</p></blockquote><p>对应的命令行是：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd quick-start</span><br><span class="line">opa test . -v</span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出如下</span></span><br><span class="line">data.example_rbac_test.test_not_allow: PASS (693.201µs)</span><br><span class="line">data.example_rbac_test.test_allow: PASS (562.02µs)</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">PASS: 2/2</span><br></pre></td></tr></table></figure><p>也可以查看测试覆盖率：</p><p><code>opa test . -c</code></p><p>设定测试覆盖率标准：</p><p><code>opa test . -c --threshold 100</code></p><p>（这里提示下别忘了<code>vscode-opa</code>支持可视化覆盖率展示哦）</p><p>也支持选择测试用例执行：</p><p><code>opa test -r test_allow . -v</code></p><h2 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">cd quick-start</span><br><span class="line">opa eval --profile -d example.rego -d data.json -i input.json -f pretty <span class="string">"data.example_rbac.allow"</span>  </span><br><span class="line"></span><br><span class="line"><span class="literal">true</span></span><br><span class="line">+------------------------------+---------+</span><br><span class="line">|            METRIC            |  VALUE  |</span><br><span class="line">+------------------------------+---------+</span><br><span class="line">| timer_rego_data_parse_ns     | <span class="number">18332</span>   |</span><br><span class="line">| timer_rego_load_files_ns     | <span class="number">5506307</span> |</span><br><span class="line">| timer_rego_module_compile_ns | <span class="number">573408</span>  |</span><br><span class="line">| timer_rego_module_parse_ns   | <span class="number">5226456</span> |</span><br><span class="line">| timer_rego_query_compile_ns  | <span class="number">87390</span>   |</span><br><span class="line">| timer_rego_query_eval_ns     | <span class="number">292198</span>  |</span><br><span class="line">| timer_rego_query_parse_ns    | <span class="number">277932</span>  |</span><br><span class="line">+------------------------------+---------+</span><br><span class="line">+----------+----------+----------+-------------------------+</span><br><span class="line">|   TIME   | NUM EVAL | NUM REDO |        LOCATION         |</span><br><span class="line">+----------+----------+----------+-------------------------+</span><br><span class="line">| <span class="number">54.121</span>µs | <span class="number">1</span>        | <span class="number">1</span>        | data.example_rbac.allow |</span><br><span class="line">| <span class="number">42.776</span>µs | <span class="number">1</span>        | <span class="number">2</span>        | example.rego:<span class="number">15</span>         |</span><br><span class="line">| <span class="number">37.861</span>µs | <span class="number">1</span>        | <span class="number">1</span>        | example.rego:<span class="number">9</span>          |</span><br><span class="line">| <span class="number">35.81</span>µs  | <span class="number">1</span>        | <span class="number">1</span>        | example.rego:<span class="number">25</span>         |</span><br><span class="line">| <span class="number">22.469</span>µs | <span class="number">1</span>        | <span class="number">1</span>        | example.rego:<span class="number">10</span>         |</span><br><span class="line">| <span class="number">21.353</span>µs | <span class="number">2</span>        | <span class="number">2</span>        | example.rego:<span class="number">16</span>         |</span><br><span class="line">| <span class="number">16.888</span>µs | <span class="number">2</span>        | <span class="number">1</span>        | example.rego:<span class="number">17</span>         |</span><br><span class="line">| <span class="number">15.923</span>µs | <span class="number">2</span>        | <span class="number">1</span>        | example.rego:<span class="number">23</span>         |</span><br><span class="line">| <span class="number">14.736</span>µs | <span class="number">1</span>        | <span class="number">2</span>        | example.rego:<span class="number">22</span>         |</span><br><span class="line">| <span class="number">8.798</span>µs  | <span class="number">1</span>        | <span class="number">1</span>        | example.rego:<span class="number">24</span>         |</span><br><span class="line">+----------+----------+----------+-------------------------+</span><br></pre></td></tr></table></figure><blockquote><p>Tips: –profile还支持结果排序和限制显示条数</p><ul><li><code>--profile-sort</code>：对性能分析结果排序，默认按<code>total_time_ns =&gt; num_eval =&gt; num_redo =&gt; file =&gt; line</code>排序, 详见<a href="https://www.openpolicyagent.org/docs/latest/policy-performance/#sort-criteria-for-the-profile-results" target="_blank" rel="noopener">profile-sort文档</a></li><li><code>--profile-limit</code>：显示几条分析结果，默认10条</li></ul></blockquote><h2 id="benchmark"><a href="#benchmark" class="headerlink" title="benchmark"></a>benchmark</h2><p><code>opa</code> 也支持<code>benchmark</code>，基本实现了<code>go</code>的<code>benchmark</code>的使用方式, 甚至有更详细的结果（毕竟一直标榜性能么）</p><p>默认<code>benchmark</code>会展示内存（<code>--benchmem</code>）和查询(<code>--metrics</code>)的基准测试结果</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ opa bench --count <span class="number">1</span> -d example.rego -d data.json -i input.json -f pretty <span class="string">"data.example_rbac.allow"</span></span><br><span class="line">+-------------------------------------------+------------+</span><br><span class="line">| samples                                   |      <span class="number">14162</span> |</span><br><span class="line">| ns/op                                     |      <span class="number">93655</span> |</span><br><span class="line">| B/op                                      |      <span class="number">15117</span> |</span><br><span class="line">| allocs/op                                 |        <span class="number">311</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_75%    |      <span class="number">89900</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_90%    |     <span class="number">112253</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_95%    |     <span class="number">125465</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_99%    |     <span class="number">222404</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_99<span class="number">.9</span>%  |     <span class="number">549291</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_99<span class="number">.99</span>% |     <span class="number">550611</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_count  |      <span class="number">14162</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_max    |     <span class="number">550611</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_mean   |      <span class="number">76735</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_median |      <span class="number">68336</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_min    |      <span class="number">38896</span> |</span><br><span class="line">| histogram_timer_rego_query_eval_ns_stddev |      <span class="number">38828</span> |</span><br><span class="line">+-------------------------------------------+------------+</span><br></pre></td></tr></table></figure><p>当然也集成到了<code>opa test</code>中</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ opa test -v --bench  example.rego example_test.rego data.json </span><br><span class="line">data.example_rbac_test.test_not_allow      <span class="number">15139</span>             <span class="number">74172</span> ns/op             <span class="number">62044</span> timer_rego_query_eval_ns/op     <span class="number">14666</span> B/op     <span class="number">270</span> allocs/op</span><br><span class="line">data.example_rbac_test.test_allow          <span class="number">10000</span>            <span class="number">102658</span> ns/op             <span class="number">90779</span> timer_rego_query_eval_ns/op     <span class="number">17825</span> B/op     <span class="number">367</span> allocs/op</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">PASS: <span class="number">2</span>/<span class="number">2</span></span><br></pre></td></tr></table></figure><p>而且<code>--format</code>指定<code>gobench</code>的话，还支持了<a href="https://github.com/golang/perf" target="_blank" rel="noopener"><code>benchstat</code></a>, 是<code>Go</code>亲生的，无疑了</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">opa test -v --bench --count <span class="number">5</span> --format gobench   example.rego example_test.rego data.json| tee b.txt</span><br><span class="line"></span><br><span class="line">BenchmarkDataExampleRbacTestTestNotAllow           <span class="number">15186</span>             <span class="number">87349</span> ns/op             <span class="number">73644</span> timer_rego_query_eval_ns/op     <span class="number">14663</span> B/op        <span class="number">270</span> allocs/op</span><br><span class="line">BenchmarkDataExampleRbacTestTestAllow      <span class="number">10000</span>            <span class="number">115857</span> ns/op            <span class="number">101565</span> timer_rego_query_eval_ns/op     <span class="number">17828</span> B/op        <span class="number">367</span> allocs/op</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">PASS: <span class="number">2</span>/<span class="number">2</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">benchstat b.txt</span><br><span class="line"></span><br><span class="line">name                             time/op</span><br><span class="line">DataExampleRbacTestTestNotAllow                  <span class="number">92.9</span>µs ±<span class="number">40</span>%</span><br><span class="line">DataExampleRbacTestTestAllow                      <span class="number">123</span>µs ± <span class="number">8</span>%</span><br><span class="line"></span><br><span class="line">name                             timer_rego_query_eval_ns/op</span><br><span class="line">DataExampleRbacTestTestNotAllow                   <span class="number">79.0</span>k ±<span class="number">41</span>%</span><br><span class="line">DataExampleRbacTestTestAllow                       <span class="number">109</span>k ± <span class="number">9</span>%</span><br><span class="line"></span><br><span class="line">name                             alloc/op</span><br><span class="line">DataExampleRbacTestTestNotAllow                  <span class="number">14.7</span>kB ± <span class="number">0</span>%</span><br><span class="line">DataExampleRbacTestTestAllow                     <span class="number">17.8</span>kB ± <span class="number">0</span>%</span><br><span class="line"></span><br><span class="line">name                             allocs/op</span><br><span class="line">DataExampleRbacTestTestNotAllow                     <span class="number">270</span> ± <span class="number">0</span>%</span><br><span class="line">DataExampleRbacTestTestAllow                        <span class="number">367</span> ± <span class="number">0</span>%</span><br></pre></td></tr></table></figure><p>基准测试前后对比自然也是支持，如<code>benchstat old.txt new.txt</code>，就不详述了。</p><p>这些工具固然好，高性能还是需要follow一些经验法则的</p><p>这里引用官方对于性能优化的建议如下(<a href="https://www.openpolicyagent.org/docs/latest/policy-performance/#key-takeaways" target="_blank" rel="noopener">key-takeaways</a>)：</p><ul><li>编写策略（<code>policy</code>）要最大程度地减少迭代和搜索。<ul><li>使用的数组元素有唯一标识符时，改为唯一标识作为key的对象。</li><li>考虑利用部分评估（<a href="https://blog.openpolicyagent.org/partial-evaluation-162750eaf422" target="_blank" rel="noopener">partial-evaluation</a>）以将非线性策略编译为线性策略。</li></ul></li><li>利用规则索引优化（<a href="https://blog.openpolicyagent.org/optimizing-opa-rule-indexing-59f03f17caf3" target="_blank" rel="noopener">rule-indexing</a>）编写策略，以便规则索引有效。</li><li>使用探查器(<code>profiler</code>)可帮助确定策略的哪些部分将从提高的性能中受益最大。</li><li>使用基准测试工具（<code>benchmark tools</code>）来帮助获取真实世界的时序数据并检测策略性能变化。</li></ul><blockquote><p>里边提到的<code>partial-evaluation</code>和<code>rule-indexing</code>是保证<code>OPA</code>高性能的两个重要特性，感兴趣的同学可以自行查看下。</p></blockquote><p>下一篇，我们来谈谈<code>OPA</code>的一个重磅功能 - <code>bundle</code>, 一种将策略及数据进行包组织的方式，也支持丰富的管理<code>restful api</code>,适合分布式决策服务的构建。</p><!-- ---文章首发公众号：newbmiao推荐阅读：[OPA系列](http://blog.newbmiao.com/categories/OPA/)![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->]]></content>
-    
-    <summary type="html">
-    
-      OPA进阶-测试、性能分析和基准测试
-    
-    </summary>
-    
-    
-      <category term="OPA" scheme="http://blog.newbmiao.com/categories/OPA/"/>
-    
-    
-      <category term="OPA" scheme="http://blog.newbmiao.com/tags/OPA/"/>
-    
-      <category term="test" scheme="http://blog.newbmiao.com/tags/test/"/>
-    
-      <category term="profile" scheme="http://blog.newbmiao.com/tags/profile/"/>
-    
-      <category term="benchmark" scheme="http://blog.newbmiao.com/tags/benchmark/"/>
+      <category term="protoc-gen-go-grpc" scheme="https://newbmiao.github.io/tags/protoc-gen-go-grpc/"/>
     
   </entry>
   

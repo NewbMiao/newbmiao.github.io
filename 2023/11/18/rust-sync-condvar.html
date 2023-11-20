@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Rust并发控制之Condvar | 菜鸟Miao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,condvar" />
+  
+  
+  <meta name="description" content="Rust并发控制之Condvar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust并发控制之Condvar">
+<meta property="og:url" content="https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html">
+<meta property="og:site_name" content="菜鸟Miao">
+<meta property="og:description" content="Rust并发控制之Condvar">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-18T11:44:31.000Z">
+<meta property="article:modified_time" content="2023-11-20T02:27:04.673Z">
+<meta property="article:author" content="菜鸟Miao">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="condvar">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟Miao</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(博客地址永久迁移为 https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/dig101/">Dig101</a>
+        
+          <a class="main-nav-link" href="/categories/OPA/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/tips/">Tips</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+	  
+	
+        <div id="search-form">
+                <input type="text" class="st-default-search-input search-form-input" style="outline: none;width: 110px;">
+        </div>
+	
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-rust-sync-condvar" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/11/18/rust-sync-condvar.html" class="article-date">
+  <time datetime="2023-11-18T11:44:31.000Z" itemprop="datePublished">2023-11-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Rust并发控制之Condvar
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <div id="toc" class="toc-article">
+         <h3>文章目录</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#唤醒顺序不保证"><span class="toc-number">1.</span> <span class="toc-text">唤醒顺序不保证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#虚假唤醒"><span class="toc-number">2.</span> <span class="toc-text">虚假唤醒</span></a></li></ol>
+        </div>
+        
+        <!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>上次提到的<a href="https://mp.weixin.qq.com/s/X4hIhzggiv-nv4vAxvX6Rw" target="_blank" rel="noopener">Barrier</a>用到了Rust的condvar和mutex，今天来看下condvar的用法。</p>
+<a id="more"></a>
+
+<p>condvar即condition variable（条件变量），是一种线程同步的方式，用于线程间的通信。它可以阻塞（wait）线程，期间不消耗CPU，直到某个时间发生唤醒（notify）线程。</p>
+<p>代码举例来说：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::&#123;Arc, Condvar, Mutex&#125;;</span><br><span class="line"><span class="keyword">use</span> std::thread;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> pair = Arc::new((Mutex::new(<span class="literal">false</span>), Condvar::new()));</span><br><span class="line">    <span class="keyword">let</span> pair2 = Arc::clone(&amp;pair);</span><br><span class="line"></span><br><span class="line">    thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        <span class="keyword">let</span> (lock, cvar) = &amp;*pair2;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> started = lock.lock().unwrap();</span><br><span class="line">        *started = <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">// We notify the condvar that the value has changed.</span></span><br><span class="line">        cvar.notify_one();</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Wait for the thread to start up.</span></span><br><span class="line">    <span class="keyword">let</span> (lock, cvar) = &amp;*pair;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> started = lock.lock().unwrap();</span><br><span class="line">    <span class="keyword">while</span> !*started &#123;</span><br><span class="line">        started = cvar.wait(started).unwrap();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码中，创建一个线程在修改started变量后唤醒等待的线程。main中等待的的线程会一直阻塞（wait）直到started的值被修改。</p>
+<p>其中wait会需要一个锁的MutexGuard来配合，wait会自动释放锁，并阻塞当前线程，直到被唤醒时重新获取锁，并返回锁的MutexGuard，来获取锁当前保护的值</p>
+<blockquote>
+<p>Tips: MutexGuard实现了销毁时自动释放锁和可以通过解引用（deref）到它保护的值</p>
+</blockquote>
+<p>这里有两个有意思的点：</p>
+<ul>
+<li>为什么要和mutex一起使用？</li>
+<li>为什么唤醒时要检查条件是否满足？</li>
+</ul>
+<p>这个要从condvar唤醒的机制说起。</p>
+<h2 id="唤醒顺序不保证"><a href="#唤醒顺序不保证" class="headerlink" title="唤醒顺序不保证"></a>唤醒顺序不保证</h2><p>先来看下唤醒的顺序，我们起两批同样数目的线程，一批线程每个线程会修改一次变量并唤醒一个另一批等待的线程，为了观测唤醒顺序，代码如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::&#123;Arc, Condvar, Mutex&#125;;</span><br><span class="line"><span class="keyword">use</span> std::thread::&#123;<span class="keyword">self</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SharedData</span></span> &#123;</span><br><span class="line">    counter: Mutex&lt;<span class="built_in">usize</span>&gt;,</span><br><span class="line">    condvar: Condvar,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> shared_data = Arc::new(SharedData &#123;</span><br><span class="line">        counter: Mutex::new(<span class="number">0</span>),</span><br><span class="line">        condvar: Condvar::new(),</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> thread_num = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> workers = <span class="built_in">Vec</span>::new();</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> waits = <span class="built_in">Vec</span>::new();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..thread_num &#123;</span><br><span class="line">        do_wait(i, Arc::clone(&amp;shared_data), &amp;<span class="keyword">mut</span> waits);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..thread_num &#123;</span><br><span class="line">        do_work(i, Arc::clone(&amp;shared_data), &amp;<span class="keyword">mut</span> workers)</span><br><span class="line">    &#125;</span><br><span class="line">    waits.into_iter().for_each(|w| w.join().unwrap());</span><br><span class="line">    workers.into_iter().for_each(|w| w.join().unwrap());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">do_work</span></span>(i: <span class="built_in">i32</span>, data: Arc&lt;SharedData&gt;, workers: &amp;<span class="keyword">mut</span> <span class="built_in">Vec</span>&lt;thread::JoinHandle&lt;()&gt;&gt;) &#123;</span><br><span class="line">    workers.push(thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        <span class="keyword">let</span> SharedData &#123; counter, condvar &#125; = &amp;*data;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> data = counter.lock().unwrap();</span><br><span class="line">        *data += <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"Woker thread &#123;&#125; before notify: Counter &#123;&#125;"</span>, i, data);</span><br><span class="line">        condvar.notify_one();</span><br><span class="line">    &#125;));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">do_wait</span></span>(i: <span class="built_in">i32</span>, data: Arc&lt;SharedData&gt;, waits: &amp;<span class="keyword">mut</span> <span class="built_in">Vec</span>&lt;thread::JoinHandle&lt;()&gt;&gt;) &#123;</span><br><span class="line">    waits.push(thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        <span class="keyword">let</span> SharedData &#123; counter, condvar &#125; = &amp;*data;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> data = counter.lock().unwrap();</span><br><span class="line">        data = condvar.wait(data).unwrap();</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"   Wait thread &#123;&#125; after wake up: Counter &#123;&#125;"</span>, i, data);</span><br><span class="line">    &#125;));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果不唯一，比如如下结果，五次修改触发了五次唤醒，但是wait唤醒顺序不一定是按照worker修改顺序（而修改顺序是符合预期的，因为是加锁保证的）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Woker thread 0 before notify: Counter 1</span><br><span class="line">Woker thread 4 before notify: Counter 2</span><br><span class="line">Woker thread 2 before notify: Counter 3</span><br><span class="line">   Wait thread 1 after wake up: Counter 3</span><br><span class="line">   Wait thread 3 after wake up: Counter 3</span><br><span class="line">Woker thread 3 before notify: Counter 4</span><br><span class="line">   Wait thread 0 after wake up: Counter 4</span><br><span class="line">Woker thread 1 before notify: Counter 5</span><br><span class="line">   Wait thread 4 after wake up: Counter 5</span><br><span class="line">   Wait thread 2 after wake up: Counter 5</span><br></pre></td></tr></table></figure>
+
+<p>甚至有可能是唤醒次数少于五次，导致有些线程一直阻塞，比如如下结果，只有四次唤醒，导致有1个线程一直阻塞：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Woker thread 1 before notify: Counter 1</span><br><span class="line">   Wait thread 2 after wake up: Counter 1</span><br><span class="line">Woker thread 3 before notify: Counter 2</span><br><span class="line">Woker thread 0 before notify: Counter 3</span><br><span class="line">   Wait thread 4 after wake up: Counter 3</span><br><span class="line">Woker thread 4 before notify: Counter 4</span><br><span class="line">   Wait thread 3 after wake up: Counter 4</span><br><span class="line">   Wait thread 1 after wake up: Counter 4</span><br><span class="line">Woker thread 2 before notify: Counter 5</span><br><span class="line"><span class="comment"># 有一个线程一直阻塞在这里</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么顺序不保证呢？condvar实现是基于操作系统的条件变量实现，顺序取决于操作系统调度时当前可唤醒的线程是哪个，要保证唤醒顺序需要额外的开销，而这个开销是不必要的，因为唤醒顺序对于线程间的通信是没有意义的，所以底层实现并不保证唤醒顺序。<a href="https://www.reddit.com/r/C_Programming/comments/12itrvd/condition_variables_wakeup_ordering/" target="_blank" rel="noopener">这里</a>有相关讨论</p>
+<p>所以多个线程等待同一条件变量时，notify_one唤醒和等待也不是一定是一对一的调用，每次唤醒也不能保证都是不同的等待线程。</p>
+<p>至于为什么会有线程一直阻塞的情况，是因为唤醒次数少于等待次数，导致有些线程一直阻塞。<br>因为是多线程并发构建的notify_one和wait，存在调用notify_one时没有线程在等待的可能，导致唤醒次数少于等待次数的情况。</p>
+<h2 id="虚假唤醒"><a href="#虚假唤醒" class="headerlink" title="虚假唤醒"></a>虚假唤醒</h2><p>还有就是虚假唤醒，即wait返回时，条件由于并发原因已经不满足，还可能因为唤醒并不是由于显示的notify调用，这个听起来很奇怪，但不是一个bug，是底层操作系统实现导致的，具体看看<a href="https://en.wikipedia.org/wiki/Spurious_wakeup" target="_blank" rel="noopener">wiki</a>上的说明吧。</p>
+<p>综上这两点，condvar唤醒时是需要重新检查条件是否依旧满足，而且需要和mutex一起使用，来确保条件值获取的并发安全。</p>
+<p>除此condvar还有一些方便的方法，比如提供了</p>
+<ul>
+<li>notify_all来广播唤醒所有等待的线程；</li>
+<li>wait_while可以根据条件等待条件直到满足；</li>
+<li>wait_timeout只等待一段时间如果不能及时被唤醒。</li>
+</ul>
+<p>官方文档都有例子，就不展开了。</p>
+<p>关于condvar比较实际的例子有WaitGroup，不需要像Barrier一样初始化时指定线程数量，而是在运行时动态增加线程数量，在<a href="https://github.com/crossbeam-rs/crossbeam/blob/master/crossbeam-utils/src/sync/wait_group.rs" target="_blank" rel="noopener">crossbeam-utils</a>中有实现，代码很精炼，感兴趣可以看下</p>
+<!-- ---
+
+文章首发公众号：newbmiao
+
+![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	如有疑问，请文末留言交流或邮件：<a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a>
+  <img src="/img/newbmiao_white_all.jpg" width="50%"  style="min-width:250px;margin:0px;" title="newbmiao"/>
+  本文链接 : <a href="https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2023&#x2F;11&#x2F;18&#x2F;rust-sync-condvar.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2023&#x2F;11&#x2F;18&#x2F;rust-sync-condvar.html</a>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      
+        <a data-url="https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html" data-id="clp6fotp10001y4ypbi0peirp" class="article-share-link">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/condvar/" rel="tag">condvar</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust/" rel="tag">rust</a></li></ul>
+
+            
+	<span id="busuanzi_container_page_pv" style="color:#999">
+ 	 <i class="fa fa-eye"></i> <span id="busuanzi_value_page_pv"> <i class="fa fa-spinner fa-spin"></i></span>次阅读
+       </span>
+       
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;最近更新 ：<time datetime="2023-11-20T02:27:04.673Z" itemprop="dateModify">2023-11-20</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/11/20/blog-migrate-hostname.html">博客地址已迁移到newbmiao.github.io</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/18/rust-sync-condvar.html">Rust并发控制之Condvar</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/12/rust-sync-barrier.html">Rust并发控制之Barrier</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/11/rust-send-and-sync-trait.html">聊聊Rust的并发约束：Send和Sync</a>
+          </li>
+        
+          <li>
+            <a href="/2023/10/07/ownership-of-rc-and-arc.html">聊聊共享所有权之Rc和Arc</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/OPA/">OPA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/dropbox/">dropbox</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/hexo/">hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/">devops</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/devops/terraform/">terraform</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/gearman/">gearman</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/dig101/">dig101</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/insight/">insight</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/notes/">notes</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/html5/">html5</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/journal/">journal</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/js/jquery/">jquery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/notes/">notes</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mac/shadowsocks/">shadowsocks</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/tool/">tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/optimize/">optimize</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/php/CI/">CI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/regex/">regex</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/signal/">signal</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/tool/">tool</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/rust/OIDC/">OIDC</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/rust/OIDC/oauth2/">oauth2</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/summary/">summary</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/OIDC/">OIDC</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/OIDC/oauth2/">oauth2</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/software-engineering/">software-engineering</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/tips/">tips</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web/notes/">notes</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/practice/">practice</a><span class="category-list-count">4</span></li></ul></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/terraform/" style="font-size: 16.36px; color: #2491f6">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/provider/" style="font-size: 15px; color: #1e90ff">provider</a> <a href="/tags/hexo/" style="font-size: 17.73px; color: #2a93ee">hexo</a> <a href="/tags/blog/" style="font-size: 19.09px; color: #3094e5">blog</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/gitcafe/" style="font-size: 15px; color: #1e90ff">gitcafe</a> <a href="/tags/slice/" style="font-size: 16.36px; color: #2491f6">slice</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/panic/" style="font-size: 15px; color: #1e90ff">panic</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/protoc-gen-go/" style="font-size: 15px; color: #1e90ff">protoc-gen-go</a> <a href="/tags/protoc-gen-go-grpc/" style="font-size: 15px; color: #1e90ff">protoc-gen-go-grpc</a> <a href="/tags/journal/" style="font-size: 16.36px; color: #2491f6">journal</a> <a href="/tags/git/" style="font-size: 15px; color: #1e90ff">git</a> <a href="/tags/linux/" style="font-size: 25.91px; color: #4d9aba">linux</a> <a href="/tags/mac/" style="font-size: 17.73px; color: #2a93ee">mac</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/html5/" style="font-size: 16.36px; color: #2491f6">html5</a> <a href="/tags/drag/" style="font-size: 16.36px; color: #2491f6">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/js/" style="font-size: 28.64px; color: #599da9">js</a> <a href="/tags/javascript-program-solution/" style="font-size: 17.73px; color: #2a93ee">javascript-program-solution</a> <a href="/tags/maintainable-javascript/" style="font-size: 15px; color: #1e90ff">maintainable-javascript</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/OPA/" style="font-size: 21.82px; color: #3c96d4">OPA</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/comprehensions/" style="font-size: 15px; color: #1e90ff">comprehensions</a> <a href="/tags/Rego/" style="font-size: 16.36px; color: #2491f6">Rego</a> <a href="/tags/virtual-document/" style="font-size: 15px; color: #1e90ff">virtual-document</a> <a href="/tags/test/" style="font-size: 15px; color: #1e90ff">test</a> <a href="/tags/profile/" style="font-size: 15px; color: #1e90ff">profile</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/mysql/" style="font-size: 19.09px; color: #3094e5">mysql</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/phpdoc/" style="font-size: 15px; color: #1e90ff">phpdoc</a> <a href="/tags/php/" style="font-size: 27.27px; color: #539bb1">php</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/target/" style="font-size: 15px; color: #1e90ff">target</a> <a href="/tags/function/" style="font-size: 15px; color: #1e90ff">function</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/php-fpm/" style="font-size: 15px; color: #1e90ff">php-fpm</a> <a href="/tags/apache/" style="font-size: 15px; color: #1e90ff">apache</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/rust/" style="font-size: 24.55px; color: #4799c3">rust</a> <a href="/tags/docker/" style="font-size: 17.73px; color: #2a93ee">docker</a> <a href="/tags/oauth2/" style="font-size: 16.36px; color: #2491f6">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.36px; color: #2491f6">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/keycloak/" style="font-size: 16.36px; color: #2491f6">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/google-idp/" style="font-size: 15px; color: #1e90ff">google-idp</a> <a href="/tags/ownership/" style="font-size: 16.36px; color: #2491f6">ownership</a> <a href="/tags/borrow/" style="font-size: 15px; color: #1e90ff">borrow</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/thoughts/" style="font-size: 15px; color: #1e90ff">thoughts</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/doc/" style="font-size: 15px; color: #1e90ff">doc</a> <a href="/tags/excel/" style="font-size: 15px; color: #1e90ff">excel</a> <a href="/tags/AppleScript/" style="font-size: 15px; color: #1e90ff">AppleScript</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/jquery/" style="font-size: 20.45px; color: #3695dc">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/closure/" style="font-size: 15px; color: #1e90ff">closure</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/or-channel-pattern/" style="font-size: 16.36px; color: #2491f6">or-channel-pattern</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/de-virtualize/" style="font-size: 15px; color: #1e90ff">de-virtualize</a> <a href="/tags/interface/" style="font-size: 16.36px; color: #2491f6">interface</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/reflect/" style="font-size: 16.36px; color: #2491f6">reflect</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/string/" style="font-size: 15px; color: #1e90ff">string</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/mutex/" style="font-size: 16.36px; color: #2491f6">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/atomic/" style="font-size: 15px; color: #1e90ff">atomic</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/sema/" style="font-size: 15px; color: #1e90ff">sema</a> <a href="/tags/notes/" style="font-size: 23.18px; color: #4198cb">notes</a> <a href="/tags/jquery-timepicker-addon/" style="font-size: 15px; color: #1e90ff">jquery-timepicker-addon</a> <a href="/tags/CI/" style="font-size: 15px; color: #1e90ff">CI</a> <a href="/tags/ajax/" style="font-size: 15px; color: #1e90ff">ajax</a> <a href="/tags/promise/" style="font-size: 15px; color: #1e90ff">promise</a> <a href="/tags/pcntl/" style="font-size: 15px; color: #1e90ff">pcntl</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a> <a href="/tags/laradock/" style="font-size: 15px; color: #1e90ff">laradock</a> <a href="/tags/xdebug/" style="font-size: 15px; color: #1e90ff">xdebug</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/migrate/" style="font-size: 15px; color: #1e90ff">migrate</a> <a href="/tags/condvar/" style="font-size: 15px; color: #1e90ff">condvar</a>
+    </div>
+  </div>
+
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://blog.ihuxu.com/" target="_blank">胡小旭</a>
+          </li>
+        
+          <li>
+            <a href="https://curl.qcloud.com/OEZz5KSh" target="_blank">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title">文章目录</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+
+<script src="/js/toc.js"></script>
+
+
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 菜鸟Miao<br>
+     <p>
+     <span id="busuanzi_container_site_uv">
+  	您是本站第<span id="busuanzi_value_site_uv"> <i class="fa fa-spinner fa-spin"></i></span>个访问者
+     </span>
+     <span id="busuanzi_container_site_pv">
+        /本站总访问量<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i> </span>次
+     </span>
+     </p>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+      .
+      备案号：<a href="http://www.beian.miit.gov.cn" target="_blank" >京ICP备15015526号</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/dig101/" class="mobile-nav-link">Dig101</a>
+  
+    <a href="/categories/OPA/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/tips/" class="mobile-nav-link">Tips</a>
+  
+</nav>
+  <script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','bqAniPPC1T7RV4MomxcE','2.0.0');
+</script>
+
+
+
+</div>
+</body>
+</html>
+
