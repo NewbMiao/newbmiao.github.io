@@ -4,31 +4,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tips-如何优雅的使用GDB调试Go | 菜鸟Miao</title>
+  <title>Rust并发控制之Condvar-两线程交替打印 | 菜鸟Miao</title>
   <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
-  <meta name="keywords" itemprop="keywords" content="tips,gdb,docker" />
+  <meta name="keywords" itemprop="keywords" content="rust,condvar" />
   
   
-  <meta name="description" content="tips-use-gdb-elegantly">
+  <meta name="description" content="Rust并发控制之Condvar-两线程交替打印">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tips-如何优雅的使用GDB调试Go">
-<meta property="og:url" content="https://newbmiao.github.io/2020/02/18/tips-use-gdb-elegantly.html">
+<meta property="og:title" content="Rust并发控制之Condvar-两线程交替打印">
+<meta property="og:url" content="https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html">
 <meta property="og:site_name" content="菜鸟Miao">
-<meta property="og:description" content="tips-use-gdb-elegantly">
+<meta property="og:description" content="Rust并发控制之Condvar-两线程交替打印">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://asciinema.org/a/302911.svg">
-<meta property="og:image" content="http://media.newbmiao.com/tips/gdb-codesign.gif">
-<meta property="article:published_time" content="2020-02-18T15:29:37.000Z">
-<meta property="article:modified_time" content="2023-06-18T00:52:29.957Z">
+<meta property="article:published_time" content="2023-11-23T15:30:59.000Z">
+<meta property="article:modified_time" content="2023-11-23T16:15:59.407Z">
 <meta property="article:author" content="菜鸟Miao">
-<meta property="article:tag" content="tips">
-<meta property="article:tag" content="gdb">
-<meta property="article:tag" content="docker">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="condvar">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://asciinema.org/a/302911.svg">
   
     <link rel="alternative" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
   
@@ -97,14 +93,14 @@
 </header>
 
     <div class="outer">
-      <section id="main"><article id="post-tips-use-gdb-elegantly" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-rust-sync-condvar-2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/02/18/tips-use-gdb-elegantly.html" class="article-date">
-  <time datetime="2020-02-18T15:29:37.000Z" itemprop="datePublished">2020-02-18</time>
+    <a href="/2023/11/23/rust-sync-condvar-2.html" class="article-date">
+  <time datetime="2023-11-23T15:30:59.000Z" itemprop="datePublished">2023-11-23</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/tips/">tips</a>
+    <a class="article-category-link" href="/categories/rust/">rust</a>
   </div>
 
   </div>
@@ -115,7 +111,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Tips-如何优雅的使用GDB调试Go
+      Rust并发控制之Condvar-两线程交替打印
     </h1>
   
 
@@ -126,119 +122,37 @@
 	
         <div id="toc" class="toc-article">
          <h3>文章目录</h3>
-         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker篇：3步即可调试"><span class="toc-number">1.</span> <span class="toc-text">Docker篇：3步即可调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac篇：需要证书签名"><span class="toc-number">2.</span> <span class="toc-text">Mac篇：需要证书签名</span></a></li></ol>
+         
         </div>
         
-        <blockquote>
-<p>Tips: all for hands-free.</p>
-</blockquote>
-<p>Tips 系列：记录日常解决问题、解放双手的一些小技巧。</p>
-<p>目的只有一个：不被重复的琐事麻痹，能偷懒的绝不手软。</p>
-<hr>
-<p>今天聊聊如何优雅的使用GDB调试Go程序。</p>
-<p>GDB有啥用？</p>
-<p>想了解代码底层的话，它是一大利器，更别说定位问题啥的。</p>
-<p>具体骚操作见曹大的<a href="https://xargin.com/debugger/" target="_blank" rel="noopener">使用 debugger 学习 golang</a></p>
-<p>但GDB从安装到可用，可能有一大堆问题要解决（尤其在Mac上），我们怎么能优雅的使用它，避免陷入问题中，是本文的重点。</p>
-<p>（涉及Docker和Mac两个平台上运行）</p>
+        <p>在并发控制的面试里有个很喜欢考的点：如何控制两个并发线程交替打印1和2。</p>
+<p>实现的方式有很多，今天我们先用上篇提到的condvar试试。</p>
 <!-- **文章目录** -->
-<!-- [[TOC]] -->
+<!-- [TOC] -->
 <a id="more"></a>
-<p>先来看比较推荐的Docker方式</p>
-<h2 id="Docker篇：3步即可调试"><a href="#Docker篇：3步即可调试" class="headerlink" title="Docker篇：3步即可调试"></a>Docker篇：3步即可调试</h2><p>docker加持的话，非常方便，随用随起</p>
-<p>先上效果：戳 <a href="https://asciinema.org/a/302911" target="_blank" rel="noopener">gdb-debug-go-in-docker</a></p>
-<p><img src="https://asciinema.org/a/302911.svg" alt="gdb-debug-go-in-docker"></p>
-<!--more-->
-<p>具体步骤如下：（完全回归工具本质，换台机器也能调试）</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 已当前目录映射启动gdb</span></span><br><span class="line">docker run --rm -it --security-opt=<span class="string">"apparmor=unconfined"</span> \</span><br><span class="line">  --security-opt=<span class="string">"seccomp=unconfined"</span>  \</span><br><span class="line">  --<span class="built_in">cap</span>-add=SYS_PTRACE -v <span class="string">"$(pwd):/go/src/app"</span> \</span><br><span class="line">  newbmiao/gdb-<span class="keyword">go</span>:<span class="number">1.14</span> bash</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 编译go，不使用compressdwarf 、inline and escape</span></span><br><span class="line"><span class="keyword">go</span> build -ldflags=-compressdwarf=<span class="literal">false</span> -gcflags=all=<span class="string">"-N -l"</span> -o test test.<span class="keyword">go</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 可以愉快的debug了</span></span><br><span class="line">gdb ./test</span><br></pre></td></tr></table></figure>
 
-<p>一套打完，收工，就这么简单。文末会附上怎么定义的docker。</p>
-<hr>
-<p>你可能有疑问，docker这些参数是干啥的，下边附资料，感兴趣自行查看</p>
-<blockquote>
-<p>具体讨论见issue：<a href="https://github.com/moby/moby/issues/7276#issuecomment-194137403" target="_blank" rel="noopener">apparmor denies ptrace to docker-default profile</a></p>
-</blockquote>
+<p>思路是利用条件变量来控制两个线程：</p>
 <ul>
-<li>AppArmor</li>
+<li>线程1：当且仅当条件为false时开始打印1，并修改条件为true, 通知等待的另一个线程打印2，否则while阻塞等待</li>
+<li>线程2：条件为false时阻塞等待notify，直到条件为true，然后重置条件为false，并打印2</li>
 </ul>
-<p>AppArmor 是一个 Linux 内核安全模块，可用于限制主机操作系统上运行的进程的功能。每个进程都可以拥有自己的安全配置文件。安全配置文件用来允许或禁止特定功能，例如网络访问或文件读/写/执行权限。</p>
-<p>详见<a href="https://docs.docker.com/engine/security/apparmor/" target="_blank" rel="noopener">AppArmor security profiles for Docker</a></p>
-<ul>
-<li>Seccomp</li>
-</ul>
-<p>Seccomp是Secure computing mode的缩写，它是Linux内核提供的一个操作，用于限制一个进程可以执行的系统调用．当然，我们需要有一个配置文件来指明进程到底可以执行哪些系统调用，不可以执行哪些系统调用．在Docker中，它使用Seccomp来限制一个容器可以执行的系统调用。</p>
-<p>详见<a href="https://docs.docker.com/engine/security/seccomp/" target="_blank" rel="noopener">Seccomp security profiles for Docker</a></p>
-<ul>
-<li>SYS_PTRACE</li>
-</ul>
-<p>配合<code>seccomp=unconfined</code>, 允许容器使用ptrace运行strace / ltrace之类的程序。</p>
-<h2 id="Mac篇：需要证书签名"><a href="#Mac篇：需要证书签名" class="headerlink" title="Mac篇：需要证书签名"></a>Mac篇：需要证书签名</h2><p>版本： <code>gdb 8.3.1</code> On <code>macoOS High Serria 10.13.6</code></p>
-<p>步骤:</p>
-<ul>
-<li>创建系统证书 <code>gdb-cert</code></li>
-</ul>
-<p>重点是标红处，其他一路下一步即可。（注意证书创建成功，才能签名成功）</p>
-<p><img src="http://media.newbmiao.com/tips/gdb-codesign.gif" alt="创建系统证书"></p>
-<p>（如果创建失败，可以<strong>删除证书，重启创建</strong>(推荐)；或者尝试创建登录证书=》导出=》=》加载到系统证书）</p>
-<ul>
-<li>gdb代码签名</li>
-</ul>
-<p>已创建脚本，直接执行：</p>
-<p><code>sh debugger/gdb/installMac.sh</code></p>
-<ul>
-<li>gdb调试（方式同docker篇）</li>
-</ul>
-<blockquote>
-<p>证书相关具体参见：<a href="https://sourceware.org/gdb/wiki/PermissionsDarwin#Create_a_certificate_in_the_System_Keychain" target="_blank" rel="noopener">PermissionsDarwin</a></p>
-</blockquote>
-<p>同样列一下可能遇到的问题:</p>
-<ul>
-<li>codesign</li>
-</ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Unable to find Mach task port <span class="keyword">for</span> process-id <span class="number">3884</span>: (os/kern) failure (<span class="number">0x5</span>).</span><br><span class="line"> (please check gdb is codesigned - see taskgated(<span class="number">8</span>))</span><br></pre></td></tr></table></figure>
+<p>代码及注释如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::&#123;Arc, Condvar, Mutex&#125;;</span><br><span class="line"><span class="keyword">use</span> std::thread::&#123;<span class="keyword">self</span>, sleep&#125;;</span><br><span class="line"><span class="keyword">use</span> std::time::Duration;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> pair = Arc::new((Mutex::new(<span class="literal">false</span>), Condvar::new()));</span><br><span class="line">    <span class="keyword">let</span> cnt = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">let</span> pair2 = pair.clone();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> t1 = thread::spawn(&#123;</span><br><span class="line">        <span class="keyword">move</span> || &#123;</span><br><span class="line">            <span class="keyword">let</span> &amp;(<span class="keyword">ref</span> lock, <span class="keyword">ref</span> cvar) = &amp;*pair2;</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..cnt &#123;</span><br><span class="line">                <span class="keyword">while</span> <span class="keyword">let</span> <span class="literal">Ok</span>(<span class="keyword">mut</span> v) = lock.lock() &#123;</span><br><span class="line">                    <span class="comment">// 条件为false时开始打印1</span></span><br><span class="line">                    <span class="comment">// 并修改条件为true, 通知等待的另一个线程打印2</span></span><br><span class="line">                    <span class="keyword">if</span> !*v &#123;</span><br><span class="line">                        <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span> &#123;</span><br><span class="line">                            <span class="built_in">print!</span>(<span class="string">"1 "</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                        *v = <span class="literal">true</span>;</span><br><span class="line">                        cvar.notify_one();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="comment">// 及时释放锁，不让mutexguard被scope结束时才释放</span></span><br><span class="line">                        <span class="comment">// 如果后续没操作的话，可以不用这里drop，等离开scope时自动释放也一样</span></span><br><span class="line">                        <span class="built_in">drop</span>(v);</span><br><span class="line">                        <span class="comment">// [2]</span></span><br><span class="line">                        <span class="comment">// sleep(Duration::from_millis(1));</span></span><br><span class="line">                        <span class="comment">// [1]</span></span><br><span class="line">                        <span class="comment">// print!(" waitting... ");</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> t2 = thread::spawn(&#123;</span><br><span class="line">        <span class="keyword">move</span> || &#123;</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..cnt &#123;</span><br><span class="line">                <span class="keyword">let</span> &amp;(<span class="keyword">ref</span> lock, <span class="keyword">ref</span> cvar) = &amp;*pair;</span><br><span class="line">                <span class="keyword">let</span> <span class="keyword">mut</span> v = lock.lock().unwrap();</span><br><span class="line">                <span class="comment">// 条件为false时等待notify，直到条件为true</span></span><br><span class="line">                <span class="keyword">while</span> !*v &#123;</span><br><span class="line">                    v = cvar.wait(v).unwrap();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 重置条件为false，并打印2</span></span><br><span class="line">                *v = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">1</span> &#123;</span><br><span class="line">                    <span class="built_in">print!</span>(<span class="string">"2 "</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    t1.join().unwrap();</span><br><span class="line">    t2.join().unwrap();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>初次运行卡住</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gdb ./<span class="built_in">test</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; r</span></span><br><span class="line">Starting program: /Users/newbmiao/Documents/tech/Dig101-Go/test</span><br><span class="line">[New Thread 0xd03 of process 7603]</span><br><span class="line"><span class="meta">#</span><span class="bash"> 卡住。。。</span></span><br></pre></td></tr></table></figure>
+<p>运行结果可以实现打印 <code>1 2 1 2 1 2</code></p>
+<p>不过线程1用遍历阻塞其实还是消耗了不少cpu时间，恢复注释[1]的打印可以看出，又多次waitting输出</p>
+<p>可以加一点等待sleep，如注释[2]来减少cpu的占用和频繁对锁的抢占。</p>
+<p>其实这个题目用semaphore实现也很有意思，下一篇我们聊semaphore时再来看。</p>
+<!-- ---
 
-<p>解决方法：</p>
-<p>直接别的窗口找到对应进程id，kill掉，后续会正常</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps aux|grep gdb</span><br><span class="line">kill -9 xxx</span><br></pre></td></tr></table></figure>
+文章首发公众号：newbmiao
 
-<ul>
-<li>SIG113问题</li>
-</ul>
-<p>详见：<a href="https://github.com/cyrus-and/gdb-dashboard/issues/81" target="_blank" rel="noopener">GDB kind of doesn’t work on macOS Sierra</a></p>
-<p>解决方法：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gdb 的配置</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat ~/.gdbinit</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> gdb-dashboard</span></span><br><span class="line">// $ cat ~/.gdbinit.d/init</span><br><span class="line">set startup-with-shell off</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>让gdb更理解go的调试信息</li>
-</ul>
-<p>让gdb打印更易读，不压缩dwarf</p>
-<p><code>go build -ldflags=-compressdwarf=false -gcflags=all=&quot;-N -l&quot; -o test test.go</code></p>
-<blockquote>
-<p>gdb使用 <code>$GOROOT/src/runtime/runtime-gdb.py</code> 来加载go运行时支持.<br>可以从二进制文件中查看到:  <code>strings test |grep gdb</code></p>
-</blockquote>
-<ul>
-<li>libsystem_darwin.dylib错误</li>
-</ul>
-<p>直接忽略就行，详见：<a href="https://stackoverflow.com/questions/58125727/gdb-giving-weird-errors" target="_blank" rel="noopener">GDB giving weird errors</a></p>
-<blockquote>
-<p>详细代码见<a href="https://github.com/NewbMiao/free-hands-tips#gdb-go" target="_blank" rel="noopener">NewbMiao/free-hands-tips</a></p>
-</blockquote>
-<p>See more:</p>
-<ul>
-<li><a href="https://github.com/cyrus-and/gdb-dashboard" target="_blank" rel="noopener">cyrus-and/gdb-dashboard</a></li>
-<li><a href="https://golang.org/doc/gdb" target="_blank" rel="noopener">Debugging Go Code with GDB</a></li>
-</ul>
-
+![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->
 	
 	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
 	如有疑问，请文末留言交流或邮件：<a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a>
   <img src="/img/newbmiao_white_all.jpg" width="50%"  style="min-width:250px;margin:0px;" title="newbmiao"/>
-  本文链接 : <a href="https://newbmiao.github.io/2020/02/18/tips-use-gdb-elegantly.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2020&#x2F;02&#x2F;18&#x2F;tips-use-gdb-elegantly.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2020&#x2F;02&#x2F;18&#x2F;tips-use-gdb-elegantly.html</a>
+  本文链接 : <a href="https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2023&#x2F;11&#x2F;23&#x2F;rust-sync-condvar-2.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2023&#x2F;11&#x2F;23&#x2F;rust-sync-condvar-2.html</a>
   </blockquote>
 	
       
@@ -246,13 +160,13 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2020/02/18/tips-use-gdb-elegantly.html" data-id="clna3lktd004xwhyp0opu8ble" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html" data-id="clpbecool0000utyp0dyk409r" class="article-share-link">分享到</a>
       
 
       
 
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gdb/" rel="tag">gdb</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/condvar/" rel="tag">condvar</a></li></ul>
 
             
 	<span id="busuanzi_container_page_pv" style="color:#999">
@@ -261,7 +175,7 @@
        
      
      <span style="color:#999">
-&nbsp; | &nbsp;最近更新 ：<time datetime="2023-06-18T00:52:29.957Z" itemprop="dateModify">2023-06-18</time>
+&nbsp; | &nbsp;最近更新 ：<time datetime="2023-11-23T16:15:59.407Z" itemprop="dateModify">2023-11-24</time>
 </span>
 
      
