@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>菜鸟Miao</title>
   <icon>https://www.gravatar.com/avatar/644a62fb3ee1c60061ebca1d0996b0ae</icon>
-  <subtitle>start from a newb...(博客地址永久迁移为 https://newbmiao.github.io)</subtitle>
+  <subtitle>start from a newb...(博客地址: https://newbmiao.github.io)</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://newbmiao.github.io/"/>
