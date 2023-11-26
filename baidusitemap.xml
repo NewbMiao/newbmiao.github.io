@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-basis.html</loc>
+    <lastmod>2023-11-26</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2021/08/25/fanIn-and-fanOut.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
@@ -25,11 +29,11 @@
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/03/18/opa-func-and-virtual-doc.html</loc>
+    <loc>https://newbmiao.github.io/2020/03/20/opa-comprehensions.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/03/20/opa-comprehensions.html</loc>
+    <loc>https://newbmiao.github.io/2020/03/18/opa-func-and-virtual-doc.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
@@ -65,19 +69,11 @@
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/03/13/opa-quick-start.html</loc>
-    <lastmod>2023-11-26</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2020/04/05/opa-test-profile-and-benchmark.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/06/18/auth-manage-via-keycloak.html</loc>
-    <lastmod>2023-11-26</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2023/08/13/master-rust-ownership-from-scratch.html</loc>
+    <loc>https://newbmiao.github.io/2020/03/13/opa-quick-start.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
@@ -94,6 +90,14 @@
   </url>
   <url>
     <loc>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</loc>
+    <lastmod>2023-11-26</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2023/08/13/master-rust-ownership-from-scratch.html</loc>
+    <lastmod>2023-11-26</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2023/06/18/auth-manage-via-keycloak.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
@@ -117,10 +121,6 @@
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-basis.html</loc>
-    <lastmod>2023-11-26</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2021/08/07/one-8-bytes-optimization.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
@@ -141,11 +141,11 @@
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2021/08/19/2-way-of-or-done-pattern.html</loc>
+    <loc>https://newbmiao.github.io/2020/02/29/dig101-golang-interface-de-virtualize.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/02/29/dig101-golang-interface-de-virtualize.html</loc>
+    <loc>https://newbmiao.github.io/2021/08/19/2-way-of-or-done-pattern.html</loc>
     <lastmod>2023-11-26</lastmod>
   </url>
   <url>
@@ -169,6 +169,10 @@
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
+    <loc>https://newbmiao.github.io/2020/01/07/dig101-golang-slice.html</loc>
+    <lastmod>2023-11-24</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2020/02/26/dig101-golang-interface.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
@@ -177,7 +181,11 @@
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/01/07/dig101-golang-slice.html</loc>
+    <loc>https://newbmiao.github.io/2018/02/09/advanced-go-concurrency-patterns.html</loc>
+    <lastmod>2023-11-24</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2018/03/15/go-value-layout-in-memory.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
@@ -186,14 +194,6 @@
   </url>
   <url>
     <loc>https://newbmiao.github.io/2018/03/05/go-value-in-heap-and-stack.html</loc>
-    <lastmod>2023-11-24</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2018/03/15/go-value-layout-in-memory.html</loc>
-    <lastmod>2023-11-24</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2018/02/09/advanced-go-concurrency-patterns.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
@@ -289,15 +289,15 @@
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-process.html</loc>
-    <lastmod>2023-11-24</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-ACL.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
     <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
+    <lastmod>2023-11-24</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-process.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>

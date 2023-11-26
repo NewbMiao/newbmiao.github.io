@@ -295,13 +295,13 @@
     
       <category term="terraform" scheme="https://newbmiao.github.io/tags/terraform/"/>
     
+      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
+    
       <category term="oauth2" scheme="https://newbmiao.github.io/tags/oauth2/"/>
     
       <category term="OIDC" scheme="https://newbmiao.github.io/tags/OIDC/"/>
     
       <category term="axum" scheme="https://newbmiao.github.io/tags/axum/"/>
-    
-      <category term="rust" scheme="https://newbmiao.github.io/tags/rust/"/>
     
       <category term="keycloak" scheme="https://newbmiao.github.io/tags/keycloak/"/>
     
