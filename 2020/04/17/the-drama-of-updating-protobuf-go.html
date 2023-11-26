@@ -19,13 +19,13 @@
 <meta property="og:site_name" content="菜鸟Miao">
 <meta property="og:description" content="记一次奇妙的go-protobuf包升级之旅">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://media.newbmiao.com/emoji/finish.gif">
-<meta property="og:image" content="http://media.newbmiao.com/emoji/block.jpg">
-<meta property="og:image" content="http://media.newbmiao.com/emoji/block.jpg">
-<meta property="og:image" content="http://media.newbmiao.com/emoji/unbelieve.jpg">
-<meta property="og:image" content="http://media.newbmiao.com/emoji/peace.jpg">
+<meta property="og:image" content="https://newbmiao.github.io/images/emoji/finish.gif">
+<meta property="og:image" content="https://newbmiao.github.io/images/emoji/block.jpg">
+<meta property="og:image" content="https://newbmiao.github.io/images/emoji/block.jpg">
+<meta property="og:image" content="https://newbmiao.github.io/images/emoji/unbelieve.jpg">
+<meta property="og:image" content="https://newbmiao.github.io/images/emoji/peace.jpg">
 <meta property="article:published_time" content="2020-04-17T14:58:00.000Z">
-<meta property="article:modified_time" content="2023-11-24T15:29:22.151Z">
+<meta property="article:modified_time" content="2023-11-26T13:24:29.815Z">
 <meta property="article:author" content="菜鸟Miao">
 <meta property="article:tag" content="go">
 <meta property="article:tag" content="protobuf">
@@ -33,7 +33,7 @@
 <meta property="article:tag" content="protoc-gen-go">
 <meta property="article:tag" content="protoc-gen-go-grpc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://media.newbmiao.com/emoji/finish.gif">
+<meta name="twitter:image" content="https://newbmiao.github.io/images/emoji/finish.gif">
   
     <link rel="alternative" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
   
@@ -160,7 +160,7 @@
 <p><code>InternalMessageInfo</code>也变成了接口<code>type Message = protoiface.MessageV1</code></p>
 <p>这个<code>InternalMessageInfo</code>的废弃在版本升级中也提到了，详见<a href="https://github.com/protocolbuffers/protobuf-go/releases/tag/v1.20.0#v1.20-generated-code" target="_blank" rel="noopener">generated-code</a></p>
 <p>好，替换方法，第一回合结束</p>
-<p><img src="http://media.newbmiao.com/emoji/finish.gif" alt="准备收工"></p>
+<p><img src="/images/emoji/finish.gif" alt="准备收工"></p>
 <h2 id="Round-Two"><a href="#Round-Two" class="headerlink" title="Round Two"></a>Round Two</h2><p>等等，再仔细看了下<code>github.com/golang/protobuf</code>文档，里边提到<code>v1.4.0</code>版本后, 后边代码将交由<code>google.golang.org/protobuf</code> Repo维护，看来谷歌要把pb的包都收到自己组织下</p>
 <p>那我顺手直接把<code>grpc</code>生成工具也替换过去呗！</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GO111MODULE=on <span class="keyword">go</span> get -u google.golang.org/protobuf/cmd/protoc-gen-<span class="keyword">go</span>@v1<span class="number">.21</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
@@ -179,7 +179,7 @@
 <p>What? 失败+1。。。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">protoc-gen-go-grpc: program not found or is not executable</span><br><span class="line">Please specify a program using absolute path or make sure the program is available in your PATH system variable</span><br><span class="line">--go-grpc_out: protoc-gen-go-grpc: Plugin failed with status code 1.</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://media.newbmiao.com/emoji/block.jpg" alt="心塞x1"></p>
+<p><img src="/images/emoji/block.jpg" alt="心塞x1"></p>
 <p><code>protoc-gen-go-grpc</code>是新工具？</p>
 <p>搜了下，确实有这个工具，说新版本会用他来生成<code>grpc</code>，主要是为了更好支持<code>protobuf reflection</code></p>
 <blockquote>
@@ -192,20 +192,20 @@
 <p>失败+2。。。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get google.golang.org/protobuf/cmd/protoc-gen-go-grpc: module google.golang.org/protobuf@upgrade found (v1.21.0), but does not contain package google.golang.org/protobuf/cmd/protoc-gen-go-grpc</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://media.newbmiao.com/emoji/block.jpg" alt="心塞x2"></p>
+<p><img src="/images/emoji/block.jpg" alt="心塞x2"></p>
 <p>goDoc里有<a href="https://pkg.go.dev/google.golang.org/protobuf/cmd/protoc-gen-go-grpc?tab=overview" target="_blank" rel="noopener">protoc-gen-go-grpc</a>，<a href="https://github.com/protocolbuffers/protobuf-go" target="_blank" rel="noopener">Repo</a>里没有，这是什么操作？</p>
 <p>猜测这问题应该有人遇到吧，果然搜到了issue：<a href="https://github.com/golang/protobuf/issues/1070#issuecomment-607465055" target="_blank" rel="noopener">plugins are not supported:grpc</a></p>
 <p>原来是<code>google.golang.org/protobuf</code>先发布了,里边也包含了新版的<code>protoc-gen-go</code>，</p>
 <p>只是其不再支持<code>grpc</code>生成，需要另一个工具<code>protoc-gen-go-grpc</code></p>
 <p>然而它还没有发布，还在<a href="https://github.com/grpc/grpc-go/pull/3453" target="_blank" rel="noopener">Review</a>中。。。（当然目前也不会是稳定版本）</p>
-<p><img src="http://media.newbmiao.com/emoji/unbelieve.jpg" alt="令人窒息的操作"></p>
+<p><img src="/images/emoji/unbelieve.jpg" alt="令人窒息的操作"></p>
 <p>不过，官方也说了，依然可以用旧包<code>github.com/golang/protobuf</code>的<code>protoc-gen-go-grpc</code>工具生成<code>grpc</code>代码</p>
 <blockquote>
 <p>因为旧包<code>protoc-gen-go-grpc</code>里依然可以用新包<code>protoc-gen-go-grpc</code>里生成grpc代码的<code>gengogrpc</code>, 见<a href="https://github.com/grpc/grpc-go/pull/3453#issuecomment-600879894" target="_blank" rel="noopener">comment</a></p>
 </blockquote>
 <h2 id="Round-Three"><a href="#Round-Three" class="headerlink" title="Round Three"></a>Round Three</h2><p>好吧，那就只升级代码中调用的protobuf为<code>google.golang.org/protobuf@v1.21.0</code>，代码生成工具还用旧版里<code>github.com/golang/protobuf/protoc-gen-go@v1.4.0</code>吧</p>
 <p>再次生成pb文件, 终于没有问题了, peace finally</p>
-<p><img src="http://media.newbmiao.com/emoji/peace.jpg" alt="peace"></p>
+<p><img src="/images/emoji/peace.jpg" alt="peace"></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">proto <span class="string">"github.com/golang/protobuf/proto"</span></span><br><span class="line">grpc <span class="string">"google.golang.org/grpc"</span></span><br><span class="line">codes <span class="string">"google.golang.org/grpc/codes"</span></span><br><span class="line">status <span class="string">"google.golang.org/grpc/status"</span></span><br><span class="line">protoreflect <span class="string">"google.golang.org/protobuf/reflect/protoreflect"</span></span><br><span class="line">protoimpl <span class="string">"google.golang.org/protobuf/runtime/protoimpl"</span></span><br></pre></td></tr></table></figure>
 
 <p>只是看着生成代码里的依然需要<code>import</code>的旧包<code>github.com/golang/protobuf</code>，总感觉哪里怪怪的</p>
@@ -219,7 +219,7 @@
 
 推荐阅读：[Dig101-Go系列](http://mp.weixin.qq.com/mp/homepage?__biz=MzUxNzA2NzEzNw==&hid=3&sn=6ded611e164ec49132752fdbdaac552f&scene=18#wechat_redirect)
 
-![欢迎关注，获取及时更新内容](http://media.newbmiao.com/qrcode/newbmiao.png) -->
+![欢迎关注，获取及时更新内容](/images/qrcode/newbmiao.png) -->
 	
 	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
 	如有疑问，请文末留言交流或邮件：<a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a>
@@ -232,7 +232,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2020/04/17/the-drama-of-updating-protobuf-go.html" data-id="clpcrxgbp00149typdumbd42q" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2020/04/17/the-drama-of-updating-protobuf-go.html" data-id="clpfit2wf0016l9yp3crv1mud" class="article-share-link">分享到</a>
       
 
       
@@ -247,7 +247,7 @@
        
      
      <span style="color:#999">
-&nbsp; | &nbsp;最近更新 ：<time datetime="2023-11-24T15:29:22.151Z" itemprop="dateModify">2023-11-24</time>
+&nbsp; | &nbsp;最近更新 ：<time datetime="2023-11-26T13:24:29.815Z" itemprop="dateModify">2023-11-26</time>
 </span>
 
      
@@ -321,7 +321,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hexo/" style="font-size: 18.33px; color: #2c93ea">hexo</a> <a href="/tags/blog/" style="font-size: 23.33px; color: #4298ca">blog</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/terraform/" style="font-size: 16.67px; color: #2592f4">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/thoughts/" style="font-size: 16.67px; color: #2592f4">thoughts</a> <a href="/tags/html5/" style="font-size: 16.67px; color: #2592f4">html5</a> <a href="/tags/drag/" style="font-size: 16.67px; color: #2592f4">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/js/" style="font-size: 28.33px; color: #589cab">js</a> <a href="/tags/slice/" style="font-size: 16.67px; color: #2592f4">slice</a> <a href="/tags/linux/" style="font-size: 26.67px; color: #519bb5">linux</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/mac/" style="font-size: 18.33px; color: #2c93ea">mac</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/mysql/" style="font-size: 20px; color: #3495df">mysql</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/optimize/" style="font-size: 15px; color: #1e90ff">optimize</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/Rego/" style="font-size: 16.67px; color: #2592f4">Rego</a> <a href="/tags/web/" style="font-size: 18.33px; color: #2c93ea">web</a> <a href="/tags/php/" style="font-size: 28.33px; color: #589cab">php</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/oauth2/" style="font-size: 16.67px; color: #2592f4">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.67px; color: #2592f4">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/keycloak/" style="font-size: 16.67px; color: #2592f4">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/ownership/" style="font-size: 16.67px; color: #2592f4">ownership</a> <a href="/tags/borrow-checker/" style="font-size: 15px; color: #1e90ff">borrow-checker</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/condvar/" style="font-size: 16.67px; color: #2592f4">condvar</a> <a href="/tags/semaphore/" style="font-size: 15px; color: #1e90ff">semaphore</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/docker/" style="font-size: 16.67px; color: #2592f4">docker</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/hands-free/" style="font-size: 15px; color: #1e90ff">hands-free</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/jquery/" style="font-size: 21.67px; color: #3b96d5">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/interface/" style="font-size: 16.67px; color: #2592f4">interface</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/reflect/" style="font-size: 16.67px; color: #2592f4">reflect</a> <a href="/tags/mutex/" style="font-size: 16.67px; color: #2592f4">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/atomic/" style="font-size: 15px; color: #1e90ff">atomic</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a> <a href="/tags/rust/" style="font-size: 25px; color: #4999c0">rust</a> <a href="/tags/opa/" style="font-size: 23.33px; color: #4298ca">opa</a> <a href="/tags/fan-in/" style="font-size: 15px; color: #1e90ff">fan-in</a> <a href="/tags/fan-out/" style="font-size: 15px; color: #1e90ff">fan-out</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a>
+      <a href="/tags/blog/" style="font-size: 23.33px; color: #4298ca">blog</a> <a href="/tags/hexo/" style="font-size: 18.33px; color: #2c93ea">hexo</a> <a href="/tags/fan-in/" style="font-size: 15px; color: #1e90ff">fan-in</a> <a href="/tags/fan-out/" style="font-size: 15px; color: #1e90ff">fan-out</a> <a href="/tags/terraform/" style="font-size: 16.67px; color: #2592f4">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/slice/" style="font-size: 16.67px; color: #2592f4">slice</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/js/" style="font-size: 28.33px; color: #589cab">js</a> <a href="/tags/thoughts/" style="font-size: 16.67px; color: #2592f4">thoughts</a> <a href="/tags/html5/" style="font-size: 16.67px; color: #2592f4">html5</a> <a href="/tags/drag/" style="font-size: 16.67px; color: #2592f4">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/linux/" style="font-size: 26.67px; color: #519bb5">linux</a> <a href="/tags/mac/" style="font-size: 18.33px; color: #2c93ea">mac</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/opa/" style="font-size: 23.33px; color: #4298ca">opa</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/Rego/" style="font-size: 16.67px; color: #2592f4">Rego</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/php/" style="font-size: 28.33px; color: #589cab">php</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/web/" style="font-size: 18.33px; color: #2c93ea">web</a> <a href="/tags/mysql/" style="font-size: 20px; color: #3495df">mysql</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/optimize/" style="font-size: 15px; color: #1e90ff">optimize</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/oauth2/" style="font-size: 16.67px; color: #2592f4">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.67px; color: #2592f4">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/rust/" style="font-size: 25px; color: #4999c0">rust</a> <a href="/tags/keycloak/" style="font-size: 16.67px; color: #2592f4">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/ownership/" style="font-size: 16.67px; color: #2592f4">ownership</a> <a href="/tags/borrow-checker/" style="font-size: 15px; color: #1e90ff">borrow-checker</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/condvar/" style="font-size: 16.67px; color: #2592f4">condvar</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/docker/" style="font-size: 16.67px; color: #2592f4">docker</a> <a href="/tags/semaphore/" style="font-size: 15px; color: #1e90ff">semaphore</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/hands-free/" style="font-size: 15px; color: #1e90ff">hands-free</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/jquery/" style="font-size: 21.67px; color: #3b96d5">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/interface/" style="font-size: 16.67px; color: #2592f4">interface</a> <a href="/tags/reflect/" style="font-size: 16.67px; color: #2592f4">reflect</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/mutex/" style="font-size: 16.67px; color: #2592f4">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/atomic/" style="font-size: 15px; color: #1e90ff">atomic</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a>
     </div>
   </div>
 
