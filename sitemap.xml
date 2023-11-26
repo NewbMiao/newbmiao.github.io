@@ -2,6 +2,60 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://newbmiao.github.io/2020/03/14/how-to-use-opa-cli-elegantly.html</loc>
+    
+    <lastmod>2023-11-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2020/04/16/opa-bundle.html</loc>
+    
+    <lastmod>2023-11-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2020/03/13/opa-quick-start.html</loc>
+    
+    <lastmod>2023-11-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2020/03/20/opa-comprehensions.html</loc>
+    
+    <lastmod>2023-11-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2020/04/05/opa-test-profile-and-benchmark.html</loc>
+    
+    <lastmod>2023-11-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2020/03/18/opa-func-and-virtual-doc.html</loc>
+    
+    <lastmod>2023-11-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://newbmiao.github.io/2023/10/07/ownership-of-rc-and-arc.html</loc>
     
     <lastmod>2023-11-26</lastmod>
@@ -38,34 +92,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2020/04/16/opa-bundle.html</loc>
-    
-    <lastmod>2023-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://newbmiao.github.io/2023/06/18/auth-manage-via-keycloak.html</loc>
-    
-    <lastmod>2023-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/2020/03/20/opa-comprehensions.html</loc>
-    
-    <lastmod>2023-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/2020/04/05/opa-test-profile-and-benchmark.html</loc>
     
     <lastmod>2023-11-26</lastmod>
     
@@ -110,15 +137,6 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2021/08/07/one-8-bytes-optimization.html</loc>
-    
-    <lastmod>2023-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://newbmiao.github.io/2021/08/22/recursive-ordone-issue.html</loc>
     
     <lastmod>2023-11-26</lastmod>
@@ -129,6 +147,15 @@
   
   <url>
     <loc>https://newbmiao.github.io/2021/08/09/one-example-to-learn-cond.html</loc>
+    
+    <lastmod>2023-11-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2021/08/07/one-8-bytes-optimization.html</loc>
     
     <lastmod>2023-11-26</lastmod>
     
@@ -200,25 +227,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2020/03/18/opa-func-and-virtual-doc.html</loc>
-    
-    <lastmod>2023-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/2020/03/14/how-to-use-opa-cli-elegantly.html</loc>
-    
-    <lastmod>2023-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html</loc>
+    <loc>https://newbmiao.github.io/2020/02/18/tips-use-gdb-elegantly.html</loc>
     
     <lastmod>2023-11-26</lastmod>
     
@@ -236,7 +245,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2020/02/18/tips-use-gdb-elegantly.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html</loc>
     
     <lastmod>2023-11-26</lastmod>
     
@@ -272,16 +281,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2020/03/13/opa-quick-start.html</loc>
-    
-    <lastmod>2023-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/2023/11/12/rust-sync-barrier.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</loc>
     
     <lastmod>2023-11-26</lastmod>
     
@@ -299,7 +299,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/12/rust-sync-barrier.html</loc>
     
     <lastmod>2023-11-26</lastmod>
     
@@ -416,15 +416,6 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2018/02/09/advanced-go-concurrency-patterns.html</loc>
-    
-    <lastmod>2023-11-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://newbmiao.github.io/2018/03/05/go-value-in-heap-and-stack.html</loc>
     
     <lastmod>2023-11-24</lastmod>
@@ -434,7 +425,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2018/02/06/go-memory-model.html</loc>
+    <loc>https://newbmiao.github.io/2018/02/09/advanced-go-concurrency-patterns.html</loc>
     
     <lastmod>2023-11-24</lastmod>
     
@@ -444,6 +435,15 @@
   
   <url>
     <loc>https://newbmiao.github.io/2018/03/15/go-value-layout-in-memory.html</loc>
+    
+    <lastmod>2023-11-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2018/02/06/go-memory-model.html</loc>
     
     <lastmod>2023-11-24</lastmod>
     
@@ -479,7 +479,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2015/12/04/xdebug-remote-debug-with-phpstorm-and-vagrant.html</loc>
+    <loc>https://newbmiao.github.io/2015/01/08/ci-load-class-source-code-analysis.html</loc>
     
     <lastmod>2023-11-24</lastmod>
     
@@ -488,7 +488,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2015/01/08/ci-load-class-source-code-analysis.html</loc>
+    <loc>https://newbmiao.github.io/2015/12/04/xdebug-remote-debug-with-phpstorm-and-vagrant.html</loc>
     
     <lastmod>2023-11-24</lastmod>
     
@@ -524,7 +524,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2017/02/17/auto-wrap-chinese-use-imagick-and-upload-image-by-base64-encode-str.html</loc>
+    <loc>https://newbmiao.github.io/2015/06/17/use-phpdoc-to-render-api-document.html</loc>
     
     <lastmod>2023-11-24</lastmod>
     
@@ -533,7 +533,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/2015/06/17/use-phpdoc-to-render-api-document.html</loc>
+    <loc>https://newbmiao.github.io/2017/02/17/auto-wrap-chinese-use-imagick-and-upload-image-by-base64-encode-str.html</loc>
     
     <lastmod>2023-11-24</lastmod>
     
@@ -884,7 +884,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/demo/iframe-tabs.html</loc>
+    <loc>https://newbmiao.github.io/demo/index.html</loc>
     
     <lastmod>2023-06-18</lastmod>
     
@@ -893,7 +893,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/demo/index.html</loc>
+    <loc>https://newbmiao.github.io/demo/iframe-tabs.html</loc>
     
     <lastmod>2023-06-18</lastmod>
     
@@ -1000,14 +1000,21 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/go/</loc>
+    <loc>https://newbmiao.github.io/tags/fan-in/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/concurrency/</loc>
+    <loc>https://newbmiao.github.io/tags/fan-out/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1021,14 +1028,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/fan-in/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/fan-out/</loc>
+    <loc>https://newbmiao.github.io/tags/concurrency/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1049,13 +1049,6 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/protobuf/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://newbmiao.github.io/tags/thoughts/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -1063,14 +1056,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/html5/</loc>
+    <loc>https://newbmiao.github.io/tags/js/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/js/</loc>
+    <loc>https://newbmiao.github.io/tags/html5/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1091,42 +1084,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/random/</loc>
+    <loc>https://newbmiao.github.io/tags/protobuf/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/mac/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/tool/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/vim/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/shadowsocks/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/software/</loc>
+    <loc>https://newbmiao.github.io/tags/linux/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1140,14 +1105,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/optimize/</loc>
+    <loc>https://newbmiao.github.io/tags/limit/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/opa/</loc>
+    <loc>https://newbmiao.github.io/tags/optimize/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1161,7 +1126,63 @@
   </url>
   
   <url>
+    <loc>https://newbmiao.github.io/tags/mac/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/vim/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://newbmiao.github.io/tags/Rego/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/benchmark/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/software/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/tool/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/shadowsocks/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/web/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/php/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1189,42 +1210,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/benchmark/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/web/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/php/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/limit/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://newbmiao.github.io/tags/reference/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/regex/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1280,6 +1266,20 @@
   </url>
   
   <url>
+    <loc>https://newbmiao.github.io/tags/rc/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/arc/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://newbmiao.github.io/tags/borrow-checker/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -1288,20 +1288,6 @@
   
   <url>
     <loc>https://newbmiao.github.io/tags/lifetime/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/redis/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/linux/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1322,21 +1308,21 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/barrier/</loc>
+    <loc>https://newbmiao.github.io/tags/regex/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/rc/</loc>
+    <loc>https://newbmiao.github.io/tags/random/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/arc/</loc>
+    <loc>https://newbmiao.github.io/tags/condvar/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1357,14 +1343,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/condvar/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/semaphore/</loc>
+    <loc>https://newbmiao.github.io/tags/redis/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1372,13 +1351,6 @@
   
   <url>
     <loc>https://newbmiao.github.io/tags/docker/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/summary/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1399,7 +1371,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/gdb/</loc>
+    <loc>https://newbmiao.github.io/tags/semaphore/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/barrier/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1413,21 +1392,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/hands-free/</loc>
+    <loc>https://newbmiao.github.io/tags/gdb/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/dropbox/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/cors/</loc>
+    <loc>https://newbmiao.github.io/tags/summary/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1448,7 +1420,21 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/for-range/</loc>
+    <loc>https://newbmiao.github.io/tags/dropbox/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/hands-free/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/cors/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1462,21 +1448,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/map/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/append/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://newbmiao.github.io/tags/reflect/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/map/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1490,7 +1469,21 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/memory/</loc>
+    <loc>https://newbmiao.github.io/tags/for-range/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/append/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/cond/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1498,20 +1491,6 @@
   
   <url>
     <loc>https://newbmiao.github.io/tags/mutex/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/memory-reordering/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/tags/atomic/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1532,6 +1511,20 @@
   </url>
   
   <url>
+    <loc>https://newbmiao.github.io/tags/memory-reordering/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/atomic/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://newbmiao.github.io/tags/signal/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -1539,7 +1532,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/tags/cond/</loc>
+    <loc>https://newbmiao.github.io/tags/memory/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/OPA/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1555,14 +1555,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/blog/hexo/</loc>
+    <loc>https://newbmiao.github.io/categories/devops/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/devops/</loc>
+    <loc>https://newbmiao.github.io/categories/blog/hexo/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1576,21 +1576,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/devops/terraform/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/categories/devops/gearman/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://newbmiao.github.io/categories/thoughts/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/devops/terraform/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1604,14 +1597,14 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/go/notes/</loc>
+    <loc>https://newbmiao.github.io/categories/devops/gearman/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/mac/</loc>
+    <loc>https://newbmiao.github.io/categories/go/notes/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1625,7 +1618,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/opa/</loc>
+    <loc>https://newbmiao.github.io/categories/mac/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1646,6 +1639,20 @@
   </url>
   
   <url>
+    <loc>https://newbmiao.github.io/categories/web/js/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/rust/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://newbmiao.github.io/categories/web/html5/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -1660,14 +1667,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/rust/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/categories/web/js/</loc>
+    <loc>https://newbmiao.github.io/categories/thoughts/software-engineering/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1681,7 +1681,7 @@
   </url>
   
   <url>
-    <loc>https://newbmiao.github.io/categories/thoughts/software-engineering/</loc>
+    <loc>https://newbmiao.github.io/categories/database/mysql/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1696,13 +1696,6 @@
   
   <url>
     <loc>https://newbmiao.github.io/categories/mac/shadowsocks/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://newbmiao.github.io/categories/database/mysql/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1752,6 +1745,13 @@
   
   <url>
     <loc>https://newbmiao.github.io/categories/linux/notes/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/OPA/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
