@@ -958,7 +958,7 @@
 
   <url>
     <loc>https://newbmiao.github.io/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -966,581 +966,581 @@
   
   <url>
     <loc>https://newbmiao.github.io/tags/hexo/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/blog/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/terraform/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/aws/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/gearman/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/fan-in/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/fan-out/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/go/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/slice/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/concurrency/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/happens-before/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/ringbuffer/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/thoughts/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/js/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/html5/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/drag/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/chrome/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/protobuf/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/linux/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/mysql/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/limit/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/optimize/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/bundle/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/mac/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/vim/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/Rego/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/benchmark/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/software/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/tool/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/shadowsocks/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/web/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/php/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/imgick/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/json/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/blob/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/reference/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/oauth2/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/OIDC/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/axum/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/rust/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/keycloak/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/token-exchange/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/ownership/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/rc/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/arc/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/borrow-checker/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/lifetime/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/cell/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/refcell/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/regex/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/random/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/condvar/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/send/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/sync/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/redis/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/docker/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/authentication/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/authorization/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/semaphore/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/barrier/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/software-engineering/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/gdb/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/summary/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/jquery/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/iframe/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/dropbox/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/hands-free/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/cors/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/interface/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/reflect/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/map/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/dereference/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/for-range/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/append/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/cond/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/mutex/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/struct/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/memory-align/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/memory-reordering/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/atomic/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/signal/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/memory/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/tags/OPA/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -1549,210 +1549,210 @@
   
   <url>
     <loc>https://newbmiao.github.io/categories/blog/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/devops/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/blog/hexo/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/go/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/thoughts/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/devops/terraform/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/web/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/devops/gearman/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/go/notes/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/database/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/mac/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/thoughts/journal/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/web/php/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/web/js/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/rust/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/web/html5/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/tech/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/thoughts/software-engineering/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/thoughts/summary/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/database/mysql/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/mac/tool/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/mac/shadowsocks/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/tech/regex/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/database/redis/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/tech/oauth2/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/tech/tips/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/go/dig101/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/linux/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/linux/notes/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://newbmiao.github.io/categories/OPA/</loc>
-    <lastmod>2023-11-26</lastmod>
+    <lastmod>2023-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
