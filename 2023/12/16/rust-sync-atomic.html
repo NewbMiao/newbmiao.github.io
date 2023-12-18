@@ -1,0 +1,488 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深入理解Rust的Atomic及Ordering | 菜鸟Miao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,sync,atomic,ordering,acquire,release,seqcst,acqrel,relaxed" />
+  
+  
+  <meta name="description" content="Rust并发控制之Atomic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Rust的Atomic及Ordering">
+<meta property="og:url" content="https://newbmiao.github.io/2023/12/16/rust-sync-atomic.html">
+<meta property="og:site_name" content="菜鸟Miao">
+<meta property="og:description" content="Rust并发控制之Atomic">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-16T08:23:50.000Z">
+<meta property="article:modified_time" content="2023-12-18T11:27:26.342Z">
+<meta property="article:author" content="菜鸟Miao">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="sync">
+<meta property="article:tag" content="atomic">
+<meta property="article:tag" content="ordering">
+<meta property="article:tag" content="acquire">
+<meta property="article:tag" content="release">
+<meta property="article:tag" content="seqcst">
+<meta property="article:tag" content="acqrel">
+<meta property="article:tag" content="relaxed">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟Miao</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(博客地址: https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/dig101/">Dig101</a>
+        
+          <a class="main-nav-link" href="/categories/OPA/">OPA</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+	  
+	
+        <div id="search-form">
+                <input type="text" class="st-default-search-input search-form-input" style="outline: none;width: 110px;">
+        </div>
+	
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-rust-sync-atomic" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/12/16/rust-sync-atomic.html" class="article-date">
+  <time datetime="2023-12-16T08:23:50.000Z" itemprop="datePublished">2023-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解Rust的Atomic及Ordering
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <div id="toc" class="toc-article">
+         <h3>文章目录</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mutex-vs-Atomic"><span class="toc-number">1.</span> <span class="toc-text">Mutex vs Atomic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Atomic初探"><span class="toc-number">2.</span> <span class="toc-text">Atomic初探</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指令重排"><span class="toc-number">3.</span> <span class="toc-text">指令重排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ordering"><span class="toc-number">4.</span> <span class="toc-text">Ordering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证Ordering的可见性"><span class="toc-number">5.</span> <span class="toc-text">验证Ordering的可见性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fence"><span class="toc-number">6.</span> <span class="toc-text">fence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#延迟加载"><span class="toc-number">7.</span> <span class="toc-text">延迟加载</span></a></li></ol>
+        </div>
+        
+        <p>之前提到的<code>Mutex</code>、<code>Condvar</code>是<code>Rust</code>中比较偏高层的共享数据型并发控制，更底层的并发控制也有，比如<code>Atomic</code>（原子操作）。</p>
+<p>今天结合代码来深入聊聊<code>Atomic</code>及其相关的<code>Ordering</code></p>
+<a id="more"></a>
+<!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>首先为什么要有Atomic，用Mutex不就可以了吗，我们来对比下</p>
+<h2 id="Mutex-vs-Atomic"><a href="#Mutex-vs-Atomic" class="headerlink" title="Mutex vs Atomic"></a>Mutex vs Atomic</h2><p>1.从数据操作上对比：</p>
+<p><code>Mutex</code>是并发下对数据的<strong>互斥访问控制</strong>，多个线程尝试写入，同时必须只能有一个线程争得锁，进而写入成功，其他线程只能等待其释放锁后再争夺锁。</p>
+<p><code>Atomic</code>本身就是并发下对数据的原子操作，其操作是构建在操作系统的原子指令上，比如<code>读取（Load），写入（Store），比较写入(CAS，compare and swap)，自增（fetch_add）</code>等，操作要么成功要么失败，不可能被其他线程打断，出现中间状态，避免操作中数据竞争状态的发生。</p>
+<p>也就是说<code>Atomic</code>是依赖底层系统的指令不可拆分达到无需锁（<code>lock free</code>）就能直接对数据地址共享操作。</p>
+<p>2.从临界区构建上对比：</p>
+<p><code>Mutex</code>是在加锁和释放锁之间构建了并发访问的临界区，进而进行数据操作。</p>
+<p><code>Atomic</code>本身对于数据地址操作就是原子的，如果临界区想操作就是数据本身，那就不需要额外的保证</p>
+<p>但如果还有别的数据需要在临界区操作，则需要通过<code>load/store/cas</code>等组合<code>wait loop</code>才能实现，也就是常说的自旋（spin），这也是更底层的方式。一般在对性能要求更细致场景会需要。</p>
+<p>下边先用伪代码举例常见临界区的样子（后边会结合Ordering用代码详细展开）</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">thread <span class="number">1</span>: </span><br><span class="line">    <span class="comment">// 条件满足设置flag</span></span><br><span class="line">    store/CAS flag: <span class="literal">false</span>-&gt;<span class="literal">true</span></span><br><span class="line">thread <span class="number">2</span>: </span><br><span class="line">    <span class="comment">// wait flag满足条件，模拟类似锁的阻塞, spin</span></span><br><span class="line">    <span class="keyword">while</span> load flag == <span class="literal">false</span> &#123;&#125;;</span><br><span class="line">    <span class="comment">// 执行临界区操作</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<h2 id="Atomic初探"><a href="#Atomic初探" class="headerlink" title="Atomic初探"></a>Atomic初探</h2><p>了解了<code>Atomic</code>的作用，下边先从一个例子了解下如何使用</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicBool, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 初始化原子bool类型</span></span><br><span class="line"><span class="keyword">static</span> FLAG: AtomicBool = AtomicBool::new(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = thread::spawn(|| &#123;</span><br><span class="line">        <span class="comment">// 原子操作修改</span></span><br><span class="line">        FLAG.store(<span class="literal">true</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> b = thread::spawn(|| &#123;</span><br><span class="line">        <span class="comment">// 原子操作读取</span></span><br><span class="line">        <span class="keyword">if</span> FLAG.load(Ordering::Relaxed) &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"Relaxed: Flag is set!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    a.join().unwrap();</span><br><span class="line">    b.join().unwrap();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码很简单，两个线程分别对Flag修改和读取，读取时会尝试判断是否满足打印条件。</p>
+<p>不过运行代码，打印不一定会发生。你可能觉得多线程下，两线程执行顺序不能保证，执行顺序可能是先load后store，这样的结果也很正常。</p>
+<p>这是一种可能，然而远没有那么简单。</p>
+<p>这里要提下指令重排和<code>Atomic</code>的<code>Ordering</code>排序</p>
+<h2 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">f</span></span>(a: &amp;<span class="keyword">mut</span> <span class="built_in">i32</span>, b: &amp;<span class="keyword">mut</span> <span class="built_in">i32</span>) &#123;</span><br><span class="line">    *a += <span class="number">1</span>;</span><br><span class="line">    *b += <span class="number">1</span>;</span><br><span class="line">    *a += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当你写下这段代码，交给操作系统编译执行，但很可能你得到的是这样的</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">f</span></span>(a: &amp;<span class="keyword">mut</span> <span class="built_in">i32</span>, b: &amp;<span class="keyword">mut</span> <span class="built_in">i32</span>) &#123;</span><br><span class="line">    *a += <span class="number">2</span>;</span><br><span class="line">    *b += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为什么？</p>
+<p>操作系统处理器和编译器悄悄的帮你优化了代码来让他运行更快，这里规则是：</p>
+<p><strong>只要不影响程序语义，指令可以重排执行以优化，即不按代码顺序执行</strong>。</p>
+<p>单线程下这样问题可能还不大，但如果多线程下，同一线程下多条原子指令，也是会有指令重排的可能，数据竞争很有可能发生，就是说加了原子操作也无法确定数据操作顺序。</p>
+<p>如以下代码：</p>
+<p><strong>b线程的1和2不互相依赖，可以指令重排成2和1</strong></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicI32, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> X: AtomicI32 = AtomicI32::new(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">static</span> Y: AtomicI32 = AtomicI32::new(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = thread::spawn(|| &#123;</span><br><span class="line">        <span class="keyword">let</span> x = X.load(Ordering::Relaxed);</span><br><span class="line">        Y.store(x, Ordering::Relaxed);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> b = thread::spawn(|| &#123;</span><br><span class="line">        <span class="comment">// 1</span></span><br><span class="line">        <span class="keyword">let</span> y = Y.load(Ordering::Relaxed);</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        X.store(<span class="number">42</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;);</span><br><span class="line">    a.join().unwrap();</span><br><span class="line">    b.join().unwrap();</span><br><span class="line">    <span class="built_in">assert_eq!</span>(X.load(Ordering::Relaxed), <span class="number">42</span>);</span><br><span class="line">    <span class="comment">// 有可能, b线程的1和2不互相依赖，可以指令重排成2和1</span></span><br><span class="line">    <span class="built_in">assert_eq!</span>(Y.load(Ordering::Relaxed), <span class="number">42</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>底层的原子操作当然不能坐视不理，提出了<code>Ordering</code>来约束当前原子操作修改在其他多线程下的可见性，希望能约束<strong>当前线程发生原子操作如何同步到其他线程</strong>，能在并发中并发数据操作能有更好的<strong>确定性</strong>。</p>
+<h2 id="Ordering"><a href="#Ordering" class="headerlink" title="Ordering"></a>Ordering</h2><p><code>Rust</code>用于的内存访问顺序（<code>memory order</code>）的<code>Ordering</code>基本和<a href="https://en.cppreference.com/w/cpp/atomic/memory_order" target="_blank" rel="noopener"><code>C++ 20</code>的内存排序</a>的保持一致， 下边先挨个过一遍</p>
+<ul>
+<li>Relaxed</li>
+</ul>
+<p>最基础的内存排序要求，只要求当前原子操作是要么完全执行，要么还未执行，其操作结果的可见性同步在其他线程没有任何顺序的保证（如指令重排代码所示）</p>
+<ul>
+<li>Acquire</li>
+</ul>
+<p>适用于读取数据操作，要求：</p>
+<p>当前线程不能有<strong>其他的读或写被reorder在load之前</strong><br>其他线程的同一数据已发生的Release写入操作都是对其可见的。</p>
+<ul>
+<li>Release</li>
+</ul>
+<p>适用于写数据操作，要求：</p>
+<p>当前线程不能有<strong>其他的读或写被reorder在store之后</strong><br>当前写入后的结果对其他线程的同一数据Acquire读取操作是可见的。</p>
+<p>也就是说，这里线程间可见性要求，<code>acquire load</code>总是可以同步到其他线程已发生的<code>release store</code></p>
+<p>结合代码来看就是（指令重排部分见注释）：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicBool, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="comment">// 更严谨的测试可以用loom</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="number">0</span>..<span class="number">100000</span> &#123;</span><br><span class="line">        acquire_release()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">acquire_release</span></span>() &#123;</span><br><span class="line">    <span class="keyword">static</span> FLAG: AtomicBool = AtomicBool::new(<span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">mut</span> DATA: <span class="built_in">u64</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> a = thread::spawn(|| &#123;</span><br><span class="line">        <span class="keyword">unsafe</span> &#123; DATA = <span class="number">42</span> &#125;;</span><br><span class="line">        FLAG.store(<span class="literal">true</span>, Ordering::Release);</span><br><span class="line">        <span class="comment">// 不允许有读写重排到store之后</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> b = thread::spawn(|| &#123;</span><br><span class="line">        <span class="comment">// 不允许有读写重排到load之前</span></span><br><span class="line">        <span class="keyword">while</span> !FLAG.load(Ordering::Acquire) &#123;&#125;</span><br><span class="line">        <span class="built_in">assert_eq!</span>(<span class="keyword">unsafe</span> &#123; DATA &#125;, <span class="number">42</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    a.join().unwrap();</span><br><span class="line">    b.join().unwrap();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>AcqRel</li>
+</ul>
+<p>适用于同时读写操作（Read and write）,读操作用Acquire，写操作用Release</p>
+<ul>
+<li>SeqCst</li>
+</ul>
+<p>在保证读写一定是Acquire和Release的约束外，还保证<strong>其他线程看到的原子操作顺序一致</strong>，即<strong>全局只有一种内存结果可见顺序（a single total order）</strong>。</p>
+<p>也就是说多线程下，即使执行顺序不能保证，但执行完后全局只能有一种原子操作的结果顺序，可以每次是不一样的（因为执行的先后不同），但一旦执行顺序确定后，就不可能有第二种原子操作结果的可能性存在。如同将不同线程的原子操作执行给串行化了一样。</p>
+<p>所以内存顺序的严格程度就是从<code>Relax-&gt;Acquire+Relase-&gt;SeqCst</code>。越严格当然也会带来越多的性能开销。</p>
+<p>来个代码帮助理解下用<code>Ordering</code>组合构建临界区：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::atomic::&#123;AtomicBool, Ordering&#125;;</span><br><span class="line"><span class="keyword">use</span> std::sync::Arc;</span><br><span class="line"><span class="keyword">use</span> std::thread;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> lock = Arc::new(AtomicBool::new(<span class="literal">false</span>));</span><br><span class="line">    <span class="keyword">let</span> lock_clone_read = lock.clone();</span><br><span class="line">    <span class="keyword">let</span> lock_clone_store = lock.clone();</span><br><span class="line">    thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        <span class="comment">// 持有锁</span></span><br><span class="line">        lock.store(<span class="literal">true</span>, Ordering::SeqCst);</span><br><span class="line">        <span class="comment">// 执行临界区操作</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待锁被获取</span></span><br><span class="line">    <span class="keyword">while</span> !lock_clone_read.load(Ordering::Acquire) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 进入临界区，可以放心的执行临界区操作了</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Critical section!"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 释放锁</span></span><br><span class="line">    lock_clone_store.store(<span class="literal">false</span>, Ordering::Release);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证Ordering的可见性"><a href="#验证Ordering的可见性" class="headerlink" title="验证Ordering的可见性"></a>验证Ordering的可见性</h2><p>原子操作结果可见性同步严格程度不同影响大么？</p>
+<p>眼见为实，下边在通过一段<code>Relaxed</code>的代码先来验证下</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::&#123;</span><br><span class="line">        atomic::&#123;AtomicBool, AtomicU64, Ordering&#125;,</span><br><span class="line">        Arc,</span><br><span class="line">    &#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> S: AtomicU64 = AtomicU64::new(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">relaxed</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> a = Arc::new(AtomicBool::new(<span class="literal">false</span>));</span><br><span class="line">    <span class="keyword">let</span> b = Arc::new(AtomicBool::new(<span class="literal">false</span>));</span><br><span class="line">    <span class="keyword">let</span> a_clone = a.clone();</span><br><span class="line">    <span class="keyword">let</span> b_clone = b.clone();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> t1 = thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        a.store(<span class="literal">true</span>, Ordering::Relaxed);</span><br><span class="line">        <span class="keyword">if</span> !b.load(Ordering::Relaxed) &#123;</span><br><span class="line">            S.fetch_add(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> t2 = thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">        b_clone.store(<span class="literal">true</span>, Ordering::Relaxed);</span><br><span class="line">        <span class="keyword">if</span> !a_clone.load(Ordering::Relaxed) &#123;</span><br><span class="line">            S.fetch_add(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    t1.join().unwrap();</span><br><span class="line">    t2.join().unwrap();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> cnt = <span class="number">100000</span>;</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="number">0</span>..cnt &#123;</span><br><span class="line">        relaxed();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 结果可能大于10000</span></span><br><span class="line">    <span class="keyword">let</span> s = S.load(Ordering::SeqCst);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"s: &#123;&#125;"</span>, s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果是S基本大于10000，为什么？我们展开分析下</p>
+<p>两个<code>AtomicBool</code> A和B初始是false，两个线程用<code>Relaxed</code>先修改一个为true和再去读取另一个的值，如果判断读取到的值还是false就增加结果长度一次。</p>
+<p>两个线程在判断是否增加结果长度时，会有以下几种可能：</p>
+<ol>
+<li>其他线程指令重排</li>
+</ol>
+<ul>
+<li>修改排到load之后还没执行修改，S+1 （Relaxed时）</li>
+</ul>
+<ol start="2">
+<li>其他线程指令不重排</li>
+</ol>
+<ul>
+<li>还没开始修改，S+1 </li>
+<li>其他线程修改了，但对当前load不可见，S+1（Relaxed时） </li>
+<li>其他线程修改了，对当前load可见，S不变</li>
+</ul>
+<p>所以指令重排和读取对修改不可见都会让S+1， <code>Relaxed</code>会有更多可能让S+1</p>
+<p>所以遍历一次，两线程并发的情况下，如果S增加了2，则说明对于修改的可见性同步要求较弱，即使另一个线程修改了值，也没能及时同步到当前值的load</p>
+<p>对于<code>Relaxed</code>约束，那么执行100000次，S很容易大于100000。</p>
+<p>如果换成<code>SeqCst</code>，不允许上边代码中指令重排，又全局串行化了不同的原子操作。</p>
+<p>如果其他线程修改发生在当前线程load之前，其一定是对当前线程load可见的，不会同时都不可见的可能性。所以S最多只能是100000。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> t1 = thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">    a.store(<span class="literal">true</span>, Ordering::SeqCst);</span><br><span class="line">    <span class="keyword">if</span> !b.load(Ordering::SeqCst) &#123;</span><br><span class="line">        S.fetch_add(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> t2 = thread::spawn(<span class="keyword">move</span> || &#123;</span><br><span class="line">    b_clone.store(<span class="literal">true</span>, Ordering::SeqCst);</span><br><span class="line">    <span class="keyword">if</span> !a_clone.load(Ordering::SeqCst) &#123;</span><br><span class="line">        S.fetch_add(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="fence"><a href="#fence" class="headerlink" title="fence"></a>fence</h2><p><code>Ordering</code>除了可以对绑定到<strong>单个原子数据类型</strong>的操作上，也可以用在<code>fence</code>约束多条原子操作上，防止编译器和处理器对内存操作的重排，添加内存屏障（memory barrier），这也是构建临界区的一种方式</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a.store(<span class="number">1</span>, Release);</span><br><span class="line"><span class="comment">// 可以替换为</span></span><br><span class="line">fence(Release);</span><br><span class="line">a.store(<span class="number">1</span>, Relaxed);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a.load(Acquire);</span><br><span class="line"><span class="comment">// 可以被替换为</span></span><br><span class="line">a.load(Relaxed);</span><br><span class="line">fence(Acquire);</span><br></pre></td></tr></table></figure>
+
+<p>这样拆分后，可以被扩展用作多个数据操作组合在线程间可见性的保证。也可以<strong>可选的选择</strong>什么时候用<code>acquire/release/seqcst</code></p>
+<p>比如下边用原子操作和fence模拟锁的实现</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::atomic::AtomicBool;</span><br><span class="line"><span class="keyword">use</span> std::sync::atomic::fence;</span><br><span class="line"><span class="keyword">use</span> std::sync::atomic::Ordering;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">Mutex</span></span> &#123;</span><br><span class="line">    flag: AtomicBool,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Mutex &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">new</span></span>() -&gt; Mutex &#123;</span><br><span class="line">        Mutex &#123;</span><br><span class="line">            flag: AtomicBool::new(<span class="literal">false</span>),</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">lock</span></span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="comment">// relaxed+acquire fence 来及时同步已发生的unlock (release)</span></span><br><span class="line">        <span class="comment">// cas时没有直接使用严格的acquire</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">self</span></span><br><span class="line">            .flag</span><br><span class="line">            .compare_exchange_weak(<span class="literal">false</span>, <span class="literal">true</span>, Ordering::Relaxed, Ordering::Relaxed)</span><br><span class="line">            .is_err()</span><br><span class="line">        &#123;&#125;</span><br><span class="line">        fence(Ordering::Acquire);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">unlock</span></span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.flag.store(<span class="literal">false</span>, Ordering::Release);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="延迟加载"><a href="#延迟加载" class="headerlink" title="延迟加载"></a>延迟加载</h2><p><code>Atomic</code>也常用来做资源的延迟初始化，让多线程共享一份资源。</p>
+<p>比如：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicPtr, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Data</span></span> &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">generate_data</span></span>() -&gt; Data &#123;</span><br><span class="line">    Data &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">get_data</span></span>() -&gt; &amp;<span class="symbol">'static</span> Data &#123;</span><br><span class="line">    <span class="keyword">static</span> PTR: AtomicPtr&lt;Data&gt; = AtomicPtr::new(std::ptr::null_mut());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> p = PTR.load(Ordering::Acquire);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> p.is_null() &#123;</span><br><span class="line">        p = <span class="built_in">Box</span>::into_raw(<span class="built_in">Box</span>::new(generate_data()));</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Err</span>(e) = PTR.compare_exchange(</span><br><span class="line">            std::ptr::null_mut(),</span><br><span class="line">            p,</span><br><span class="line">            Ordering::Release,</span><br><span class="line">            Ordering::Acquire,</span><br><span class="line">        ) &#123;</span><br><span class="line">            <span class="comment">// Safety: p comes from Box::into_raw right above,</span></span><br><span class="line">            <span class="comment">// and wasn't shared with any other thread.</span></span><br><span class="line">            <span class="built_in">drop</span>(<span class="keyword">unsafe</span> &#123; <span class="built_in">Box</span>::from_raw(p) &#125;);</span><br><span class="line">            p = e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Safety: p is not null and points to a properly initialized value.</span></span><br><span class="line">    <span class="keyword">unsafe</span> &#123; &amp;*p &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> t1 = thread::spawn(|| get_data());</span><br><span class="line">    <span class="keyword">let</span> t2 = thread::spawn(|| get_data());</span><br><span class="line">    <span class="keyword">let</span> (ret1, ret2) = (t1.join().unwrap(), t2.join().unwrap());</span><br><span class="line">    <span class="built_in">assert_eq!</span>(ret1 <span class="keyword">as</span> *<span class="keyword">const</span> _, ret2 <span class="keyword">as</span> *<span class="keyword">const</span> _);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不过一般情况下我们都没有需要自己去实现，很多crate都能实现类似操作，比如<a href="https://docs.rs/once_cell/latest/once_cell/#lazy-initialized-global-data" target="_blank" rel="noopener">OneCell</a></p>
+<p>综上，<code>Atomic</code>是更底层的原子操作，为了同步原子操作的结果在其他线程的可见性以及约束编译器和操作系统的指令重排，也支持<code>Ordering</code>来提供不同程度的可见性保证。</p>
+<p>深入了解<code>Atomic</code>并不意味着我们一定会用他来做一些<code>lock free</code>的开发，毕竟轮子已经有好多了，但至少能更好理解一些并发控制代码中原子操作的实现，也不会对各种<code>Ordering</code>傻傻分不清了。</p>
+<p>最后推荐两个不错的<code>Atomic</code>资料，非常有助于理解，感兴趣的可以去看看</p>
+<ul>
+<li><a href="https://marabos.nl/atomics/memory-ordering.html" target="_blank" rel="noopener">Rust Atomics and Locks: memory ordering</a></li>
+<li><a href="https://www.youtube.com/watch?v=rMGWeSjctlY" target="_blank" rel="noopener">Crust of Rust: Atomics and Memory Ordering</a></li>
+</ul>
+<!-- 
+
+---
+
+**欢迎关注公众号：newbmiao, 获取及时更新**
+
+-->
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	如有疑问，请文末留言交流或邮件：<a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a>
+  <img src="/img/newbmiao_white_all.jpg" width="50%"  style="min-width:250px;margin:0px;" title="newbmiao"/>
+  本文链接 : <a href="https://newbmiao.github.io/2023/12/16/rust-sync-atomic.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2023&#x2F;12&#x2F;16&#x2F;rust-sync-atomic.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2023&#x2F;12&#x2F;16&#x2F;rust-sync-atomic.html</a>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      
+        <a data-url="https://newbmiao.github.io/2023/12/16/rust-sync-atomic.html" data-id="clqau3yoq004dksyp24399ys2" class="article-share-link">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/atomic/" rel="tag">atomic</a></li></ul>
+
+            
+	<span id="busuanzi_container_page_pv" style="color:#999">
+ 	 <i class="fa fa-eye"></i> <span id="busuanzi_value_page_pv"> <i class="fa fa-spinner fa-spin"></i></span>次阅读
+       </span>
+       
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;最近更新 ：<time datetime="2023-12-18T11:27:26.342Z" itemprop="dateModify">2023-12-18</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/16/rust-sync-atomic.html">深入理解Rust的Atomic及Ordering</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/08/rust-sync-channel.html">Rust并发控制之Channel</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/24/rust-sync-semaphore.html">Rust并发控制之Semaphore-两线程交替打印</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/23/rust-sync-condvar-2.html">Rust并发控制之Condvar-两线程交替打印</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/20/blog-migrate-hostname.html">博客地址已迁移到newbmiao.github.io</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/OPA/">OPA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/hexo/">hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/database/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/redis/">redis</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/">devops</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/devops/gearman/">gearman</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/terraform/">terraform</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/dig101/">dig101</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/notes/">notes</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/notes/">notes</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mac/shadowsocks/">shadowsocks</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/tool/">tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/oauth2/">oauth2</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/regex/">regex</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tips/">tips</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/journal/">journal</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/software-engineering/">software-engineering</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/summary/">summary</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web/html5/">html5</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/js/">js</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/php/">php</a><span class="category-list-count">12</span></li></ul></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hexo/" style="font-size: 18.33px; color: #2c93ea">hexo</a> <a href="/tags/blog/" style="font-size: 23.33px; color: #4298ca">blog</a> <a href="/tags/terraform/" style="font-size: 16.67px; color: #2592f4">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/slice/" style="font-size: 16.67px; color: #2592f4">slice</a> <a href="/tags/thoughts/" style="font-size: 16.67px; color: #2592f4">thoughts</a> <a href="/tags/fan-in/" style="font-size: 15px; color: #1e90ff">fan-in</a> <a href="/tags/fan-out/" style="font-size: 15px; color: #1e90ff">fan-out</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/linux/" style="font-size: 26.67px; color: #519bb5">linux</a> <a href="/tags/html5/" style="font-size: 16.67px; color: #2592f4">html5</a> <a href="/tags/drag/" style="font-size: 16.67px; color: #2592f4">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/js/" style="font-size: 28.33px; color: #589cab">js</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/mac/" style="font-size: 18.33px; color: #2c93ea">mac</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/mysql/" style="font-size: 20px; color: #3495df">mysql</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/php/" style="font-size: 28.33px; color: #589cab">php</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/optimize/" style="font-size: 15px; color: #1e90ff">optimize</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/web/" style="font-size: 18.33px; color: #2c93ea">web</a> <a href="/tags/OPA/" style="font-size: 23.33px; color: #4298ca">OPA</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/Rego/" style="font-size: 16.67px; color: #2592f4">Rego</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/rust/" style="font-size: 25px; color: #4999c0">rust</a> <a href="/tags/ownership/" style="font-size: 16.67px; color: #2592f4">ownership</a> <a href="/tags/borrow-checker/" style="font-size: 15px; color: #1e90ff">borrow-checker</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/oauth2/" style="font-size: 16.67px; color: #2592f4">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.67px; color: #2592f4">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/keycloak/" style="font-size: 16.67px; color: #2592f4">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/atomic/" style="font-size: 16.67px; color: #2592f4">atomic</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/condvar/" style="font-size: 16.67px; color: #2592f4">condvar</a> <a href="/tags/semaphore/" style="font-size: 15px; color: #1e90ff">semaphore</a> <a href="/tags/docker/" style="font-size: 16.67px; color: #2592f4">docker</a> <a href="/tags/channel/" style="font-size: 15px; color: #1e90ff">channel</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/hands-free/" style="font-size: 15px; color: #1e90ff">hands-free</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/jquery/" style="font-size: 21.67px; color: #3b96d5">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/interface/" style="font-size: 16.67px; color: #2592f4">interface</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/mutex/" style="font-size: 16.67px; color: #2592f4">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/reflect/" style="font-size: 16.67px; color: #2592f4">reflect</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a>
+    </div>
+  </div>
+
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://blog.ihuxu.com/" target="_blank">胡小旭</a>
+          </li>
+        
+          <li>
+            <a href="https://curl.qcloud.com/OEZz5KSh" target="_blank">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title">文章目录</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+
+<script src="/js/toc.js"></script>
+
+
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 菜鸟Miao<br>
+     <p>
+     <span id="busuanzi_container_site_uv">
+  	您是本站第<span id="busuanzi_value_site_uv"> <i class="fa fa-spinner fa-spin"></i></span>个访问者
+     </span>
+     <span id="busuanzi_container_site_pv">
+        /本站总访问量<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i> </span>次
+     </span>
+     </p>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/dig101/" class="mobile-nav-link">Dig101</a>
+  
+    <a href="/categories/OPA/" class="mobile-nav-link">OPA</a>
+  
+</nav>
+  <script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','bqAniPPC1T7RV4MomxcE','2.0.0');
+</script>
+
+
+
+</div>
+</body>
+</html>
+
