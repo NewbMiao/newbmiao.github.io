@@ -1555,3 +1555,7 @@ pre .javascript .function {
 .tagcloud a {
   margin-right: 5px;
 }
+.article-entry pre.mermaid {
+  background: #fff;
+  text-align: center;
+}

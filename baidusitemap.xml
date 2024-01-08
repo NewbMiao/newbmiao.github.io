@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://newbmiao.github.io/2024/01/08/rust-async-multi-future-concurrency.html</loc>
+    <lastmod>2024-01-06</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2024/01/06/rust-async-future.html</loc>
+    <lastmod>2024-01-06</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2023/12/16/rust-sync-atomic.html</loc>
     <lastmod>2023-12-18</lastmod>
   </url>
@@ -13,11 +21,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/10/14/jquery-tabs-with-iframe.html</loc>
+    <loc>https://newbmiao.github.io/2015/10/25/jQuery-code-record.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/10/25/jQuery-code-record.html</loc>
+    <loc>https://newbmiao.github.io/2015/10/14/jquery-tabs-with-iframe.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -33,19 +41,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/11/24/rust-sync-semaphore.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2021/11/21/cache-rust-dependencies-with-docker-build.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2023/08/12/seeing-code-as-debt-not-value.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2021/09/19/tech-behind-authentication.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -53,7 +49,15 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/11/12/rust-sync-barrier.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/24/rust-sync-semaphore.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2021/09/19/tech-behind-authentication.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2023/08/12/seeing-code-as-debt-not-value.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -61,11 +65,15 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/12/rust-sync-barrier.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -85,19 +93,19 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/06/18/auth-manage-via-keycloak.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2015/02/28/regex-notes.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/09/01/use-fastcgi_finish_request-speed-up-your-page.html</loc>
+    <loc>https://newbmiao.github.io/2023/06/18/auth-manage-via-keycloak.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
     <loc>https://newbmiao.github.io/2015/09/25/use-luhm-to-validate-bank-card.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/09/01/use-fastcgi_finish_request-speed-up-your-page.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -113,15 +121,15 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/03/08/php-assignment-and-reference.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2017/02/17/auto-wrap-chinese-use-imagick-and-upload-image-by-base64-encode-str.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
     <loc>https://newbmiao.github.io/2015/06/17/use-phpdoc-to-render-api-document.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/03/08/php-assignment-and-reference.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -189,15 +197,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
+    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-ACL.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-basis.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2015/09/16/Niaoge-Linux-Desktop-Guide-notes-daemon.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -205,11 +209,15 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
+    <loc>https://newbmiao.github.io/2015/09/16/Niaoge-Linux-Desktop-Guide-notes-daemon.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2014/12/28/build-your-git-server-on-linux.html</loc>
+    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-basis.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/02/28/js-data-structure.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -217,7 +225,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/02/28/js-data-structure.html</loc>
+    <loc>https://newbmiao.github.io/2014/12/28/build-your-git-server-on-linux.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -229,11 +237,15 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
+    <loc>https://newbmiao.github.io/2015/02/28/js-function-closure.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2016/08/17/how-to-call-a-function-with-unsure-number-params.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/02/28/js-function-closure.html</loc>
+    <loc>https://newbmiao.github.io/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -242,10 +254,6 @@
   </url>
   <url>
     <loc>https://newbmiao.github.io/2015/09/23/some-code-when-use-jquery-fileupload.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -285,11 +293,15 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
+    <loc>https://newbmiao.github.io/2021/08/25/fanIn-and-fanOut.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2018/08/20/go-source-analysis-of-memory-alloc.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2021/08/25/fanIn-and-fanOut.html</loc>
+    <loc>https://newbmiao.github.io/2020/05/22/how-to-modify-a-pointer-of-go-inside.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -309,10 +321,6 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/05/22/how-to-modify-a-pointer-of-go-inside.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2020/01/18/dig101-golang-string.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
@@ -329,11 +337,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/02/29/dig101-golang-interface-de-virtualize.html</loc>
+    <loc>https://newbmiao.github.io/2021/08/19/2-way-of-or-done-pattern.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2021/08/19/2-way-of-or-done-pattern.html</loc>
+    <loc>https://newbmiao.github.io/2020/02/29/dig101-golang-interface-de-virtualize.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -341,7 +349,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/08/18/hexo-with-gitcafe-and-github.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/20/blog-migrate-hostname.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -349,11 +357,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/11/20/blog-migrate-hostname.html</loc>
+    <loc>https://newbmiao.github.io/2015/10/16/gearman-beginer-guide.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/10/16/gearman-beginer-guide.html</loc>
+    <loc>https://newbmiao.github.io/2015/08/18/hexo-with-gitcafe-and-github.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>

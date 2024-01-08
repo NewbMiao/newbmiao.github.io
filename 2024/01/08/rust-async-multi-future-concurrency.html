@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Rust异步编程之Future并发处理 | 菜鸟Miao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,future,async,select,join,spawn" />
+  
+  
+  <meta name="description" content="Rust异步编程之Future并发处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust异步编程之Future并发处理">
+<meta property="og:url" content="https://newbmiao.github.io/2024/01/08/rust-async-multi-future-concurrency.html">
+<meta property="og:site_name" content="菜鸟Miao">
+<meta property="og:description" content="Rust异步编程之Future并发处理">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-08T06:34:39.000Z">
+<meta property="article:modified_time" content="2024-01-06T17:02:59.781Z">
+<meta property="article:author" content="菜鸟Miao">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="future">
+<meta property="article:tag" content="async">
+<meta property="article:tag" content="select">
+<meta property="article:tag" content="join">
+<meta property="article:tag" content="spawn">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟Miao</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(博客地址: https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/dig101/">Dig101</a>
+        
+          <a class="main-nav-link" href="/categories/OPA/">OPA</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+	  
+	
+        <div id="search-form">
+                <input type="text" class="st-default-search-input search-form-input" style="outline: none;width: 110px;">
+        </div>
+	
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-rust-async-multi-future-concurrency" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2024/01/08/rust-async-multi-future-concurrency.html" class="article-date">
+  <time datetime="2024-01-08T06:34:39.000Z" itemprop="datePublished">2024-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Rust异步编程之Future并发处理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <div id="toc" class="toc-article">
+         <h3>文章目录</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#join"><span class="toc-number">1.</span> <span class="toc-text">join</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#try-join"><span class="toc-number">2.</span> <span class="toc-text">try_join</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spawn"><span class="toc-number">3.</span> <span class="toc-text">spawn</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select"><span class="toc-number">4.</span> <span class="toc-text">select</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#顺序执行"><span class="toc-number">4.1.</span> <span class="toc-text">顺序执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#precondition"><span class="toc-number">4.2.</span> <span class="toc-text">precondition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分支修改"><span class="toc-number">4.3.</span> <span class="toc-text">分支修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cancel"><span class="toc-number">4.4.</span> <span class="toc-text">cancel</span></a></li></ol></li></ol>
+        </div>
+        
+        <p>上篇文章我们知道，<code>Rust</code>的<code>Future</code>是异步执行，<code>await</code>时是阻塞在当前的异步任务<code>task</code>上，直到完成。</p>
+<p>当多个异步任务执行时，如果只能都阻塞一个个执行，那就变成同步串行执行了，当然不是我们通常希望的并发处理方式，今天就来聊聊多个异步任务的一些并发处理方式。</p>
+<!-- **文章目录** -->
+<!-- [TOC] -->
+<a id="more"></a>
+
+<h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><p>多个异步任务执行时，如果希望全部执行完成后统一返回，可以让他们都并发去执行，等全部完成后再一起返回。<code>join!</code>宏就可以实现它。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">async_fn1</span></span>() -&gt; <span class="built_in">u32</span> &#123;</span><br><span class="line">    <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">async_fn2</span></span>() -&gt; <span class="built_in">u32</span> &#123;</span><br><span class="line">    <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> (first, second) = tokio::join!(async_fn1(), async_fn2());</span><br><span class="line">    <span class="built_in">assert_eq!</span>(first, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">assert_eq!</span>(second, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="try-join"><a href="#try-join" class="headerlink" title="try_join"></a>try_join</h2><p>如果其中有失败的话，也会返回失败的<code>Err</code>。如果想一有失败就立马返回，不等待其他任务完成，可以使用<code>try_join!</code>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">async_fn1</span></span>() -&gt; <span class="built_in">Result</span>&lt;<span class="built_in">u32</span>, &amp;<span class="symbol">'static</span> <span class="built_in">str</span>&gt; &#123;</span><br><span class="line">    <span class="literal">Ok</span>(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">async_fn2</span></span>() -&gt; <span class="built_in">Result</span>&lt;<span class="built_in">u32</span>, &amp;<span class="symbol">'static</span> <span class="built_in">str</span>&gt; &#123;</span><br><span class="line">    <span class="literal">Err</span>(<span class="string">"async_fn2 failed"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> res = tokio::try_join!(async_fn1(), async_fn2());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">match</span> res &#123;</span><br><span class="line">        <span class="literal">Ok</span>((first, second)) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"first = &#123;&#125;, second = &#123;&#125;"</span>, first, second);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="literal">Err</span>(err) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"error: &#123;&#125;"</span>, err);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="spawn"><a href="#spawn" class="headerlink" title="spawn"></a>spawn</h2><p>上边<code>join</code>虽然是让多个异步任务并发执行，但其实际还是在同一个<code>task</code>上异步执行，如果想让每个异步任务都在一个新的<code>task</code>上<strong>独立</strong>执行，可以用<code>spawn</code>。</p>
+<p>异步任务<code>spawn</code>后会在后台立即开始运行，即便没有对其返回的<code>JoinHandle</code>进行<code>await</code></p>
+<p>这就有点像多线程里的<code>spawn</code>，只不过这里粒度不是线程，是<code>task</code>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> futures::future::join_all;</span><br><span class="line"><span class="keyword">use</span> tokio::&#123;join, task::JoinHandle&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">async_op</span></span>(id: <span class="built_in">i32</span>) -&gt; <span class="built_in">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> s = <span class="built_in">format!</span>(<span class="string">"Start task &#123;&#125;"</span>, id);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, s);</span><br><span class="line">    s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> ops = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> tasks: <span class="built_in">Vec</span>&lt;JoinHandle&lt;<span class="built_in">String</span>&gt;&gt; = ops</span><br><span class="line">        .into_iter()</span><br><span class="line">        .map(|op| tokio::spawn(async_op(op)))</span><br><span class="line">        .collect();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// option 1</span></span><br><span class="line">    <span class="comment">// let outputs = join!(</span></span><br><span class="line">    <span class="comment">//     tasks.pop().unwrap(),</span></span><br><span class="line">    <span class="comment">//     tasks.pop().unwrap(),</span></span><br><span class="line">    <span class="comment">//     tasks.pop().unwrap()</span></span><br><span class="line">    <span class="comment">// );</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// println!("&#123;:?&#125;", outputs);</span></span><br><span class="line">    <span class="comment">// tuple of results:</span></span><br><span class="line">    <span class="comment">// (Ok("Start task 3"), Ok("Start task 2"), Ok("Start task 1"))</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// option 2</span></span><br><span class="line">    <span class="keyword">let</span> outputs = join_all(tasks).<span class="keyword">await</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;:?&#125;"</span>, outputs);</span><br><span class="line">    <span class="comment">// vector of results:</span></span><br><span class="line">    <span class="comment">// [Ok("Start task 1"), Ok("Start task 2"), Ok("Start task 3")]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p>如果是多个异步分支（<code>branch</code>）有一个完成就返回，并取消(<code>drop</code>来释放异步资源)其他异步分支的话，可以用<code>select</code></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">async_fn1</span></span>() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">async_fn2</span></span>() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    tokio::<span class="built_in">select!</span> &#123;</span><br><span class="line">        _ = async_fn1() =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"async_fn1() completed first"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        _ = async_fn2() =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"async_fn2() completed first"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="顺序执行"><a href="#顺序执行" class="headerlink" title="顺序执行"></a>顺序执行</h3><p>这里<code>select</code>会对每个分支随机执行，顺序是不保证的。如果期望顺序执行，可以用<code>biased</code></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> count = <span class="number">0u8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        tokio::<span class="built_in">select!</span> &#123;</span><br><span class="line">            <span class="comment">// 顺序执行</span></span><br><span class="line">            biased;</span><br><span class="line"></span><br><span class="line">            _ = <span class="keyword">async</span> &#123;&#125;, <span class="keyword">if</span> count &lt; <span class="number">1</span> =&gt; &#123;</span><br><span class="line">                count += <span class="number">1</span>;</span><br><span class="line">                <span class="built_in">assert_eq!</span>(count, <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            _ = <span class="keyword">async</span> &#123;&#125;, <span class="keyword">if</span> count &lt; <span class="number">2</span> =&gt; &#123;</span><br><span class="line">                count += <span class="number">1</span>;</span><br><span class="line">                <span class="built_in">assert_eq!</span>(count, <span class="number">2</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span> =&gt; &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="precondition"><a href="#precondition" class="headerlink" title="precondition"></a>precondition</h3><p>上边例子中，分支使用了<code>if precondition</code>，如果当前<code>select</code>循环中运行到该分支，条件满足则执行；不满足的话会标记分支为失效（<code>disabled</code>）本次<code>select</code>中不会执行。</p>
+<p>如果在<code>loop</code>中，下一次进入<code>select</code>循环会重新标记<code>disabled</code>状态</p>
+<p>另外当前循环如果所以分支都被标记为<code>disabled</code>状态，就必须要有<code>else</code>分支，使<code>select</code>仍可运行。不然就会收到<code>panic</code>: <code>all branches are disabled and there is no else branch</code>.</p>
+<h3 id="分支修改"><a href="#分支修改" class="headerlink" title="分支修改"></a>分支修改</h3><p><code>select</code>的分支也可修改， 比如下边通过<code>Pin::set</code>来修改<code>Pin</code>住的异步任务。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> tokio::select;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">action</span></span>(input: <span class="built_in">Option</span>&lt;<span class="built_in">i32</span>&gt;) -&gt; <span class="built_in">Option</span>&lt;<span class="built_in">String</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">match</span> input &#123;</span><br><span class="line">        <span class="literal">Some</span>(input) =&gt; <span class="literal">Some</span>(input.to_string()),</span><br><span class="line">        <span class="literal">None</span> =&gt; <span class="keyword">return</span> <span class="literal">None</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> (tx, <span class="keyword">mut</span> rx) = tokio::sync::mpsc::channel(<span class="number">128</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> done = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">let</span> operation = action(<span class="literal">None</span>);</span><br><span class="line">    tokio::pin!(operation);</span><br><span class="line"></span><br><span class="line">    tokio::spawn(<span class="keyword">async</span> <span class="keyword">move</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> _ = tx.send(<span class="number">1</span>).<span class="keyword">await</span>;</span><br><span class="line">        <span class="keyword">let</span> _ = tx.send(<span class="number">3</span>).<span class="keyword">await</span>;</span><br><span class="line">        <span class="keyword">let</span> _ = tx.send(<span class="number">2</span>).<span class="keyword">await</span>;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">select!</span> &#123;</span><br><span class="line">            res = &amp;<span class="keyword">mut</span> operation, <span class="keyword">if</span> !done =&gt; &#123;</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">"Got = &#123;:?&#125;"</span>, res);</span><br><span class="line">                done = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">let</span> <span class="literal">Some</span>(_) = res &#123;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="literal">Some</span>(v) = rx.recv() =&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> v % <span class="number">2</span> == <span class="number">0</span> &#123;</span><br><span class="line">                    <span class="comment">// `.set` is a method on `Pin`.</span></span><br><span class="line">                    operation.set(action(<span class="literal">Some</span>(v)));</span><br><span class="line">                    done = <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里第一个分支的<code>precondition</code>是必须的，不然就会有可能出现多次执行一个已完成的异步任务，会<code>panic</code>: <code>async fn resumed after completion</code>。</p>
+<h3 id="cancel"><a href="#cancel" class="headerlink" title="cancel"></a>cancel</h3><p>最后在聊聊分支取消。</p>
+<p>当<code>select</code>有分支完成时，其他分支会被取消。取消依托于<code>Drop</code>。当<code>future</code>被<code>drop</code>，其也会停止被异步调度。</p>
+<p>比如下边代码，当<code>oneshot::Receiver</code>被取消而<code>Drop</code>时，会向<code>Sender</code>发送<code>close</code>通知，以便于清理<code>sender</code>并中断其执行。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> tokio::sync::oneshot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> (<span class="keyword">mut</span> tx1, rx1) = oneshot::channel::&lt;<span class="built_in">u32</span>&gt;();</span><br><span class="line">    <span class="keyword">let</span> (tx2, rx2) = oneshot::channel();</span><br><span class="line"></span><br><span class="line">    tokio::spawn(<span class="keyword">async</span> <span class="keyword">move</span> &#123;</span><br><span class="line">        tokio::<span class="built_in">select!</span> &#123;</span><br><span class="line">            _ = tx1.closed() =&gt; &#123;</span><br><span class="line">                <span class="comment">// `val = rx1` is canceled</span></span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">"tx1 closed"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    tokio::spawn(<span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> _ = tx2.send(<span class="string">"two"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    tokio::<span class="built_in">select!</span> &#123;</span><br><span class="line">        val = rx1 =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"rx1 completed first with &#123;:?&#125;"</span>, val);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        val = rx2 =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">"rx2 completed first with &#123;:?&#125;"</span>, val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!-- 
+
+---
+
+**欢迎关注公众号：[newbmiao](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzUxNzA2NzEzNw==&action=getalbum&album_id=2145763210988224521&scene=173&subscene=91&sessionid=1702900175&enterid=1702900179&from_msgid=2247484338&from_itemidx=1&count=3&nolastread=1#wechat_redirect), 获取及时更新**
+
+-->
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	如有疑问，请文末留言交流或邮件：<a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a>
+  <img src="/img/newbmiao_white_all.jpg" width="50%"  style="min-width:250px;margin:0px;" title="newbmiao"/>
+  本文链接 : <a href="https://newbmiao.github.io/2024/01/08/rust-async-multi-future-concurrency.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2024&#x2F;01&#x2F;08&#x2F;rust-async-multi-future-concurrency.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2024&#x2F;01&#x2F;08&#x2F;rust-async-multi-future-concurrency.html</a>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      
+        <a data-url="https://newbmiao.github.io/2024/01/08/rust-async-multi-future-concurrency.html" data-id="clr38orqz0053n5yp2dlrc9ih" class="article-share-link">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/future/" rel="tag">future</a></li></ul>
+
+            
+	<span id="busuanzi_container_page_pv" style="color:#999">
+ 	 <i class="fa fa-eye"></i> <span id="busuanzi_value_page_pv"> <i class="fa fa-spinner fa-spin"></i></span>次阅读
+       </span>
+       
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;最近更新 ：<time datetime="2024-01-06T17:02:59.781Z" itemprop="dateModify">2024-01-07</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/01/08/rust-async-multi-future-concurrency.html">Rust异步编程之Future并发处理</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/06/rust-async-future.html">Rust异步编程之Future初探</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/16/rust-sync-atomic.html">深入理解Rust的Atomic及Ordering</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/08/rust-sync-channel.html">Rust并发控制之Channel</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/24/rust-sync-semaphore.html">Rust并发控制之Semaphore-两线程交替打印</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/OPA/">OPA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/hexo/">hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/database/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/redis/">redis</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/">devops</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/devops/gearman/">gearman</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/terraform/">terraform</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/dig101/">dig101</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/notes/">notes</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/notes/">notes</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mac/shadowsocks/">shadowsocks</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/tool/">tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/oauth2/">oauth2</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/regex/">regex</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tips/">tips</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/journal/">journal</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/software-engineering/">software-engineering</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/summary/">summary</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web/html5/">html5</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/js/">js</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/php/">php</a><span class="category-list-count">12</span></li></ul></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hexo/" style="font-size: 18.33px; color: #2c93ea">hexo</a> <a href="/tags/blog/" style="font-size: 23.33px; color: #4298ca">blog</a> <a href="/tags/terraform/" style="font-size: 16.67px; color: #2592f4">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/slice/" style="font-size: 16.67px; color: #2592f4">slice</a> <a href="/tags/fan-in/" style="font-size: 15px; color: #1e90ff">fan-in</a> <a href="/tags/fan-out/" style="font-size: 15px; color: #1e90ff">fan-out</a> <a href="/tags/thoughts/" style="font-size: 16.67px; color: #2592f4">thoughts</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/html5/" style="font-size: 16.67px; color: #2592f4">html5</a> <a href="/tags/drag/" style="font-size: 16.67px; color: #2592f4">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/js/" style="font-size: 28.33px; color: #589cab">js</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/linux/" style="font-size: 26.67px; color: #519bb5">linux</a> <a href="/tags/mac/" style="font-size: 18.33px; color: #2c93ea">mac</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/mysql/" style="font-size: 20px; color: #3495df">mysql</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/optimize/" style="font-size: 15px; color: #1e90ff">optimize</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/OPA/" style="font-size: 23.33px; color: #4298ca">OPA</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/Rego/" style="font-size: 16.67px; color: #2592f4">Rego</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/web/" style="font-size: 18.33px; color: #2c93ea">web</a> <a href="/tags/php/" style="font-size: 28.33px; color: #589cab">php</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/oauth2/" style="font-size: 16.67px; color: #2592f4">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.67px; color: #2592f4">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/rust/" style="font-size: 25px; color: #4999c0">rust</a> <a href="/tags/keycloak/" style="font-size: 16.67px; color: #2592f4">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/ownership/" style="font-size: 16.67px; color: #2592f4">ownership</a> <a href="/tags/borrow-checker/" style="font-size: 15px; color: #1e90ff">borrow-checker</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/futures/" style="font-size: 15px; color: #1e90ff">futures</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/condvar/" style="font-size: 16.67px; color: #2592f4">condvar</a> <a href="/tags/atomic/" style="font-size: 16.67px; color: #2592f4">atomic</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/docker/" style="font-size: 16.67px; color: #2592f4">docker</a> <a href="/tags/future/" style="font-size: 15px; color: #1e90ff">future</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/semaphore/" style="font-size: 15px; color: #1e90ff">semaphore</a> <a href="/tags/channel/" style="font-size: 15px; color: #1e90ff">channel</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/hands-free/" style="font-size: 15px; color: #1e90ff">hands-free</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/jquery/" style="font-size: 21.67px; color: #3b96d5">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/interface/" style="font-size: 16.67px; color: #2592f4">interface</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/reflect/" style="font-size: 16.67px; color: #2592f4">reflect</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/mutex/" style="font-size: 16.67px; color: #2592f4">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a>
+    </div>
+  </div>
+
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://blog.ihuxu.com/" target="_blank">胡小旭</a>
+          </li>
+        
+          <li>
+            <a href="https://curl.qcloud.com/OEZz5KSh" target="_blank">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title">文章目录</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+
+<script src="/js/toc.js"></script>
+
+
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 菜鸟Miao<br>
+     <p>
+     <span id="busuanzi_container_site_uv">
+  	您是本站第<span id="busuanzi_value_site_uv"> <i class="fa fa-spinner fa-spin"></i></span>个访问者
+     </span>
+     <span id="busuanzi_container_site_pv">
+        /本站总访问量<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i> </span>次
+     </span>
+     </p>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/dig101/" class="mobile-nav-link">Dig101</a>
+  
+    <a href="/categories/OPA/" class="mobile-nav-link">OPA</a>
+  
+</nav>
+  <script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  <script src='https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','bqAniPPC1T7RV4MomxcE','2.0.0');
+</script>
+
+
+
+</div>
+</body>
+</html>
+

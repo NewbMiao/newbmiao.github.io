@@ -96,6 +96,144 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-dig101-golang-string" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/18/dig101-golang-string.html" class="article-date">
+  <time datetime="2020-01-17T23:50:21.000Z" itemprop="datePublished">2020-01-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>►<a class="article-category-link" href="/categories/go/dig101/">dig101</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/18/dig101-golang-string.html">Dig101-Go之string那些事</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Dig101: dig more, simplified more and know more</p>
+</blockquote>
+<p>string这么简单，我想你也一直是这样想的，没关系，我也没打算把它搞复杂。</p>
+<p>别着急，我们先从string的拼接操作 <code>+</code> 开始</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/01/18/dig101-golang-string.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      
+        <a data-url="https://newbmiao.github.io/2020/01/18/dig101-golang-string.html" data-id="clr38orrl00fzn5yp96rnen30" class="article-share-link">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;最近更新 ：<time datetime="2023-12-08T12:53:11.104Z" itemprop="dateModify">2023-12-08</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+
+
+  
+    <article id="post-dig101-golang-slice" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/07/dig101-golang-slice.html" class="article-date">
+  <time datetime="2020-01-07T13:51:12.000Z" itemprop="datePublished">2020-01-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>►<a class="article-category-link" href="/categories/go/dig101/">dig101</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/07/dig101-golang-slice.html">Dig101-Go之灵活的slice</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Dig101: dig more, simplified more and know more</p>
+</blockquote>
+<p>Slice作为go常用的数据类型，在日常编码中非常常见。<br>相对于数组的定长不可变，slice使用起来就灵活了许多。</p>
+<h2 id="0x01-slice-到底是什么？"><a href="#0x01-slice-到底是什么？" class="headerlink" title="0x01 slice 到底是什么？"></a>0x01 slice 到底是什么？</h2><p>首先我们看下源码中slice结构的定义</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/runtime/slice.go</span></span><br><span class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123;</span><br><span class="line">  array unsafe.Pointer</span><br><span class="line">  <span class="built_in">len</span>   <span class="keyword">int</span></span><br><span class="line">  <span class="built_in">cap</span>   <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>slice数据结构如上，Data指向底层引用的数组内存地址, len是已用长度，cap是总容量。<br>为验证如上所述，我们尝试声明一个slice a，获取 a的sliceHeader头信息，并用<code>%p</code>获取<code>&amp;a, sh, a, a[0]</code>的地址<br>看看他们的地址是否相同。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment">//reflect.SliceHeader 为 slice运行时数据结构</span></span><br><span class="line">sh := (*reflect.SliceHeader)(unsafe.Pointer(&amp;a))</span><br><span class="line">fmt.Printf(<span class="string">"slice header: %#v\naddress of a: %p &amp;a[0]: %p |  &amp;a: %p sh:%p "</span>, </span><br><span class="line">    sh, a, &amp;a[<span class="number">0</span>],&amp;a, sh)</span><br><span class="line"></span><br><span class="line"><span class="comment">//slice header: &amp;reflect.SliceHeader&#123;Data:0xc000018260, Len:1, Cap:3&#125;</span></span><br><span class="line"><span class="comment">//address of a: 0xc000018260 &amp;a[0]: 0xc000018260 | &amp;a: 0xc00000c080 sh:0xc00000c080</span></span><br></pre></td></tr></table></figure>
+
+<p>结果发现<code>a和&amp;a[0]</code>地址相同。 这个好理解，切片指向地址即对应底层引用数组首个元素地址<br>而<code>&amp;a和sh及sh.Data</code>指向地址相同。这个是因为这三个地址是指slice自身地址。<br>这里【slice自身地址不同于slice指向的底层数据结构地址】， 清楚这一点对于后边的一些问题会更容易判断。</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/01/07/dig101-golang-slice.html#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      
+        <a data-url="https://newbmiao.github.io/2020/01/07/dig101-golang-slice.html" data-id="clr38orrl00fyn5ypbr9w53me" class="article-share-link">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/append/" rel="tag">append</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/slice/" rel="tag">slice</a></li></ul>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;最近更新 ：<time datetime="2023-11-24T15:29:22.171Z" itemprop="dateModify">2023-11-24</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+
+
+  
     <article id="post-dig101-golang-for-range" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/01/03/dig101-golang-for-range.html" class="article-date">
@@ -140,7 +278,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2020/01/03/dig101-golang-for-range.html" data-id="clqau3ypf00fxksypcpuwa79o" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2020/01/03/dig101-golang-for-range.html" data-id="clr38orrk00fsn5ypdf88716y" class="article-share-link">分享到</a>
       
 
       
@@ -204,7 +342,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2019/10/18/terraform-aws-provider-headfirst.html" data-id="clqau3yoc000rksypa6v9ebhv" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2019/10/18/terraform-aws-provider-headfirst.html" data-id="clr38orqg000qn5yp556wg3hg" class="article-share-link">分享到</a>
       
 
       
@@ -274,7 +412,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2019/10/10/go_mutex_insight.html" data-id="clqau3ypl00i5ksyphueqefhq" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2019/10/10/go_mutex_insight.html" data-id="clr38orro00hcn5yp66l87zac" class="article-share-link">分享到</a>
       
 
       
@@ -338,7 +476,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2018/08/20/go-source-analysis-of-memory-alloc.html" data-id="clqau3yoe001aksyp5q7oeujx" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2018/08/20/go-source-analysis-of-memory-alloc.html" data-id="clr38orql001jn5yp3kma0ux9" class="article-share-link">分享到</a>
       
 
       
@@ -400,7 +538,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2018/03/15/go-value-layout-in-memory.html" data-id="clqau3yoe0015ksyp0kfmdjia" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2018/03/15/go-value-layout-in-memory.html" data-id="clr38orqi0015n5yp0xb27rk6" class="article-share-link">分享到</a>
       
 
       
@@ -469,7 +607,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2018/03/05/go-value-in-heap-and-stack.html" data-id="clqau3yoe0018ksypeq6gdwed" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2018/03/05/go-value-in-heap-and-stack.html" data-id="clr38orqi0014n5yp4ip678u0" class="article-share-link">分享到</a>
       
 
       
@@ -550,7 +688,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2018/02/09/advanced-go-concurrency-patterns.html" data-id="clqau3yod000yksyp44wq17tf" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2018/02/09/advanced-go-concurrency-patterns.html" data-id="clr38orqh000yn5yp85hzdodf" class="article-share-link">分享到</a>
       
 
       
@@ -618,7 +756,7 @@
     
     <footer class="article-footer">
       
-        <a data-url="https://newbmiao.github.io/2018/02/06/go-memory-model.html" data-id="clqau3yoe0014ksypd3hxgzqm" class="article-share-link">分享到</a>
+        <a data-url="https://newbmiao.github.io/2018/02/06/go-memory-model.html" data-id="clr38orqh0010n5yp97657opa" class="article-share-link">分享到</a>
       
 
       
@@ -643,138 +781,9 @@
 
 
   
-    <article id="post-mysql-compare-version-string" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/08/mysql-compare-version-string.html" class="article-date">
-  <time datetime="2017-12-08T02:45:47.000Z" itemprop="datePublished">2017-12-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/database/">database</a>►<a class="article-category-link" href="/categories/database/mysql/">mysql</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/08/mysql-compare-version-string.html">mysql中比较版本字符串</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>业务背景：<br>获取小于等于当前版本的最新版本数据</p>
-<p>发现在mysql中比较版本字符串有个坑：<br><code>select &quot;5.1.3&quot;&gt;&quot;5.1.24&quot;</code><br>结果会是1，因为是按位比较，3比2大。。。。</p>
-<p>怎么解决呢，stackoverflow上种方法：<br><a href="https://stackoverflow.com/questions/34876711/mysql-query-compare-version-numbers" target="_blank" rel="noopener">传送门</a></p>
-        
-          <p class="article-more-link">
-            <a href="/2017/12/08/mysql-compare-version-string.html#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    
-    <footer class="article-footer">
-      
-        <a data-url="https://newbmiao.github.io/2017/12/08/mysql-compare-version-string.html" data-id="clqau3yoj002kksyp7vb93jim" class="article-share-link">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-      
-     
-     <span style="color:#999">
-&nbsp; | &nbsp;最近更新 ：<time datetime="2023-12-08T12:53:11.112Z" itemprop="dateModify">2023-12-08</time>
-</span>
-
-     
-
-    </footer>
-    
-  </div>
-</article>
-
-
-
-
-  
-    <article id="post-share-the-login-status-under-cors" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/16/share-the-login-status-under-cors.html" class="article-date">
-  <time datetime="2017-05-16T10:53:38.000Z" itemprop="datePublished">2017-05-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/web/">web</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/16/share-the-login-status-under-cors.html">跨域登录态共享</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="登录态共享"><a href="#登录态共享" class="headerlink" title="登录态共享"></a>登录态共享</h1><p>登录态共享？什么鬼，不知道的就可以不用看啦，需要时再说，说不定到时也用不到，笑脸~~</p>
-<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>解决多个子系统中共用模块（比方说工单系统）可以共享子系统的登录态<br>为简化问题，设定场景：<br>登录系统A，点工单操作跳转系统B，并且无需登录（至于系统登录何时失效暂不考虑）</p>
-<p>还有：别问我为什么不用单点登录(SSO)，那个，不想说，笑脸~~</p>
-<p>先别废话，直接代码上</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/05/16/share-the-login-status-under-cors.html#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    
-    <footer class="article-footer">
-      
-        <a data-url="https://newbmiao.github.io/2017/05/16/share-the-login-status-under-cors.html" data-id="clqau3yot005lksyp1csy8prh" class="article-share-link">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cors/" rel="tag">cors</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-      
-     
-     <span style="color:#999">
-&nbsp; | &nbsp;最近更新 ：<time datetime="2023-12-08T12:53:11.123Z" itemprop="dateModify">2023-12-08</time>
-</span>
-
-     
-
-    </footer>
-    
-  </div>
-</article>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">« Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/">Next »</a>
+      <a class="extend prev" rel="prev" href="/page/4/">« Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/">Next »</a>
     </nav>
   
 </section>
@@ -788,6 +797,14 @@
       <ul>
         
           <li>
+            <a href="/2024/01/08/rust-async-multi-future-concurrency.html">Rust异步编程之Future并发处理</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/06/rust-async-future.html">Rust异步编程之Future初探</a>
+          </li>
+        
+          <li>
             <a href="/2023/12/16/rust-sync-atomic.html">深入理解Rust的Atomic及Ordering</a>
           </li>
         
@@ -799,14 +816,6 @@
             <a href="/2023/11/24/rust-sync-semaphore.html">Rust并发控制之Semaphore-两线程交替打印</a>
           </li>
         
-          <li>
-            <a href="/2023/11/23/rust-sync-condvar-2.html">Rust并发控制之Condvar-两线程交替打印</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/20/blog-migrate-hostname.html">博客地址已迁移到newbmiao.github.io</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -816,7 +825,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/OPA/">OPA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/hexo/">hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/database/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/redis/">redis</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/">devops</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/devops/gearman/">gearman</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/terraform/">terraform</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/dig101/">dig101</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/notes/">notes</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/notes/">notes</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mac/shadowsocks/">shadowsocks</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/tool/">tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/oauth2/">oauth2</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/regex/">regex</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tips/">tips</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/journal/">journal</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/software-engineering/">software-engineering</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/summary/">summary</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web/html5/">html5</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/js/">js</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/php/">php</a><span class="category-list-count">12</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/OPA/">OPA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/hexo/">hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/database/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/redis/">redis</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/">devops</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/devops/gearman/">gearman</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/terraform/">terraform</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/dig101/">dig101</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/notes/">notes</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/notes/">notes</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mac/shadowsocks/">shadowsocks</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/tool/">tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/oauth2/">oauth2</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/regex/">regex</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tips/">tips</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/journal/">journal</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/software-engineering/">software-engineering</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/summary/">summary</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web/html5/">html5</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/js/">js</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/php/">php</a><span class="category-list-count">12</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -825,7 +834,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hexo/" style="font-size: 18.33px; color: #2c93ea">hexo</a> <a href="/tags/blog/" style="font-size: 23.33px; color: #4298ca">blog</a> <a href="/tags/terraform/" style="font-size: 16.67px; color: #2592f4">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/slice/" style="font-size: 16.67px; color: #2592f4">slice</a> <a href="/tags/thoughts/" style="font-size: 16.67px; color: #2592f4">thoughts</a> <a href="/tags/fan-in/" style="font-size: 15px; color: #1e90ff">fan-in</a> <a href="/tags/fan-out/" style="font-size: 15px; color: #1e90ff">fan-out</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/linux/" style="font-size: 26.67px; color: #519bb5">linux</a> <a href="/tags/html5/" style="font-size: 16.67px; color: #2592f4">html5</a> <a href="/tags/drag/" style="font-size: 16.67px; color: #2592f4">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/js/" style="font-size: 28.33px; color: #589cab">js</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/mac/" style="font-size: 18.33px; color: #2c93ea">mac</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/mysql/" style="font-size: 20px; color: #3495df">mysql</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/php/" style="font-size: 28.33px; color: #589cab">php</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/optimize/" style="font-size: 15px; color: #1e90ff">optimize</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/web/" style="font-size: 18.33px; color: #2c93ea">web</a> <a href="/tags/OPA/" style="font-size: 23.33px; color: #4298ca">OPA</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/Rego/" style="font-size: 16.67px; color: #2592f4">Rego</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/rust/" style="font-size: 25px; color: #4999c0">rust</a> <a href="/tags/ownership/" style="font-size: 16.67px; color: #2592f4">ownership</a> <a href="/tags/borrow-checker/" style="font-size: 15px; color: #1e90ff">borrow-checker</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/oauth2/" style="font-size: 16.67px; color: #2592f4">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.67px; color: #2592f4">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/keycloak/" style="font-size: 16.67px; color: #2592f4">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/atomic/" style="font-size: 16.67px; color: #2592f4">atomic</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/condvar/" style="font-size: 16.67px; color: #2592f4">condvar</a> <a href="/tags/semaphore/" style="font-size: 15px; color: #1e90ff">semaphore</a> <a href="/tags/docker/" style="font-size: 16.67px; color: #2592f4">docker</a> <a href="/tags/channel/" style="font-size: 15px; color: #1e90ff">channel</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/hands-free/" style="font-size: 15px; color: #1e90ff">hands-free</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/jquery/" style="font-size: 21.67px; color: #3b96d5">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/interface/" style="font-size: 16.67px; color: #2592f4">interface</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/mutex/" style="font-size: 16.67px; color: #2592f4">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/reflect/" style="font-size: 16.67px; color: #2592f4">reflect</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a>
+      <a href="/tags/hexo/" style="font-size: 18.33px; color: #2c93ea">hexo</a> <a href="/tags/blog/" style="font-size: 23.33px; color: #4298ca">blog</a> <a href="/tags/terraform/" style="font-size: 16.67px; color: #2592f4">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/slice/" style="font-size: 16.67px; color: #2592f4">slice</a> <a href="/tags/fan-in/" style="font-size: 15px; color: #1e90ff">fan-in</a> <a href="/tags/fan-out/" style="font-size: 15px; color: #1e90ff">fan-out</a> <a href="/tags/thoughts/" style="font-size: 16.67px; color: #2592f4">thoughts</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/html5/" style="font-size: 16.67px; color: #2592f4">html5</a> <a href="/tags/drag/" style="font-size: 16.67px; color: #2592f4">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/js/" style="font-size: 28.33px; color: #589cab">js</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/linux/" style="font-size: 26.67px; color: #519bb5">linux</a> <a href="/tags/mac/" style="font-size: 18.33px; color: #2c93ea">mac</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/mysql/" style="font-size: 20px; color: #3495df">mysql</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/optimize/" style="font-size: 15px; color: #1e90ff">optimize</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/OPA/" style="font-size: 23.33px; color: #4298ca">OPA</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/Rego/" style="font-size: 16.67px; color: #2592f4">Rego</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/web/" style="font-size: 18.33px; color: #2c93ea">web</a> <a href="/tags/php/" style="font-size: 28.33px; color: #589cab">php</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/oauth2/" style="font-size: 16.67px; color: #2592f4">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.67px; color: #2592f4">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/rust/" style="font-size: 25px; color: #4999c0">rust</a> <a href="/tags/keycloak/" style="font-size: 16.67px; color: #2592f4">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/ownership/" style="font-size: 16.67px; color: #2592f4">ownership</a> <a href="/tags/borrow-checker/" style="font-size: 15px; color: #1e90ff">borrow-checker</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/futures/" style="font-size: 15px; color: #1e90ff">futures</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/condvar/" style="font-size: 16.67px; color: #2592f4">condvar</a> <a href="/tags/atomic/" style="font-size: 16.67px; color: #2592f4">atomic</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/docker/" style="font-size: 16.67px; color: #2592f4">docker</a> <a href="/tags/future/" style="font-size: 15px; color: #1e90ff">future</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/semaphore/" style="font-size: 15px; color: #1e90ff">semaphore</a> <a href="/tags/channel/" style="font-size: 15px; color: #1e90ff">channel</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/hands-free/" style="font-size: 15px; color: #1e90ff">hands-free</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/jquery/" style="font-size: 21.67px; color: #3b96d5">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/interface/" style="font-size: 16.67px; color: #2592f4">interface</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/reflect/" style="font-size: 16.67px; color: #2592f4">reflect</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/mutex/" style="font-size: 16.67px; color: #2592f4">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a>
     </div>
   </div>
 
@@ -835,7 +844,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -881,7 +890,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2023 菜鸟Miao<br>
+      &copy; 2024 菜鸟Miao<br>
      <p>
      <span id="busuanzi_container_site_uv">
   	您是本站第<span id="busuanzi_value_site_uv"> <i class="fa fa-spinner fa-spin"></i></span>个访问者
@@ -934,6 +943,14 @@
 <script src="/js/script.js"></script>
 
 
+
+
+  <script src='https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
 
 
 
