@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://newbmiao.github.io/2024/02/03/rust-tower-service.html</loc>
+    <lastmod>2024-02-03</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2024/01/26/rust-tokio-task-tracing.html</loc>
     <lastmod>2024-01-26</lastmod>
   </url>
@@ -33,19 +37,19 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/10/14/jquery-tabs-with-iframe.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2015/07/31/school-company-data-crawling.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/02/15/tips-convert-doc-table-to-excel.html</loc>
+    <loc>https://newbmiao.github.io/2015/10/14/jquery-tabs-with-iframe.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
     <loc>https://newbmiao.github.io/2020/02/18/tips-use-gdb-elegantly.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2020/02/15/tips-convert-doc-table-to-excel.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -57,11 +61,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2021/01/02/summary-of-2020.html</loc>
+    <loc>https://newbmiao.github.io/2021/09/19/tech-behind-authentication.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2021/09/19/tech-behind-authentication.html</loc>
+    <loc>https://newbmiao.github.io/2021/01/02/summary-of-2020.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -77,11 +81,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2023/11/18/rust-sync-condvar.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/23/rust-sync-condvar-2.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -97,7 +101,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/06/26/redis-installation-guide.html</loc>
+    <loc>https://newbmiao.github.io/2015/02/28/regex-notes.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -105,7 +109,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/02/28/regex-notes.html</loc>
+    <loc>https://newbmiao.github.io/2015/06/26/redis-installation-guide.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -121,11 +125,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2017/03/14/laradock-in-action.html</loc>
+    <loc>https://newbmiao.github.io/2015/12/04/xdebug-remote-debug-with-phpstorm-and-vagrant.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/12/04/xdebug-remote-debug-with-phpstorm-and-vagrant.html</loc>
+    <loc>https://newbmiao.github.io/2017/03/14/laradock-in-action.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -141,11 +145,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/03/08/php-assignment-and-reference.html</loc>
+    <loc>https://newbmiao.github.io/2016/11/08/some-misuse-of-php.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2016/11/08/some-misuse-of-php.html</loc>
+    <loc>https://newbmiao.github.io/2015/03/08/php-assignment-and-reference.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -173,7 +177,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/03/18/opa-func-and-virtual-doc.html</loc>
+    <loc>https://newbmiao.github.io/2015/09/25/remember-once-mysql-optimize-operations.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -181,7 +185,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/09/25/remember-once-mysql-optimize-operations.html</loc>
+    <loc>https://newbmiao.github.io/2020/03/18/opa-func-and-virtual-doc.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -189,7 +193,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/08/01/use-limit-subquery-in-mysql.html</loc>
+    <loc>https://newbmiao.github.io/2017/12/08/mysql-compare-version-string.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -197,23 +201,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2017/12/08/mysql-compare-version-string.html</loc>
+    <loc>https://newbmiao.github.io/2015/08/01/use-limit-subquery-in-mysql.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
     <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-quota.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-process.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-basis.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -225,15 +217,27 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
+    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-cron.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-basis.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/09/15/Niaoge-Linux-Desktop-Guide-notes-process.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2015/02/28/js-data-structure.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/03/28/maintainable-javascript-note.html</loc>
+    <loc>https://newbmiao.github.io/2015/02/28/random-element-of-array-js.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/02/28/random-element-of-array-js.html</loc>
+    <loc>https://newbmiao.github.io/2015/03/28/maintainable-javascript-note.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -245,11 +249,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/02/28/js-function-closure.html</loc>
+    <loc>https://newbmiao.github.io/2016/08/17/how-to-call-a-function-with-unsure-number-params.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2016/08/17/how-to-call-a-function-with-unsure-number-params.html</loc>
+    <loc>https://newbmiao.github.io/2015/02/28/js-function-closure.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -257,11 +261,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/09/23/some-code-when-use-jquery-fileupload.html</loc>
+    <loc>https://newbmiao.github.io/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2016/09/07/how-to-dynamic-show-jquery-timepicker-addon.html</loc>
+    <loc>https://newbmiao.github.io/2015/09/23/some-code-when-use-jquery-fileupload.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -269,19 +273,19 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/02/22/html5-drag-api2-chrome-drag-to-downloa.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2015/02/22/html5-drag-api.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/09/01/jquery-detach.html</loc>
+    <loc>https://newbmiao.github.io/2015/02/22/html5-drag-api2-chrome-drag-to-downloa.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
     <loc>https://newbmiao.github.io/2015/02/28/jquery-html5.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/09/01/jquery-detach.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -297,6 +301,10 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
+    <loc>https://newbmiao.github.io/2018/03/15/go-value-layout-in-memory.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2021/08/25/fanIn-and-fanOut.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
@@ -305,15 +313,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2018/03/15/go-value-layout-in-memory.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2020/07/01/dig101-golang-understanding-mutex.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2021/08/07/one-8-bytes-optimization.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -325,11 +325,11 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2021/08/22/recursive-ordone-issue.html</loc>
+    <loc>https://newbmiao.github.io/2021/08/07/one-8-bytes-optimization.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/06/13/dig101-golang-reflect-handle-unexport-field.html</loc>
+    <loc>https://newbmiao.github.io/2021/08/22/recursive-ordone-issue.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -341,7 +341,15 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
+    <loc>https://newbmiao.github.io/2020/06/13/dig101-golang-reflect-handle-unexport-field.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2018/02/09/advanced-go-concurrency-patterns.html</loc>
+    <lastmod>2023-12-08</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2020/02/04/dig101-golang-map.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -353,11 +361,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/02/04/dig101-golang-map.html</loc>
-    <lastmod>2023-12-08</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2023/11/20/blog-migrate-hostname.html</loc>
+    <loc>https://newbmiao.github.io/2019/10/18/terraform-aws-provider-headfirst.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -369,7 +373,7 @@
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2019/10/18/terraform-aws-provider-headfirst.html</loc>
+    <loc>https://newbmiao.github.io/2023/11/20/blog-migrate-hostname.html</loc>
     <lastmod>2023-12-08</lastmod>
   </url>
   <url>
@@ -381,15 +385,11 @@
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2020/01/07/dig101-golang-slice.html</loc>
-    <lastmod>2023-11-24</lastmod>
-  </url>
-  <url>
     <loc>https://newbmiao.github.io/2020/02/26/dig101-golang-interface.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2018/02/06/go-memory-model.html</loc>
+    <loc>https://newbmiao.github.io/2020/01/07/dig101-golang-slice.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
@@ -397,11 +397,15 @@
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
-    <loc>https://newbmiao.github.io/2015/11/28/shadowsocks-polipo-vps.html</loc>
+    <loc>https://newbmiao.github.io/2018/02/06/go-memory-model.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
     <loc>https://newbmiao.github.io/2016/03/15/mac-tool.html</loc>
+    <lastmod>2023-11-24</lastmod>
+  </url>
+  <url>
+    <loc>https://newbmiao.github.io/2015/11/28/shadowsocks-polipo-vps.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
