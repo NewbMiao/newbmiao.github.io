@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何用Rust快速构建AWS Lambda Funtion | 菜鸟Miao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,aws lambda,cargo-lambda" />
+  
+  
+  <meta name="description" content="如何用Rust快速构建Aws lambda">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用Rust快速构建AWS Lambda Funtion">
+<meta property="og:url" content="https://newbmiao.github.io/2024/03/10/rust-lambda.html">
+<meta property="og:site_name" content="菜鸟Miao">
+<meta property="og:description" content="如何用Rust快速构建Aws lambda">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-03-10T10:44:14.000Z">
+<meta property="article:modified_time" content="2024-03-10T12:09:46.000Z">
+<meta property="article:author" content="菜鸟Miao">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="aws lambda">
+<meta property="article:tag" content="cargo-lambda">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="菜鸟Miao" type="application/atom+xml">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">菜鸟Miao</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(博客地址: https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/dig101/">Dig101</a>
+        
+          <a class="main-nav-link" href="/categories/OPA/">OPA</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+	  
+	
+        <div id="search-form">
+                <input type="text" class="st-default-search-input search-form-input" style="outline: none;width: 110px;">
+        </div>
+	
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-rust-lambda" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2024/03/10/rust-lambda.html" class="article-date">
+  <time datetime="2024-03-10T10:44:14.000Z" itemprop="datePublished">2024-03-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何用Rust快速构建AWS Lambda Funtion
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <div id="toc" class="toc-article">
+         <h3>文章目录</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cargo-lambda"><span class="toc-number">1.</span> <span class="toc-text">cargo-lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行"><span class="toc-number">2.</span> <span class="toc-text">运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打包"><span class="toc-number">3.</span> <span class="toc-text">打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署"><span class="toc-number">4.</span> <span class="toc-text">部署</span></a></li></ol>
+        </div>
+        
+        <p><code>AWS Lambda Function</code>是轻量级的计算服务。优势是按需付费，专注于功能，服务本身如何构建暴露都有<code>AWS</code>都不需要自己操心。</p>
+<p>而按需付费基本就是服务使用时长和内存占用了，这个优化的话那妥妥的是<code>Rust</code>的拿手好戏, 所以现在有好多<code>Serverless</code>服务都用<code>Rust</code>构建的<code>Lambda Function</code>来搞。</p>
+<p>今天简单看下如何用<code>Rust</code>快速构建<code>Lambda Function</code>（别担心没aws环境，往下看，有本地沙箱可尝试）</p>
+<a id="more"></a>
+
+<!-- **文章目录** -->
+<!-- [TOC] -->
+
+<h2 id="cargo-lambda"><a href="#cargo-lambda" class="headerlink" title="cargo-lambda"></a>cargo-lambda</h2><p><code>cargo-lambda</code>这个库可以用来构建<code>Lambda Function</code> （也是官方推荐的工具）</p>
+<p>如下代码安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew tap cargo-lambda/cargo-lambda</span><br><span class="line">brew install cargo-lambda</span><br></pre></td></tr></table></figure>
+
+<p>然后初始化一个demo</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cargo lambda new lambda-demo</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> Is this <span class="keyword">function</span> an HTTP <span class="keyword">function</span>? Yes</span></span><br></pre></td></tr></table></figure>
+
+<p>会自动生成初始化项目，引入相关依赖及运行时：<code>lambda-http</code>和<code>tokio</code>依赖</p>
+<p>功能部分代码如下，提供一个<code>hello world</code>式请求处理：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> lambda_http::&#123;run, service_fn, tracing, Body, Error, Request, RequestExt, Response&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">function_handler</span></span>(event: Request) -&gt; <span class="built_in">Result</span>&lt;Response&lt;Body&gt;, Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> who = event</span><br><span class="line">        .query_string_parameters_ref()</span><br><span class="line">        .and_then(|params| params.first(<span class="string">"name"</span>))</span><br><span class="line">        .unwrap_or(<span class="string">"world"</span>);</span><br><span class="line">    <span class="keyword">let</span> message = <span class="built_in">format!</span>(<span class="string">"Hello &#123;who&#125;, this is an AWS Lambda HTTP request"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> resp = Response::builder()</span><br><span class="line">        .status(<span class="number">200</span>)</span><br><span class="line">        .header(<span class="string">"content-type"</span>, <span class="string">"text/html"</span>)</span><br><span class="line">        .body(message.into())</span><br><span class="line">        .map_err(<span class="built_in">Box</span>::new)?;</span><br><span class="line">    <span class="literal">Ok</span>(resp)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() -&gt; <span class="built_in">Result</span>&lt;(), Error&gt; &#123;</span><br><span class="line">    tracing::init_default_subscriber();</span><br><span class="line"></span><br><span class="line">    run(service_fn(function_handler)).<span class="keyword">await</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>题外话，有没有感觉这个<code>service_fn</code>很眼熟?</p>
+<p>这个接的<code>handler</code>也要求实现<code>Service trait</code>， 跟<code>tower service</code>一样。为啥呢，用了<code>hyper</code>库！<br>都说<code>hyper</code>基本就是<code>Rust</code>服务框架的基石不假。</p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>开发中用<code>watch</code>就能本地运行调试，支持变更重编译</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cargo lambda watch</span><br><span class="line">#  INFO invoke server listening on [::]:<span class="number">9000</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以命令行调用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo lambda invoke lambda-demo --data-ascii "?name=newbmiao"</span><br></pre></td></tr></table></figure>
+
+<h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo lambda build --release --arm64</span><br></pre></td></tr></table></figure>
+
+<p>这样会将执行文件编译到<code>./target/lambda/lambda-demo/bootstrap</code></p>
+<p>(注意：如果是<code>workspace</code>, 则需要去<code>workspace</code>下<code>target</code>目录找)</p>
+<p>可执行文件压缩一下就可以用来部署了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip bootstrap.zip bootstrap</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>(这部分会设计比较多infrastructure，感兴趣的同学可以继续往下)</p>
+<p>部署也很方便，不过难在不是所有人都有<code>aws</code>账户啊。</p>
+<p>也好解决，<code>localstack</code>可以本地模拟<code>aws</code>环境</p>
+<p>用<code>docker-compose up</code>起个<code>localstack</code></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"3.8"</span></span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  localstack:</span><br><span class="line">    container_name: <span class="string">"$&#123;LOCALSTACK_DOCKER_NAME:-localstack-main&#125;"</span></span><br><span class="line">    image: localstack/localstack</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">"127.0.0.1:4566:4566"</span> <span class="comment"># LocalStack Gateway</span></span><br><span class="line">      - <span class="string">"127.0.0.1:4510-4559:4510-4559"</span> <span class="comment"># external services port range</span></span><br><span class="line">    environment:</span><br><span class="line">      <span class="comment"># LocalStack configuration: https://docs.localstack.cloud/references/configuration/</span></span><br><span class="line">      - DEBUG=$&#123;DEBUG:-<span class="number">0</span>&#125;</span><br><span class="line">    volumes:</span><br><span class="line">      - <span class="string">"$&#123;LOCALSTACK_VOLUME_DIR:-./volume&#125;:/var/lib/localstack"</span></span><br><span class="line">      - <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span></span><br></pre></td></tr></table></figure>
+
+<p>然后用<code>terraform</code>构建部署流程, 核心部分就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 构建</span><br><span class="line">resource &quot;aws_lambda_function&quot; &quot;lambda_demo&quot; &#123;</span><br><span class="line">  filename         &#x3D; &quot;bootstrap.zip&quot;</span><br><span class="line">  function_name    &#x3D; &quot;lambda_demo&quot;</span><br><span class="line">  role             &#x3D; aws_iam_role.iam_for_lambda_tf.arn</span><br><span class="line">  handler          &#x3D; &quot;bootstrap&quot;</span><br><span class="line">  source_code_hash &#x3D; filebase64sha256(&quot;bootstrap.zip&quot;)</span><br><span class="line">  runtime          &#x3D; &quot;provided.al2&quot;</span><br><span class="line">  architectures    &#x3D; [&quot;arm64&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>剩下就是权限以及获取<code>lambda function</code>地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">resource &quot;aws_lambda_function_url&quot; &quot;lambda_demo_url&quot; &#123;</span><br><span class="line">  function_name      &#x3D; aws_lambda_function.lambda_demo.arn</span><br><span class="line">  authorization_type &#x3D; &quot;NONE&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &quot;function_url&quot; &#123;</span><br><span class="line">  description &#x3D; &quot;Function URL.&quot;</span><br><span class="line">  value       &#x3D; aws_lambda_function_url.lambda_demo_url.function_url</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resource &quot;aws_iam_role&quot; &quot;iam_for_lambda_tf&quot; &#123;</span><br><span class="line">  name &#x3D; &quot;iam_for_lambda_tf&quot;</span><br><span class="line"></span><br><span class="line">  assume_role_policy &#x3D; &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;Version&quot;: &quot;2012-10-17&quot;,</span><br><span class="line">  &quot;Statement&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;Action&quot;: &quot;sts:AssumeRole&quot;,</span><br><span class="line">      &quot;Principal&quot;: &#123;</span><br><span class="line">        &quot;Service&quot;: &quot;lambda.amazonaws.com&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;Effect&quot;: &quot;Allow&quot;,</span><br><span class="line">      &quot;Sid&quot;: &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样从<code>terraform apply</code> 部署结果中能拿到访问地址, 比如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Apply complete! Resources: 3 added, 0 changed, 0 destroyed.</span><br><span class="line"></span><br><span class="line">Outputs:</span><br><span class="line"></span><br><span class="line">function_url = "http://h6v7ozz6ay3h6apr2hi5edsmnc0wpz80.lambda-url.us-east-1.localhost.localstack.cloud:4566/</span><br></pre></td></tr></table></figure>
+
+<p>想上手试下的话，详细代码见<a href="https://github.com/NewbMiao/rust-koan/tree/master/aws-lambda/lambda-demo" target="_blank" rel="noopener">lambda-demo</a>, <code>build.sh</code>有详细打包流程</p>
+<!-- 
+
+---
+
+**欢迎关注公众号：[newbmiao](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzUxNzA2NzEzNw==&action=getalbum&album_id=2145763210988224521&scene=173&subscene=91&sessionid=1702900175&enterid=1702900179&from_msgid=2247484338&from_itemidx=1&count=3&nolastread=1#wechat_redirect), 获取及时更新**
+
+-->
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	如有疑问，请文末留言交流或邮件：<a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a>
+  <img src="/img/newbmiao_white_all.jpg" width="50%"  style="min-width:250px;margin:0px;" title="newbmiao"/>
+  本文链接 : <a href="https://newbmiao.github.io/2024/03/10/rust-lambda.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2024&#x2F;03&#x2F;10&#x2F;rust-lambda.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;2024&#x2F;03&#x2F;10&#x2F;rust-lambda.html</a>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      
+        <a data-url="https://newbmiao.github.io/2024/03/10/rust-lambda.html" data-id="cltlgx5vg004yfhyp4fqr2olp" class="article-share-link">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aws-lambda/" rel="tag">aws-lambda</a></li></ul>
+
+            
+	<span id="busuanzi_container_page_pv" style="color:#999">
+ 	 <i class="fa fa-eye"></i> <span id="busuanzi_value_page_pv"> <i class="fa fa-spinner fa-spin"></i></span>次阅读
+       </span>
+       
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;最近更新 ：<time datetime="2024-03-10T12:09:46.000Z" itemprop="dateModify">2024-03-10</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/03/10/rust-lambda.html">如何用Rust快速构建AWS Lambda Funtion</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/03/rust-tower-service.html">Rust之tower如何构建请求中间件</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/26/rust-tokio-task-tracing.html">tokio之如何观测Rust异步任务的调度</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/13/rust-rayon-parallel.html">Rayon魔法：使Rust并行编程变得轻而易举</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/08/rust-async-multi-future-concurrency.html">Rust异步编程之Future并发处理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/OPA/">OPA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/blog/hexo/">hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/database/mysql/">mysql</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/redis/">redis</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/">devops</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/devops/gearman/">gearman</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/devops/terraform/">terraform</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/dig101/">dig101</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/notes/">notes</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/notes/">notes</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/">mac</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/mac/shadowsocks/">shadowsocks</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mac/tool/">tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/rust/">rust</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/oauth2/">oauth2</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/regex/">regex</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tips/">tips</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/">thoughts</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/journal/">journal</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/software-engineering/">software-engineering</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/thoughts/summary/">summary</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">28</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/web/html5/">html5</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/js/">js</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/php/">php</a><span class="category-list-count">12</span></li></ul></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hexo/" style="font-size: 18.33px; color: #2c93ea">hexo</a> <a href="/tags/blog/" style="font-size: 23.33px; color: #4298ca">blog</a> <a href="/tags/terraform/" style="font-size: 16.67px; color: #2592f4">terraform</a> <a href="/tags/aws/" style="font-size: 15px; color: #1e90ff">aws</a> <a href="/tags/go/" style="font-size: 30px; color: #5f9ea0">go</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/slice/" style="font-size: 16.67px; color: #2592f4">slice</a> <a href="/tags/fan-in/" style="font-size: 15px; color: #1e90ff">fan-in</a> <a href="/tags/fan-out/" style="font-size: 15px; color: #1e90ff">fan-out</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/thoughts/" style="font-size: 16.67px; color: #2592f4">thoughts</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/gearman/" style="font-size: 15px; color: #1e90ff">gearman</a> <a href="/tags/html5/" style="font-size: 16.67px; color: #2592f4">html5</a> <a href="/tags/js/" style="font-size: 28.33px; color: #589cab">js</a> <a href="/tags/drag/" style="font-size: 16.67px; color: #2592f4">drag</a> <a href="/tags/chrome/" style="font-size: 15px; color: #1e90ff">chrome</a> <a href="/tags/concurrency/" style="font-size: 15px; color: #1e90ff">concurrency</a> <a href="/tags/linux/" style="font-size: 26.67px; color: #519bb5">linux</a> <a href="/tags/random/" style="font-size: 15px; color: #1e90ff">random</a> <a href="/tags/mac/" style="font-size: 18.33px; color: #2c93ea">mac</a> <a href="/tags/vim/" style="font-size: 15px; color: #1e90ff">vim</a> <a href="/tags/mysql/" style="font-size: 20px; color: #3495df">mysql</a> <a href="/tags/optimize/" style="font-size: 15px; color: #1e90ff">optimize</a> <a href="/tags/shadowsocks/" style="font-size: 15px; color: #1e90ff">shadowsocks</a> <a href="/tags/OPA/" style="font-size: 23.33px; color: #4298ca">OPA</a> <a href="/tags/bundle/" style="font-size: 15px; color: #1e90ff">bundle</a> <a href="/tags/software/" style="font-size: 15px; color: #1e90ff">software</a> <a href="/tags/tool/" style="font-size: 15px; color: #1e90ff">tool</a> <a href="/tags/limit/" style="font-size: 15px; color: #1e90ff">limit</a> <a href="/tags/Rego/" style="font-size: 16.67px; color: #2592f4">Rego</a> <a href="/tags/web/" style="font-size: 18.33px; color: #2c93ea">web</a> <a href="/tags/php/" style="font-size: 28.33px; color: #589cab">php</a> <a href="/tags/imgick/" style="font-size: 15px; color: #1e90ff">imgick</a> <a href="/tags/json/" style="font-size: 15px; color: #1e90ff">json</a> <a href="/tags/blob/" style="font-size: 15px; color: #1e90ff">blob</a> <a href="/tags/reference/" style="font-size: 15px; color: #1e90ff">reference</a> <a href="/tags/redis/" style="font-size: 15px; color: #1e90ff">redis</a> <a href="/tags/benchmark/" style="font-size: 15px; color: #1e90ff">benchmark</a> <a href="/tags/rust/" style="font-size: 25px; color: #4999c0">rust</a> <a href="/tags/ownership/" style="font-size: 16.67px; color: #2592f4">ownership</a> <a href="/tags/rc/" style="font-size: 15px; color: #1e90ff">rc</a> <a href="/tags/arc/" style="font-size: 15px; color: #1e90ff">arc</a> <a href="/tags/send/" style="font-size: 15px; color: #1e90ff">send</a> <a href="/tags/sync/" style="font-size: 15px; color: #1e90ff">sync</a> <a href="/tags/borrow-checker/" style="font-size: 15px; color: #1e90ff">borrow-checker</a> <a href="/tags/lifetime/" style="font-size: 15px; color: #1e90ff">lifetime</a> <a href="/tags/cell/" style="font-size: 15px; color: #1e90ff">cell</a> <a href="/tags/refcell/" style="font-size: 15px; color: #1e90ff">refcell</a> <a href="/tags/futures/" style="font-size: 15px; color: #1e90ff">futures</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/atomic/" style="font-size: 16.67px; color: #2592f4">atomic</a> <a href="/tags/oauth2/" style="font-size: 16.67px; color: #2592f4">oauth2</a> <a href="/tags/OIDC/" style="font-size: 16.67px; color: #2592f4">OIDC</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/keycloak/" style="font-size: 16.67px; color: #2592f4">keycloak</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/barrier/" style="font-size: 15px; color: #1e90ff">barrier</a> <a href="/tags/condvar/" style="font-size: 16.67px; color: #2592f4">condvar</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/future/" style="font-size: 15px; color: #1e90ff">future</a> <a href="/tags/channel/" style="font-size: 15px; color: #1e90ff">channel</a> <a href="/tags/summary/" style="font-size: 15px; color: #1e90ff">summary</a> <a href="/tags/docker/" style="font-size: 16.67px; color: #2592f4">docker</a> <a href="/tags/tokio/" style="font-size: 15px; color: #1e90ff">tokio</a> <a href="/tags/tracing/" style="font-size: 15px; color: #1e90ff">tracing</a> <a href="/tags/tower/" style="font-size: 15px; color: #1e90ff">tower</a> <a href="/tags/hands-free/" style="font-size: 15px; color: #1e90ff">hands-free</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/semaphore/" style="font-size: 15px; color: #1e90ff">semaphore</a> <a href="/tags/dropbox/" style="font-size: 15px; color: #1e90ff">dropbox</a> <a href="/tags/jquery/" style="font-size: 21.67px; color: #3b96d5">jquery</a> <a href="/tags/iframe/" style="font-size: 15px; color: #1e90ff">iframe</a> <a href="/tags/software-engineering/" style="font-size: 15px; color: #1e90ff">software-engineering</a> <a href="/tags/authentication/" style="font-size: 15px; color: #1e90ff">authentication</a> <a href="/tags/authorization/" style="font-size: 15px; color: #1e90ff">authorization</a> <a href="/tags/cors/" style="font-size: 15px; color: #1e90ff">cors</a> <a href="/tags/for-range/" style="font-size: 15px; color: #1e90ff">for-range</a> <a href="/tags/interface/" style="font-size: 16.67px; color: #2592f4">interface</a> <a href="/tags/struct/" style="font-size: 15px; color: #1e90ff">struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/append/" style="font-size: 15px; color: #1e90ff">append</a> <a href="/tags/map/" style="font-size: 15px; color: #1e90ff">map</a> <a href="/tags/mutex/" style="font-size: 16.67px; color: #2592f4">mutex</a> <a href="/tags/memory-reordering/" style="font-size: 15px; color: #1e90ff">memory-reordering</a> <a href="/tags/cond/" style="font-size: 15px; color: #1e90ff">cond</a> <a href="/tags/memory/" style="font-size: 15px; color: #1e90ff">memory</a> <a href="/tags/reflect/" style="font-size: 16.67px; color: #2592f4">reflect</a> <a href="/tags/dereference/" style="font-size: 15px; color: #1e90ff">dereference</a> <a href="/tags/signal/" style="font-size: 15px; color: #1e90ff">signal</a>
+    </div>
+  </div>
+
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://blog.ihuxu.com/" target="_blank">胡小旭</a>
+          </li>
+        
+          <li>
+            <a href="https://curl.qcloud.com/OEZz5KSh" target="_blank">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title">文章目录</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+
+<script src="/js/toc.js"></script>
+
+
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+ <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+ </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 菜鸟Miao<br>
+     <p>
+     <span id="busuanzi_container_site_uv">
+  	您是本站第<span id="busuanzi_value_site_uv"> <i class="fa fa-spinner fa-spin"></i></span>个访问者
+     </span>
+     <span id="busuanzi_container_site_pv">
+        /本站总访问量<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i> </span>次
+     </span>
+     </p>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/dig101/" class="mobile-nav-link">Dig101</a>
+  
+    <a href="/categories/OPA/" class="mobile-nav-link">OPA</a>
+  
+</nav>
+  <script src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  <script src='https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','bqAniPPC1T7RV4MomxcE','2.0.0');
+</script>
+
+
+
+</div>
+</body>
+</html>
+
