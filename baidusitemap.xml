@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://newbmiao.github.io/2015/11/28/shadowsocks-polipo-vps.html</loc>
+    <lastmod>2024-12-26</lastmod>
+  </url>
+  <url>
     <loc>https://newbmiao.github.io/2024/08/17/iac-loves-simple.html</loc>
     <lastmod>2024-08-23</lastmod>
   </url>
@@ -426,10 +430,6 @@
   </url>
   <url>
     <loc>https://newbmiao.github.io/2018/03/05/go-value-in-heap-and-stack.html</loc>
-    <lastmod>2023-11-24</lastmod>
-  </url>
-  <url>
-    <loc>https://newbmiao.github.io/2015/11/28/shadowsocks-polipo-vps.html</loc>
     <lastmod>2023-11-24</lastmod>
   </url>
   <url>
