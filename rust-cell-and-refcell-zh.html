@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'en',
+    url: '/rust-cell-and-refcell.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>聊聊Rust的Cell和RefCell | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,cell,refcell" />
+  
+  
+  <meta name="description" content="聊聊Rust的Cell和RefCell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊Rust的Cell和RefCell">
+<meta property="og:url" content="https://newbmiao.github.io/rust-cell-and-refcell-zh.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="聊聊Rust的Cell和RefCell">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-03T08:53:52.000Z">
+<meta property="article:modified_time" content="2026-11-21T02:57:16.430Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="rust-cell-refcell">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/rust-cell-and-refcell-zh.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/rust-cell-and-refcell.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/rust-cell-and-refcell-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/rust-cell-and-refcell.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"聊聊Rust的Cell和RefCell","description":"聊聊Rust的Cell和RefCell","url":"https://newbmiao.github.io/rust-cell-and-refcell-zh.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/rust-cell-and-refcell-zh.html"},"datePublished":"2023-10-03T08:53:52.000Z","dateModified":"2026-11-21T02:57:16.430Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"zh-CN","image":["https://newbmiao.github.io/images/qrcode/newbmiao.webp"],"keywords":"rust-cell-refcell"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/rust-cell-and-refcell-zh.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/rust-cell-and-refcell-zh.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-rust/rust-cell-and-refcell" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh" data-lang-pair="rust-cell-and-refcell">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:zh"></span>
+    <span data-pagefind-meta="lang">zh</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/rust-cell-and-refcell-zh.html" class="article-date">
+  <time datetime="2023-10-03T08:53:52.000Z" itemprop="datePublished">2023-10-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      聊聊Rust的Cell和RefCell
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-interior-mutability"><span class="toc-number">1.</span> <span class="toc-text">Why interior mutability?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%AD%97%E6%AE%B5"><span class="toc-number">1.1.</span> <span class="toc-text">修改结构体的字段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cell-%E5%8F%AA%E9%80%82%E5%90%88-Copy-%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">Cell 只适合 Copy 类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RefCell-%E6%8F%90%E4%BE%9B%E5%BC%95%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">RefCell 提供引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%A3%80%E6%9F%A5"><span class="toc-number">4.</span> <span class="toc-text">运行时检查</span></a></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <!-- **文章目录** -->
+<!-- [TOC] -->
+
+
+<p>内部可变性（<code>interior mutability</code>）是<code>Rust</code>用来表示在一个值的外部看起来是不可变的，但是在内部是可变的。这种模式通常用于在拥有不可变引用的同时修改目标数据。</p>
+<p><code>Cell</code>和<code>RefCell</code>是<code>Rust</code>提供的两种内部可变性的实现。<code>Cell</code>是用于<code>Copy</code>类型的，而<code>RefCell</code>是用于非<code>Copy</code>类型的。</p>
+<p>不知道你有没有好奇过具体内部可变性应用在什么场景，为啥要分两种实现。</p>
+<p>今天我们针对一些场景来聊聊这两个类型的应用。</p>
+<span id="more"></span>
+
+<h2 id="Why-interior-mutability"><a href="#Why-interior-mutability" class="headerlink" title="Why interior mutability?"></a>Why interior mutability?</h2><p>如下代码所示，当需要多个可变引用时，会违反<code>Rust</code>的所有权要求：同一时间只能有一个可变引用。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">x</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">y</span> = &amp;<span class="keyword">mut</span> x;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">z</span> = &amp;<span class="keyword">mut</span> x;</span><br><span class="line">x = <span class="number">2</span>;</span><br><span class="line">*y = <span class="number">3</span>;</span><br><span class="line">*z = <span class="number">4</span>;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, x);</span><br><span class="line"># will get error:</span><br><span class="line"># error[E0499]: cannot borrow `x` <span class="keyword">as</span> mutable more than once at a time</span><br><span class="line">#  -<span class="punctuation">-&gt;</span> src/main.rs:<span class="number">5</span>:<span class="number">9</span></span><br><span class="line">#   |</span><br><span class="line"># <span class="number">4</span> | <span class="keyword">let</span> <span class="variable">y</span> = &amp;<span class="keyword">mut</span> x;</span><br><span class="line">#   |         ------ first mutable borrow occurs here</span><br><span class="line"># <span class="number">5</span> | <span class="keyword">let</span> <span class="variable">z</span> = &amp;<span class="keyword">mut</span> x;</span><br><span class="line">#   |         ^^^^^^ second mutable borrow occurs here</span><br><span class="line"># <span class="number">6</span> | x = <span class="number">2</span>;</span><br><span class="line"># <span class="number">7</span> | *y = <span class="number">3</span>;</span><br><span class="line">#   | ------ first borrow later used here</span><br><span class="line"></span><br><span class="line"># error[E0506]: cannot assign to `x` because it is borrowed</span><br><span class="line">#  -<span class="punctuation">-&gt;</span> src/main.rs:<span class="number">6</span>:<span class="number">1</span></span><br><span class="line">#   |</span><br><span class="line"># <span class="number">4</span> | <span class="keyword">let</span> <span class="variable">y</span> = &amp;<span class="keyword">mut</span> x;</span><br><span class="line">#   |         ------ `x` is borrowed here</span><br><span class="line"># <span class="number">5</span> | <span class="keyword">let</span> <span class="variable">z</span> = &amp;<span class="keyword">mut</span> x;</span><br><span class="line"># <span class="number">6</span> | x = <span class="number">2</span>;</span><br><span class="line">#   | ^^^^^ `x` is assigned to here but it was already borrowed</span><br><span class="line"># <span class="number">7</span> | *y = <span class="number">3</span>;</span><br><span class="line">#   | ------ borrow later used here</span><br></pre></td></tr></table></figure>
+
+<p>这个时候就是内部可变性发挥作用的时候了。拿<code>Cell</code>来举例</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">x</span> = Cell::<span class="title function_ invoke__">new</span>(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">y</span> = &amp;x;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">z</span> = &amp;x;</span><br><span class="line">x.<span class="title function_ invoke__">set</span>(<span class="number">2</span>);</span><br><span class="line">y.<span class="title function_ invoke__">set</span>(<span class="number">3</span>);</span><br><span class="line">z.<span class="title function_ invoke__">set</span>(<span class="number">4</span>);</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, x.<span class="title function_ invoke__">get</span>());</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>Cell</code>，其封装了<code>get</code>和<code>set</code>,可以在不需要显示声明为可变的情况下修改值。</p>
+<h3 id="修改结构体的字段"><a href="#修改结构体的字段" class="headerlink" title="修改结构体的字段"></a>修改结构体的字段</h3><p>一般我们要修改一个结构体的值，需要将其声明为<code>mut</code>, 而对应的方法也需要接收<code>&amp;mut self</code> 举例如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug, Default)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    age: <span class="type">u32</span>,</span><br><span class="line">    name: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">celebrate_birthday</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">current_age</span> = <span class="keyword">self</span>.age;</span><br><span class="line">        <span class="keyword">self</span>.age = current_age + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">Person</span> = Person::<span class="title function_ invoke__">default</span>();</span><br><span class="line">Person.<span class="title function_ invoke__">celebrate_birthday</span>();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;Age after birthday: &#123;&#125;&quot;</span>, Person.age);</span><br></pre></td></tr></table></figure>
+
+<p>但是有时候我们并不想这么做，因为我们只是想<strong>修改其中的某个字段</strong>，而不是整个结构体，亦或者<strong>接口并不想暴露一个<code>&amp;mut self</code>的方法</strong>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug, Default)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    age: Cell&lt;<span class="type">u32</span>&gt;,</span><br><span class="line">    name: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="comment">// 方法receiver无需声明为`mut`</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">celebrate_birthday</span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">current_age</span> = <span class="keyword">self</span>.age.<span class="title function_ invoke__">get</span>();</span><br><span class="line">        <span class="keyword">self</span>.age.<span class="title function_ invoke__">set</span>(current_age + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">person.<span class="title function_ invoke__">celebrate_birthday</span>();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;Age after birthday: &#123;&#125;&quot;</span>, person.age.<span class="title function_ invoke__">get</span>());</span><br></pre></td></tr></table></figure>
+
+<h2 id="Cell-只适合-Copy-类型"><a href="#Cell-只适合-Copy-类型" class="headerlink" title="Cell 只适合 Copy 类型"></a>Cell 只适合 Copy 类型</h2><p>对于非<code>Copy</code>类型，<code>Cell</code>并不适用, 因为其约束了<code>get</code>方法的返回值必须是<code>Copy</code>类型。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">impl</span>&lt;T: <span class="built_in">Copy</span>&gt; Cell&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">get</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> T &#123;</span><br></pre></td></tr></table></figure>
+
+<p>那是不是不能往<code>Cell</code>里面放非<code>Copy</code>类型的值呢？当然不是，只是失去了意义，代码如下</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">s</span> = Cell::<span class="title function_ invoke__">new</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;value&quot;</span>));</span><br><span class="line"><span class="comment">// 没有 `s.get()`，因为 `String` 不是 `Copy` 类型</span></span><br><span class="line"><span class="comment">// 而`get_mut()`返回的是 要求自身是可变的，就失去了用`Cell`的意义</span></span><br><span class="line">*s.<span class="title function_ invoke__">get_mut</span>() = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;value2&quot;</span>);</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, s.<span class="title function_ invoke__">into_inner</span>());</span><br></pre></td></tr></table></figure>
+
+<h2 id="RefCell-提供引用"><a href="#RefCell-提供引用" class="headerlink" title="RefCell 提供引用"></a>RefCell 提供引用</h2><p><code>RefCell</code>主要的不同是支持非<code>Copy</code>类型，且返回的是引用，而不是值。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::cell::RefCell;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">c</span> = RefCell::<span class="title function_ invoke__">new</span>(<span class="string">&quot;hello&quot;</span>.<span class="title function_ invoke__">to_owned</span>());</span><br><span class="line">*c.<span class="title function_ invoke__">borrow_mut</span>() = <span class="string">&quot;bonjour&quot;</span>.<span class="title function_ invoke__">to_owned</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">val</span> = c.<span class="title function_ invoke__">borrow</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">assert_eq!</span>(&amp;*val, <span class="string">&quot;bonjour&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行时检查"><a href="#运行时检查" class="headerlink" title="运行时检查"></a>运行时检查</h2><p>如果把上边代码换成如下先借用，编译能通过，但是运行时会报错。</p>
+<p><code>RefCell</code> 依旧要遵守借用规则，只是推迟检查从编译期到运行时，如果违反了借用规则，会 <code>panic</code>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```rust</span><br><span class="line"><span class="keyword">use</span> std::cell::RefCell;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">c</span> = RefCell::<span class="title function_ invoke__">new</span>(<span class="string">&quot;hello&quot;</span>.<span class="title function_ invoke__">to_owned</span>());</span><br><span class="line"><span class="keyword">let</span> <span class="variable">val</span> = c.<span class="title function_ invoke__">borrow</span>(); <span class="comment">// 先借用再修改，最后读取借用的值</span></span><br><span class="line">*c.<span class="title function_ invoke__">borrow_mut</span>() = <span class="string">&quot;bonjour&quot;</span>.<span class="title function_ invoke__">to_owned</span>();</span><br><span class="line"></span><br><span class="line"><span class="built_in">assert_eq!</span>(&amp;*val, <span class="string">&quot;bonjour&quot;</span>);</span><br><span class="line"></span><br><span class="line"># will panic:</span><br><span class="line"># thread <span class="symbol">&#x27;mai</span>n<span class="string">&#x27; panicked at &#x27;</span>already borrowed: BorrowMutError<span class="string">&#x27;, src/main.rs:7:8</span></span><br></pre></td></tr></table></figure>
+
+<p>综上可以看出，<code>Cell</code>和<code>RefCell</code>是不同粒度的内部可变性实现，简单的<code>Copy</code>类型可以考虑开销小的<code>Cell</code>来获取有内部可变性的<strong>值</strong>， 需要更灵活的内部可变<strong>借用</strong>就要用<code>RefCell</code>。</p>
+<!-- ---
+
+文章首发公众号：newbmiao
+
+推荐阅读：[OPA系列](https://newbmiao.github.io/categories/opa/)
+
+[Dig101-Go系列](https://newbmiao.github.io/categories/go/)
+
+![欢迎关注，获取及时更新内容](images/qrcode/newbmiao.webp) -->
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/rust-cell-and-refcell-zh.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;rust-cell-and-refcell-zh.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;rust-cell-and-refcell-zh.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-cell-and-refcell-zh.html" data-id="cuidUu471TIAWiIx4-KhSYfta" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-cell-refcell/" rel="tag">rust-cell-refcell</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:57:16.430Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="flt-dev-rewards" data-title-en="Fluence FLT drop — claim guide for eligible GitHub Web3 devs" data-title-zh="FLT空投：2023年参与过web3的开发能领" data-href-en="/flt-dev-rewards.html" data-href-zh="/flt-dev-rewards-zh.html">
+            <a href="/flt-dev-rewards.html">Fluence FLT drop — claim guide for eligible GitHub Web3 devs</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="5">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@7.1.2/dist/mermaid.min.js',
+    options: {"startOnLoad":true}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

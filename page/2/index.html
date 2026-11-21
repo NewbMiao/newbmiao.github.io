@@ -1,0 +1,1059 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux" />
+  
+  
+  <meta name="description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:type" content="website">
+<meta property="og:title" content="newbmiao">
+<meta property="og:url" content="https://newbmiao.github.io/page/2/index.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/">
+
+
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/page/2/index.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/page/2/index.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+  
+    
+
+<article id="post-rust/rust-tower-service-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-tower-service">
+  
+  <div class="article-meta">
+    <a href="/rust-tower-service.html" class="article-date">
+  <time datetime="2024-02-03T10:25:19.000Z" itemprop="datePublished">2024-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-tower-service.html">Tower Service and Layer — HTTP middleware chains with hyper</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-tower-service-zh.html">Rust之tower如何构建请求中间件</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>When people talk about Rust HTTP middleware, <strong>Tower</strong> comes up fast.</p>
+<p>Tower is protocol-agnostic middleware plumbing; <strong><code>Service</code></strong> and <strong><code>Layer</code></strong> are how you stack Logger, timeout, and handler layers.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>提到<code>Rust</code>请求中间件, 就不能不提<code>tower</code>。</p>
+<p><code>tower</code>是一个请求协议无关的的中间件定义类库，主要定义了<code>Service</code>和<code>Layer</code>两个<code>trait</code>来帮助实现可重用的请求处理中间件。</p>
+<p>今天拿聊聊它如何巧妙构建起中间件。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-tower-service.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-tower-service-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-tower-service.html" data-id="cuidlJHSkHyees9w-HmbXoDvm" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-tower/" rel="tag">rust-tower</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-task-tracing-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-tokio-task-tracing">
+  
+  <div class="article-meta">
+    <a href="/rust-tokio-task-tracing.html" class="article-date">
+  <time datetime="2024-01-26T11:02:37.000Z" itemprop="datePublished">2024-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-tokio-task-tracing.html">tokio-console — observe Tokio task scheduling and runtime behavior</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-tokio-task-tracing-zh.html">tokio之如何观测Rust异步任务的调度</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Rust async is built around <strong>task</strong> scheduling—tasks are the language-level unit the executor moves between.</p>
+<p>Can you <strong>see</strong> that scheduling happen? Yes. Tokio ships <strong>tokio-console</strong>: a live view of tasks, polls, and wakeups that helps when you’re debugging latency or learning how the runtime behaves.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>我们知道<code>Rust</code>的异步是以<code>task</code>的调度来构建的。<code>task</code>作为抽象在语言层面的调度单元。</p>
+<p>那如果想要观测其的调度执行有没有办法呢？。</p>
+<p>有的！异步<code>runtime</code>库<code>tokio</code>就有个<code>tokio-console</code>可以实现对异步调度的观测和分析，其对了解调度的机制和性能分析都很有帮助。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-tokio-task-tracing.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-tokio-task-tracing-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-tokio-task-tracing.html" data-id="cuidRDfNG7lV6WiN4oqzVQ8e5" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tokio-console/" rel="tag">tokio-console</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-rayon-parallel-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-rayon-parallel">
+  
+  <div class="article-meta">
+    <a href="/rust-rayon-parallel.html" class="article-date">
+  <time datetime="2024-01-13T03:43:34.000Z" itemprop="datePublished">2024-01-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-rayon-parallel.html">Rayon — data parallelism with par_iter and work stealing</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-rayon-parallel-zh.html">Rayon魔法：使Rust并行编程变得轻而易举</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p><strong>Rayon</strong> parallelizes CPU-bound iterators: swap in <code>par_iter</code> (and friends), keep order when Rayon documents it, and let the type system reject data races at compile time.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p><code>Rayon</code>库是一个数据并行化（<code>data-parallelism</code>）的 <code>Rust</code>库。在并行编程里是一个很有趣的存在， 且非常的容易上手。它可以很轻松的将同步计算流程转化为并行计算。而且基本能保证编译通过就不会有<code>data race</code>。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-rayon-parallel.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-rayon-parallel-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-rayon-parallel.html" data-id="cuidHD1XOrlVVrWYSPRjRfVwB" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rayon/" rel="tag">rayon</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-async-multi-future-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-async-multi-future-concurrency">
+  
+  <div class="article-meta">
+    <a href="/rust-async-multi-future-concurrency.html" class="article-date">
+  <time datetime="2024-01-08T06:34:39.000Z" itemprop="datePublished">2024-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-async-multi-future-concurrency.html">Tokio — join, spawn, and select for concurrent Futures</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-async-multi-future-concurrency-zh.html">Rust异步编程之Future并发处理</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>In the <a href="/rust-async-future.html">previous post</a>, a <code>Future</code> runs when you <code>.await</code> it—and that wait blocks the <strong>current task</strong> until that future completes.</p>
+<p>If every async operation had to finish before the next one started, you’d be back to serial code. Here we look at Tokio patterns for real concurrency across multiple futures.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>上篇文章我们知道，<code>Rust</code>的<code>Future</code>是异步执行，<code>await</code>时是阻塞在当前的异步任务<code>task</code>上，直到完成。</p>
+<p>当多个异步任务执行时，如果只能都阻塞一个个执行，那就变成同步串行执行了，当然不是我们通常希望的并发处理方式，今天就来聊聊多个异步任务的一些并发处理方式。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-async-multi-future-concurrency.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-async-multi-future-concurrency-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-async-multi-future-concurrency.html" data-id="cuidDmarr0LGoLwv9Q8vLUFZ0" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-async/" rel="tag">rust-async</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-async-future-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-async-future">
+  
+  <div class="article-meta">
+    <a href="/rust-async-future.html" class="article-date">
+  <time datetime="2024-01-05T23:10:51.000Z" itemprop="datePublished">2024-01-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-async-future.html">Rust Future — poll, state machines, Tokio runtime, and Pin</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-async-future-zh.html">Rust异步编程之Future初探</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Rust’s <code>Future</code> is the core abstraction for async programming. What follows is how <code>async</code>&#x2F;<code>await</code>, polling, and the runtime stack fit together.</p>
+<p><code>async</code> gives you cheap, suspendable functions; they only run when you <code>.await</code> them and the executor polls them.</p>
+<p>Compared with one OS thread per bit of concurrency, async tasks are lighter—you can host many concurrent operations without paying for a thread each time.</p>
+<p>A minimal async entry point:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">async_fn</span>() &#123;</span><br><span class="line">    <span class="comment">// handle async logic</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">async_fn</span>().<span class="keyword">await</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p><code>Rust</code>的<code>Future</code>是用来实现异步编程的。今天我们围绕其了解下<code>Rust</code>的异步编程是如何构建。</p>
+<p><code>Rust</code>用<code>async</code>就能轻松创建开销很小的可异步执行的函数，在<code>await</code>时其才会被调度执行。</p>
+<p>其比较轻量级，有别于异步多线程，依托在操作系统线程之上，构建大量并发则需要大量的线程资源，对资源的消耗比较大。</p>
+<p>比如下边用<code>async</code>构建异步任务：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">async_fn</span>() &#123;</span><br><span class="line">    <span class="comment">// handle async logic</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">async_fn</span>().<span class="keyword">await</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-async-future.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-async-future-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-async-future.html" data-id="cuidyahpcZxi6Ps24di2CvU72" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-async/" rel="tag">rust-async</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-sync-atomic-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-sync-atomic">
+  
+  <div class="article-meta">
+    <a href="/rust-sync-atomic.html" class="article-date">
+  <time datetime="2023-12-16T08:23:50.000Z" itemprop="datePublished">2023-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-sync-atomic.html">Rust atomics — Atomic types and memory Ordering</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-sync-atomic-zh.html">深入理解Rust的Atomic及Ordering</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p><code>Mutex</code> and <code>Condvar</code> are higher-level ways to share data between threads in Rust. Lower down the stack you have <strong>atomics</strong> — hardware-backed operations on individual locations.</p>
+<p>Below: <code>Atomic*</code> types and <code>Ordering</code>, mostly through runnable examples.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>之前提到的<code>Mutex</code>、<code>Condvar</code>是<code>Rust</code>中比较偏高层的共享数据型并发控制，更底层的并发控制也有，比如<code>Atomic</code>（原子操作）。</p>
+<p>今天结合代码来深入聊聊<code>Atomic</code>及其相关的<code>Ordering</code></p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-sync-atomic.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-sync-atomic-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-sync-atomic.html" data-id="cuidI7K5cBVHlP_qZMMsKrsQO" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-atomic/" rel="tag">rust-atomic</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-sync-channel-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-sync-channel">
+  
+  <div class="article-meta">
+    <a href="/rust-sync-channel.html" class="article-date">
+  <time datetime="2023-12-08T12:55:42.000Z" itemprop="datePublished">2023-12-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-sync-channel.html">Rust mpsc — sync_channel buffers and unbounded channel</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-sync-channel-zh.html">Rust并发控制之Channel</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Rust’s <code>sync</code> module exposes <strong>mpsc</strong> (multi-producer, single-consumer) channels—message passing instead of locking shared memory. That’s the style Rob Pike pushed:</p>
+<blockquote>
+<p>Don’t communicate by sharing memory; share memory by communicating. (R. Pike)</p>
+</blockquote>
+<p>Below: bounded <code>sync_channel</code> and the unbounded <code>channel</code>, plus how <code>Send</code>&#x2F;<code>Sync</code> show up on the handles.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>Rust官方<code>sync</code>包中提供了<code>mpsc</code>模式的 (多生产者，单消费者：multi-producer, single-consumer) channel，可以实现基于消息并发控制，而不是依赖控制内存共享（加锁）。这正是go语言作者 <code>R. Pike</code> 所推崇的方式：</p>
+<blockquote>
+<p>Don’t communicate by sharing memory; share memory by communicating. (R. Pike)</p>
+</blockquote>
+<p>今天就聊聊<code>mpsc</code>提供的<code>sync_channel</code>和<code>channel</code>。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-sync-channel.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-sync-channel-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-sync-channel.html" data-id="cuid61t54o-KJnrRUL6ChGrx6" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mpsc-channel/" rel="tag">mpsc-channel</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-sync-semaphore-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-sync-semaphore">
+  
+  <div class="article-meta">
+    <a href="/rust-sync-semaphore.html" class="article-date">
+  <time datetime="2023-11-24T10:57:56.000Z" itemprop="datePublished">2023-11-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-sync-semaphore.html">Tokio Semaphore — alternating 1 and 2 with two threads</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-sync-semaphore-zh.html">Rust并发控制之Semaphore-两线程交替打印</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>A <strong>semaphore</strong> caps how many concurrent actors can use a resource.</p>
+<p>Unlike a <strong>mutex</strong> (exclusive access), a semaphore hands out a fixed number of permits. Think of a bucket of tokens: each visitor <strong>acquires</strong> a token; when the bucket is empty, new acquires block until someone <strong>adds</strong> permits or <strong>releases</strong> them.</p>
+<p>Below we use the classic two-thread print puzzle to see how that feels in code.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>信号量（Semaphore）是一种对资源并发访问控制的方式。</p>
+<p>区别于互斥锁（Mutex）是对共享资源的独占访问，Semaphore允许指定多个并发访问共享资源。</p>
+<p>就是说Semaphore像一个持有令牌（permit&#x2F;token）的桶，每一个并发访问需要持有（acquire）一个令牌来访问共享资源，</p>
+<p>当没有令牌时，没法访问共享资源，直到有新的令牌加入（add）或者原来发出的令牌放回（release）桶中。</p>
+<p>接下来，我们尝试用通过用它来实现两个线程交替打印1和2，来更直观了解如何使用semaphore</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-sync-semaphore.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-sync-semaphore-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-sync-semaphore.html" data-id="cuidYXqBAn3el5z-OfdpYOFWa" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-semaphore/" rel="tag">rust-semaphore</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-sync-condvar2-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-sync-condvar-2">
+  
+  <div class="article-meta">
+    <a href="/rust-sync-condvar-2.html" class="article-date">
+  <time datetime="2023-11-23T15:30:59.000Z" itemprop="datePublished">2023-11-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-sync-condvar-2.html">Rust Condvar — alternating 1 and 2 with two threads</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-sync-condvar-2-zh.html">Rust并发控制之Condvar-两线程交替打印</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Interview favorite: two concurrent threads must print <code>1</code> and <code>2</code> in strict alternation.</p>
+<p>Plenty of solutions exist. Here we try condvar, building on the <a href="/rust-sync-condvar.html">Condvar</a> post.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>在并发控制的面试里有个很喜欢考的点：如何控制两个并发线程交替打印1和2。</p>
+<p>实现的方式有很多，今天我们先用上篇提到的condvar试试。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-sync-condvar-2.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-sync-condvar-2-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-sync-condvar-2.html" data-id="cuidn9G_Yr3W6y1IUI0gFD1Vd" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-condvar/" rel="tag">rust-condvar</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-web/legacy/migrate-hostname" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh">
+  
+  <div class="article-meta">
+    <a href="/blog-migrate-hostname.html" class="article-date">
+  <time datetime="2023-11-20T04:49:22.000Z" itemprop="datePublished">2023-11-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog-migrate-hostname.html">博客地址已迁移到newbmiao.github.io</a>
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p><strong>声明：博客地址已迁移到 <a href="https://newbmiao.github.io/">https://newbmiao.github.io</a>, 原域名<del>blog.newbmiao.com</del>已不再使用。</strong></p>
+        
+        
+          <p class="article-more-link">
+            
+            <a href="/blog-migrate-hostname.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/blog-migrate-hostname.html" data-id="cuidF-u2jdi1mgrCHIBRteZEu" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:30:41.034Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">« Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/">Next »</a>
+    </nav>
+  
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="flt-dev-rewards" data-title-en="Fluence FLT drop — claim guide for eligible GitHub Web3 devs" data-title-zh="FLT空投：2023年参与过web3的开发能领" data-href-en="/flt-dev-rewards.html" data-href-zh="/flt-dev-rewards-zh.html">
+            <a href="/flt-dev-rewards.html">Fluence FLT drop — claim guide for eligible GitHub Web3 devs</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="5">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@7.1.2/dist/mermaid.min.js',
+    options: {"startOnLoad":true}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

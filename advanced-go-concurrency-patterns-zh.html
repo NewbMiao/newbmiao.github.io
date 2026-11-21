@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'en',
+    url: '/advanced-go-concurrency-patterns.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>Advanced Go Concurrency Patterns | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="go,concurrency,select,block,parallelism,pattern" />
+  
+  
+  <meta name="description" content="Go 官方 talk 中的并发定义与 channel 模式笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Advanced Go Concurrency Patterns">
+<meta property="og:url" content="https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="Go 官方 talk 中的并发定义与 channel 模式笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-02-09T07:50:36.000Z">
+<meta property="article:modified_time" content="2026-11-21T02:59:34.802Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="go-concurrency">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/advanced-go-concurrency-patterns.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/advanced-go-concurrency-patterns.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Advanced Go Concurrency Patterns","description":"Go 官方 talk 中的并发定义与 channel 模式笔记","url":"https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html"},"datePublished":"2018-02-09T07:50:36.000Z","dateModified":"2026-11-21T02:59:34.802Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"zh-CN","keywords":"go-concurrency"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/advanced-go-concurrency-patterns-zh.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/advanced-go-concurrency-patterns-zh.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-golang/advanced-go-concurrency-patterns" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh" data-lang-pair="advanced-go-concurrency-patterns">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:zh"></span>
+    <span data-pagefind-meta="lang">zh</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/advanced-go-concurrency-patterns-zh.html" class="article-date">
+  <time datetime="2018-02-09T07:50:36.000Z" itemprop="datePublished">2018-02-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      Advanced Go Concurrency Patterns
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Concurrency-Is-Not-Parallelism"><span class="toc-number">1.</span> <span class="toc-text">Concurrency Is Not Parallelism</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Concurrency"><span class="toc-number">1.1.</span> <span class="toc-text">Concurrency</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallelism"><span class="toc-number">1.2.</span> <span class="toc-text">Parallelism</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VS"><span class="toc-number">1.3.</span> <span class="toc-text">VS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-Concurrency-Support"><span class="toc-number">1.4.</span> <span class="toc-text">Go Concurrency Support</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Go-Concurrency-Patterns"><span class="toc-number">2.</span> <span class="toc-text">Go Concurrency Patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-Channel"><span class="toc-number">2.1.</span> <span class="toc-text">Service Channel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multiplexing"><span class="toc-number">2.2.</span> <span class="toc-text">Multiplexing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sequencing"><span class="toc-number">2.3.</span> <span class="toc-text">Sequencing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-select"><span class="toc-number">2.4.</span> <span class="toc-text">for-select</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#timeout-select"><span class="toc-number">2.5.</span> <span class="toc-text">timeout-select</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#quit-channel"><span class="toc-number">2.6.</span> <span class="toc-text">quit channel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Daisy-chain"><span class="toc-number">2.7.</span> <span class="toc-text">Daisy-chain</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Advanced-Go-Concurrency-Patterns"><span class="toc-number">3.</span> <span class="toc-text">Advanced Go Concurrency Patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Three-techniques"><span class="toc-number">3.1.</span> <span class="toc-text">Three techniques</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#other-improvement"><span class="toc-number">3.2.</span> <span class="toc-text">other improvement</span></a></li></ol></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <p>go的并发模式是一个很有意思的东西，这里先做个搬运工。<br>本文是go官方talk里对并发的定义及并发的模式的一些搜集</p>
+<blockquote>
+<p>原文引自：<br>Advanced Go Concurrency Patterns</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=QDDwwePbDtw">Youtube</a></li>
+<li><a href="https://talks.golang.org/2013/advconc.slide#1">slide</a></li>
+<li><a href="https://github.com/golang/talks/tree/master/2013/advconc">code</a></li>
+</ul>
+<p>Go Concurrency Patterns</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=f6kdp27TYZs">Youtube</a></li>
+<li><a href="https://talks.golang.org/2012/concurrency.slide#1">slide</a></li>
+</ul>
+<p>Concurrency Is Not Parallelism</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=cN_DpYBzKso">Youtube</a></li>
+<li><a href="https://talks.golang.org/2012/waza.slide#1">slide</a></li>
+<li><a href="http://tonybai.com/2015/06/23/concurrency-and-parallelism/">并发不是并行</a></li>
+</ul>
+</blockquote>
+<span id="more"></span>
+<h1 id="Concurrency-Is-Not-Parallelism"><a href="#Concurrency-Is-Not-Parallelism" class="headerlink" title="Concurrency Is Not Parallelism"></a>Concurrency Is Not Parallelism</h1><p>Concurrency (并发) 是程序能<strong>组织</strong>执行过程使同时可以处理多件事<br>Parallelism (并行) 是程序能同时<strong>执行</strong>多件事</p>
+<p>所以Rob Pike说：并发关乎结构，并行关乎执行</p>
+<h2 id="Concurrency"><a href="#Concurrency" class="headerlink" title="Concurrency"></a>Concurrency</h2><p>Concurrency is the composition of independently executing computations.</p>
+<p>Concurrency is a way to structure software, particularly as a way to write clean code that interacts well with the real world.</p>
+<p>Concurrency is about dealing with lots of things at once.</p>
+<h2 id="Parallelism"><a href="#Parallelism" class="headerlink" title="Parallelism"></a>Parallelism</h2><p>Parallelism is the simultaneous execution of (possibly related) computations.</p>
+<p>Parallelism is about doing lots of things at once.</p>
+<h2 id="VS"><a href="#VS" class="headerlink" title="VS"></a>VS</h2><p>Concurrency is about structure, parallelism is about execution.</p>
+<p>Concurrency provides a way to structure a solution to solve a problem that may (but not necessarily) be parallelizable.</p>
+<h2 id="Go-Concurrency-Support"><a href="#Go-Concurrency-Support" class="headerlink" title="Go Concurrency Support"></a>Go Concurrency Support</h2><ul>
+<li>concurrent execution (goroutines)  协程支持</li>
+<li>synchronization and messaging (channels) CSP的通信方式来共享内存<br>此处需了解<a href="https://newbmiao.github.io/go-memory-model-zh.html">go的内存模型</a></li>
+<li>multi-way concurrent control (select) 控制协程切换<ul>
+<li>All channels are evaluated.<br>  每个通道都会被评估</li>
+<li>Selection blocks until one communication can proceed, which then does.<br>  没有可处理的通道时，select会一直阻塞</li>
+<li>If multiple can proceed, select chooses pseudo-randomly.<br>  多个通道可执行是，select会伪随机选一个</li>
+<li>A default clause, if present, executes immediately if no channel is ready.<br>  有default申明时，若没有可处理通道，则default立马执行</li>
+</ul>
+</li>
+</ul>
+<h1 id="Go-Concurrency-Patterns"><a href="#Go-Concurrency-Patterns" class="headerlink" title="Go Concurrency Patterns"></a>Go Concurrency Patterns</h1><h2 id="Service-Channel"><a href="#Service-Channel" class="headerlink" title="Service Channel"></a>Service Channel</h2><p>channel是go里<code>first class</code>值，想string这些类型一样。<br>用作函数返回时，通过返回的channel进行交互，可以起到服务一样的效果。</p>
+<p><a href="https://play.golang.org/p/YLBW2G3SeFp">运行</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	joe := boring(&quot;Joe&quot;)</span><br><span class="line">	ann := boring(&quot;Ann&quot;)</span><br><span class="line">	for i := 0; i &lt; 5; i++ &#123;</span><br><span class="line">		fmt.Println(&lt;-joe)</span><br><span class="line">		fmt.Println(&lt;-ann)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;You&#x27;re both boring; I&#x27;m leaving.&quot;)</span><br><span class="line">&#125;</span><br><span class="line">func boring(msg string) &lt;-chan string &#123; // Returns receive-only channel of strings.</span><br><span class="line">	c := make(chan string)</span><br><span class="line">	go func() &#123; // We launch the goroutine from inside the function.</span><br><span class="line">		for i := 0; ; i++ &#123;</span><br><span class="line">			c &lt;- fmt.Sprintf(&quot;%s %d&quot;, msg, i)</span><br><span class="line">			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	return c // Return the channel to the caller.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Multiplexing"><a href="#Multiplexing" class="headerlink" title="Multiplexing"></a>Multiplexing</h2><p>就是将多个输入处理成一个，常见实现是使用go启动多个协程去合并；或者使用for-select去合并</p>
+<p><a href="https://play.golang.org/p/G4gpS8-g36Y">运行</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	c := fanIn(boring(&quot;Joe&quot;), boring(&quot;Ann&quot;))</span><br><span class="line">	for i := 0; i &lt; 10; i++ &#123;</span><br><span class="line">		fmt.Println(&lt;-c)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(&quot;You&#x27;re both boring; I&#x27;m leaving.&quot;)</span><br><span class="line">&#125;</span><br><span class="line">func fanIn(input1, input2 &lt;-chan string) &lt;-chan string &#123;</span><br><span class="line">	c := make(chan string)</span><br><span class="line">	go func() &#123; for &#123; c &lt;- &lt;-input1&#125; &#125;()</span><br><span class="line">    go func() &#123; for &#123; c &lt;- &lt;-input2&#125; &#125;()</span><br><span class="line">	return c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>fan-in: A function can read from multiple inputs and proceed until all are closed by multiplexing the input channels onto a single channel that’s closed when all the inputs are closed.<br>fan-out: Multiple functions can read from the same channel until that channel is closed)<br><a href="https://blog.golang.org/pipelines">pipeline</a></p>
+</blockquote>
+<h2 id="Sequencing"><a href="#Sequencing" class="headerlink" title="Sequencing"></a>Sequencing</h2><p>按顺序执行，用<strong>全局通道</strong>去发送接受来控制任务依次执行<br><a href="https://play.golang.org/p/VwVSQ_4I2ex">运行</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">type Message struct &#123;</span><br><span class="line">    str string</span><br><span class="line">    wait chan bool</span><br><span class="line">&#125;</span><br><span class="line">//main</span><br><span class="line">for i := 0; i &lt; 5; i++ &#123;</span><br><span class="line">    msg1 := &lt;-c; fmt.Println(msg1.str)</span><br><span class="line">    msg2 := &lt;-c; fmt.Println(msg2.str)</span><br><span class="line">    msg1.wait &lt;- true</span><br><span class="line">    msg2.wait &lt;- true</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//boring</span><br><span class="line">waitForIt := make(chan bool) // Give main control over our execution.</span><br><span class="line">go func() &#123; // Launch the goroutine from inside the function. Function Literal.</span><br><span class="line">	for i := 0; ; i++ &#123;</span><br><span class="line">        c &lt;- Message&#123;fmt.Sprintf(&quot;%s %d&quot;, msg, i), waitForIt&#125;</span><br><span class="line">        time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)</span><br><span class="line"></span><br><span class="line">        &lt;-waitForIt // Block until main tells us to go again.</span><br><span class="line">	&#125;</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+
+<h2 id="for-select"><a href="#for-select" class="headerlink" title="for-select"></a>for-select</h2><p>简化go创建多个协程的声明方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func fanIn(input1, input2 &lt;-chan string) &lt;-chan string &#123;</span><br><span class="line">    c := make(chan string)</span><br><span class="line">    go func() &#123;</span><br><span class="line">        for &#123;</span><br><span class="line">            select &#123;</span><br><span class="line">            case s := &lt;-input1:  c &lt;- s</span><br><span class="line">            case s := &lt;-input2:  c &lt;- s</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    return c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="timeout-select"><a href="#timeout-select" class="headerlink" title="timeout-select"></a>timeout-select</h2><p>对select可以增加超时通道，超时则返回，避免select一直阻塞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    c := boring(&quot;Joe&quot;)</span><br><span class="line">    for &#123;</span><br><span class="line">        select &#123;</span><br><span class="line">        case s := &lt;-c:</span><br><span class="line">            fmt.Println(s)</span><br><span class="line">        case &lt;-time.After(1 * time.Second):</span><br><span class="line">            fmt.Println(&quot;You&#x27;re too slow.&quot;)</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="quit-channel"><a href="#quit-channel" class="headerlink" title="quit channel"></a>quit channel</h2><p>使用通道控制执行是否提前结束</p>
+<ul>
+<li>just quit</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//main</span><br><span class="line">quit := make(chan struct&#123;&#125;)</span><br><span class="line">c := boring(&quot;Joe&quot;, quit)</span><br><span class="line">for i := rand.Intn(10); i &gt;= 0; i-- &#123; fmt.Println(&lt;-c) &#125;</span><br><span class="line">quit &lt;- struct&#123;&#125;</span><br><span class="line"></span><br><span class="line">	select &#123;</span><br><span class="line">	case c &lt;- fmt.Sprintf(&quot;%s: %d&quot;, msg, i):</span><br><span class="line">		// do nothing</span><br><span class="line">	case &lt;-quit:</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>use quit deliver msg<br><code>quit := make(chan string)</code></li>
+</ul>
+<h2 id="Daisy-chain"><a href="#Daisy-chain" class="headerlink" title="Daisy-chain"></a>Daisy-chain</h2><p>关于这个模式stackoverflow有个<a href="https://stackoverflow.com/questions/26135616/understand-the-code-go-concurrency-pattern-daisy-chain">讨论</a>，可以看看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">func f(left, right chan int) &#123;</span><br><span class="line">    left &lt;- 1 + &lt;-right</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    const n = 10000</span><br><span class="line">    leftmost := make(chan int)</span><br><span class="line">    right := leftmost</span><br><span class="line">    left := leftmost</span><br><span class="line">    for i := 0; i &lt; n; i++ &#123;</span><br><span class="line">        right = make(chan int)</span><br><span class="line">        go f(left, right)</span><br><span class="line">        left = right</span><br><span class="line">    &#125;</span><br><span class="line">    go func(c chan int) &#123; c &lt;- 1 &#125;(right)</span><br><span class="line">    fmt.Println(&lt;-leftmost)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Advanced-Go-Concurrency-Patterns"><a href="#Advanced-Go-Concurrency-Patterns" class="headerlink" title="Advanced Go Concurrency Patterns"></a>Advanced Go Concurrency Patterns</h1><h2 id="Three-techniques"><a href="#Three-techniques" class="headerlink" title="Three techniques"></a>Three techniques</h2><ul>
+<li>for-select loop<br>select防止loop阻塞在某一状态，便于调度多项任务</li>
+<li>service channel, reply channels (chan chan error)<br>service channel就是常见的pattern，不多说<br>reply channels实现了close操作中关闭和错误返回无<code>data race</code>:<br><strong>close通过<code>chan chan error</code>向loop请求关闭，并等待其返回关闭前是否有错误</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">func (s *sub) Close() error &#123;</span><br><span class="line">	errc := make(chan error)</span><br><span class="line">	s.closing &lt;- errc // HLchan  //请求关闭</span><br><span class="line">	return &lt;-errc     // HLchan  //等待结果返回</span><br><span class="line">&#125;</span><br><span class="line">//in loop</span><br><span class="line">var err error</span><br><span class="line">for&#123;</span><br><span class="line">    select&#123;</span><br><span class="line">        case errc := &lt;-s.closing: //收到关闭请求</span><br><span class="line">            errc &lt;- err           //返回错误</span><br><span class="line">            close(s.updates)      //执行关闭</span><br><span class="line">            return</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>nil channels in select cases<br>向值为nil的channel发送和接收都会阻塞，在select中使用它可控制是否执行</li>
+</ul>
+<p>此外，分享中提到一些点也值得注意：</p>
+<h2 id="other-improvement"><a href="#other-improvement" class="headerlink" title="other improvement"></a>other improvement</h2><ul>
+<li>limit：限制pending（处理任务队列）的数目，不要让其无限增大，避免过多请求及内存消耗</li>
+<li>async io：拆解fetch的请求和结果处理，使用状态channel同步，使fetch中不要阻塞其他处理进行<br><strong>拆解前</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">case &lt;-startFetch:</span><br><span class="line">    var fetched []Item</span><br><span class="line">    fetched, next, err = s.fetcher.Fetch()</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        next = time.Now().Add(10 * time.Second)</span><br><span class="line">        break</span><br><span class="line">    &#125;</span><br><span class="line">    for _, item := range fetched &#123;</span><br><span class="line">        if !seen[item.GUID] &#123;</span><br><span class="line">            pending = append(pending, item)</span><br><span class="line">            seen[item.GUID] = true         </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>拆解后</strong><br>startFetch和fetchDone同一时刻，只有一个不为<code>nil</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">type fetchResult struct&#123; fetched []Item; next time.Time; err error &#125;</span><br><span class="line"></span><br><span class="line">    var fetchDone chan fetchResult // if non-nil, Fetch is running</span><br><span class="line"></span><br><span class="line">        var startFetch &lt;-chan time.Time</span><br><span class="line">        if fetchDone == nil &amp;&amp; len(pending) &lt; maxPending &#123;</span><br><span class="line">            startFetch = time.After(fetchDelay) // enable fetch case</span><br><span class="line">        &#125;</span><br><span class="line">        select &#123;</span><br><span class="line">        case &lt;-startFetch:</span><br><span class="line">            fetchDone = make(chan fetchResult, 1)</span><br><span class="line">            go func() &#123;</span><br><span class="line">                fetched, next, err := s.fetcher.Fetch()</span><br><span class="line">                fetchDone &lt;- fetchResult&#123;fetched, next, err&#125;</span><br><span class="line">            &#125;()</span><br><span class="line">        case result := &lt;-fetchDone: </span><br><span class="line">            fetchDone = nil</span><br><span class="line">            // Use result.fetched, result.next, result.err</span><br></pre></td></tr></table></figure>
+
+<p>这是对以上模式整合实现的一个rss聚合器demo，可以仔细研究下<br><a href="https://play.golang.org/p/j_npc1o3zZp">运行</a></p>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;advanced-go-concurrency-patterns-zh.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;advanced-go-concurrency-patterns-zh.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html" data-id="cuidGZtjexahlESr4iN8PaJF4" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-concurrency/" rel="tag">go-concurrency</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:59:34.802Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="flt-dev-rewards" data-title-en="Fluence FLT drop — claim guide for eligible GitHub Web3 devs" data-title-zh="FLT空投：2023年参与过web3的开发能领" data-href-en="/flt-dev-rewards.html" data-href-zh="/flt-dev-rewards-zh.html">
+            <a href="/flt-dev-rewards.html">Fluence FLT drop — claim guide for eligible GitHub Web3 devs</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="5">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@7.1.2/dist/mermaid.min.js',
+    options: {"startOnLoad":true}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

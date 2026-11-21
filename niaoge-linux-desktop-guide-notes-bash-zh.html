@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'en',
+    url: '/niaoge-linux-desktop-guide-notes-bash.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>鸟哥的Linux私房菜-bash | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="linux,bash,note" />
+  
+  
+  <meta name="description" content="鸟哥的Linux私房菜笔记-bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鸟哥的Linux私房菜-bash">
+<meta property="og:url" content="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="鸟哥的Linux私房菜笔记-bash">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-09-15T09:28:15.000Z">
+<meta property="article:modified_time" content="2026-11-21T03:06:05.875Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鸟哥的Linux私房菜-bash","description":"鸟哥的Linux私房菜笔记-bash","url":"https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html"},"datePublished":"2015-09-15T09:28:15.000Z","dateModified":"2026-11-21T03:06:05.875Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"zh-CN"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/niaoge-linux-desktop-guide-notes-bash-zh.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/niaoge-linux-desktop-guide-notes-bash-zh.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-linux/niaoge-linux-desktop-guide-notes-bash" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh" data-lang-pair="niaoge-linux-desktop-guide-notes-bash">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:zh"></span>
+    <span data-pagefind-meta="lang">zh</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/niaoge-linux-desktop-guide-notes-bash-zh.html" class="article-date">
+  <time datetime="2015-09-15T09:28:15.000Z" itemprop="datePublished">2015-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      鸟哥的Linux私房菜-bash
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bash"><span class="toc-number">1.</span> <span class="toc-text">bash</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#type"><span class="toc-number">1.1.</span> <span class="toc-text">type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#env"><span class="toc-number">1.2.</span> <span class="toc-text">env</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#export"><span class="toc-number">1.3.</span> <span class="toc-text">export</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#declare"><span class="toc-number">1.4.</span> <span class="toc-text">declare</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ulimit"><span class="toc-number">1.5.</span> <span class="toc-text">ulimit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read"><span class="toc-number">1.6.</span> <span class="toc-text">read</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">1.7.</span> <span class="toc-text">删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2"><span class="toc-number">1.8.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.9.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#alias-unalias"><span class="toc-number">1.10.</span> <span class="toc-text">alias&amp;unalias</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#history"><span class="toc-number">1.11.</span> <span class="toc-text">history</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PS1"><span class="toc-number">1.12.</span> <span class="toc-text">PS1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E9%99%86"><span class="toc-number">1.13.</span> <span class="toc-text">登陆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#source"><span class="toc-number">1.14.</span> <span class="toc-text">source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#grep"><span class="toc-number">1.15.</span> <span class="toc-text">grep</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#egrep"><span class="toc-number">1.16.</span> <span class="toc-text">egrep</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sed"><span class="toc-number">1.17.</span> <span class="toc-text">sed</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#awk"><span class="toc-number">1.18.</span> <span class="toc-text">awk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cut"><span class="toc-number">1.19.</span> <span class="toc-text">cut</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#diff"><span class="toc-number">1.20.</span> <span class="toc-text">diff</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cmp"><span class="toc-number">1.21.</span> <span class="toc-text">cmp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#patch"><span class="toc-number">1.22.</span> <span class="toc-text">patch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shell-script"><span class="toc-number">2.</span> <span class="toc-text">shell script</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#test"><span class="toc-number">2.1.</span> <span class="toc-text">test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#seq"><span class="toc-number">2.2.</span> <span class="toc-text">seq</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97"><span class="toc-number">2.3.</span> <span class="toc-text">计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F"><span class="toc-number">2.4.</span> <span class="toc-text">脚本相关变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shift"><span class="toc-number">2.5.</span> <span class="toc-text">shift</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">2.6.</span> <span class="toc-text">判断执行结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sh"><span class="toc-number">2.7.</span> <span class="toc-text">sh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E5%BC%8F"><span class="toc-number">2.8.</span> <span class="toc-text">判断式</span></a></li></ol></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <blockquote>
+<p>笔记记录于《鸟哥的Linux私房菜-第三版》,以备多看。</p>
+</blockquote>
+<h2 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h2><h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><ul>
+<li>-t #查看指令类型</li>
+<li>-a #显示PATH中所有指令</li>
+</ul>
+<h3 id="env"><a href="#env" class="headerlink" title="env"></a>env</h3><ul>
+<li>查看当前环境变量</li>
+</ul>
+<h3 id="export"><a href="#export" class="headerlink" title="export"></a>export</h3><ul>
+<li>将自定义变量导入当前环境(子程序)</li>
+</ul>
+<h3 id="declare"><a href="#declare" class="headerlink" title="declare"></a>declare</h3><ul>
+<li>declare -i num&#x3D;$RANDOM*10&#x2F;32768 #选取0-9随机数</li>
+<li>-x variable #将变量导入环境变量</li>
+<li>-r variable #只读变量</li>
+<li>+x variable #取消导入到环境变量(除 a,r 不会取消)</li>
+</ul>
+<span id="more"></span>
+<h3 id="ulimit"><a href="#ulimit" class="headerlink" title="ulimit"></a>ulimit</h3><ul>
+<li>-a 显示配额</li>
+</ul>
+<h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><ul>
+<li>-p “提示信息” variable</li>
+<li>-t 30 variable #限定时间</li>
+</ul>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ul>
+<li>echo ${PATH#&#x2F;*:} #从左向右删最短</li>
+<li>echo ${PATH##&#x2F;*:} #从左向右删最长</li>
+<li>echo ${PATH%&#x2F;*bin} #从右向左删最短</li>
+<li>echo ${PATH%%&#x2F;*bin} #从右向左删最长</li>
+</ul>
+<h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><ul>
+<li>echo ${PATH&#x2F;sbin&#x2F;SBIN} #从左到右替换第一个匹配</li>
+<li>echo ${PATH&#x2F;&#x2F;sbin&#x2F;SBIN} #从左到右替换全部匹配</li>
+</ul>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><ul>
+<li>new_var&#x3D;${old_var-default_var} #old_var未赋值则赋值为default_var</li>
+<li>new_var&#x3D;${old_var:-default_var} #old_var <strong>未赋值或赋值为空字符串</strong> 则赋值为default_var</li>
+<li>new_var&#x3D;${old_var&#x3D;default_var} #效果同上，只是old_var也会被修改</li>
+<li>new_var&#x3D;${old_var:&#x3D;default_var} #效果同上，只是old_var也会被修改</li>
+</ul>
+<h3 id="alias-unalias"><a href="#alias-unalias" class="headerlink" title="alias&amp;unalias"></a>alias&amp;unalias</h3><h3 id="history"><a href="#history" class="headerlink" title="history"></a>history</h3><ul>
+<li>!num #第几条历史操作</li>
+<li>!! #上一条操作</li>
+<li>!cmd #最近一条cmd开头操作</li>
+</ul>
+<h3 id="PS1"><a href="#PS1" class="headerlink" title="PS1"></a>PS1</h3><ul>
+<li>PS1&#x3D;’[\u@\h \t \W]$ ‘ #用户状态</li>
+</ul>
+<h3 id="登陆"><a href="#登陆" class="headerlink" title="登陆"></a>登陆</h3><ul>
+<li><p>&#x2F;etc&#x2F;issue #进站信息</p>
+</li>
+<li><p>&#x2F;etc&#x2F;motd #欢迎信息</p>
+</li>
+<li><p>&#x2F;etc&#x2F;profile #系统配置</p>
+</li>
+<li><p>~&#x2F;.bash_profile | ~&#x2F;.bash_login | ~&#x2F;.profile #个人配置</p>
+</li>
+<li><p>最终操作的文件是 ~&#x2F;.bashrc ,所以个人设置可以放里边</p>
+</li>
+</ul>
+<h3 id="source"><a href="#source" class="headerlink" title="source"></a>source</h3><ul>
+<li>source ~&#x2F;.bashrc #读取配置当前环境</li>
+<li>. ~&#x2F;.bashrc #同上</li>
+</ul>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><ul>
+<li><p>cat file | grep -n -A2 -B3 ‘str’ #连搜索结果的前3行和后2行一起显示出来</p>
+</li>
+<li><p>cat file | grep -vn ‘str’ #反向搜索</p>
+</li>
+<li><p>cat file | grep -in ‘str’ #不分大小写</p>
+</li>
+<li><p>cat file | grep -n ‘[^[:lower:]]ar’ #非小写字母+ar; [:lower:]同[a-z]</p>
+</li>
+<li><p>grep -l ‘*‘  $(find &#x2F;etc&#x2F; -type f) #查找&#x2F;etc下包含*的文件</p>
+</li>
+<li><p>find &#x2F;etc&#x2F; -type f|xargs -n 10 grep ‘*‘ #改良版，每次处理十个文件查找</p>
+</li>
+</ul>
+<h3 id="egrep"><a href="#egrep" class="headerlink" title="egrep"></a>egrep</h3><ul>
+<li>egrep -v ‘^$|^#’ file #列出非注释与非空白行</li>
+</ul>
+<h3 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h3><ul>
+<li><p>cat -n file|sed ‘2,5d’  #删除2-5行</p>
+</li>
+<li><p>cat -n file|sed ‘2a 添加到第2行后’  #<strong>行后添加</strong></p>
+</li>
+<li><p>cat -n file|sed ‘2i 添加到第2行前再加一行’ # <strong>行前添加</strong></p>
+</li>
+<li><p>sed -n ‘2 w output.txt’ file #将内容 <strong>写入</strong> output.txt</p>
+</li>
+<li><p>cat -n file|sed ‘2,5c 替换文字’  # <strong>替换</strong></p>
+</li>
+<li><p>sed -n ‘2,5p’ file #按行打印</p>
+</li>
+<li><p>cat -n t |sed -n ‘2~5p’ #按范围打印，第2行开始每隔5行</p>
+</li>
+<li><p>cat -n t |sed -n ‘&#x2F;search&#x2F;,+5p’ #匹配到search，再多打印5行</p>
+</li>
+<li><p>cat -n t |sed ‘s&#x2F;搜索字符串&#x2F;替换字符串&#x2F;g’ #替换字符串</p>
+</li>
+<li><p>cat -n t |sed ‘&#x2F;^$&#x2F;d’ #删除空白行</p>
+</li>
+<li><p>sed -i ‘s&#x2F;.$&#x2F;!&#x2F;g’ file #直接修改源文件，替换行尾的.为!</p>
+</li>
+<li><p>sed ‘s&#x2F;^&#x2F;ls -l &#x2F;e’ files #替换并 <strong>执行</strong></p>
+</li>
+<li><p>sed -i ‘$a 新增内容’ file #在文件末尾附加内容</p>
+</li>
+<li><p>sed -n -f sed-cmd-file file #执行文件中sed命令</p>
+</li>
+<li><p>cat file|sed -e ‘4d’ -e ‘6c replace 6th line’ #多条指令</p>
+</li>
+<li><p>sed ‘{<br>  s&#x2F;Google&#x2F;Github&#x2F;<br>  s&#x2F;Git&#x2F;git&#x2F;<br>  }’ file #同上</p>
+</li>
+<li><p>sed ‘s&#x2F;^.*&#x2F;&lt;&amp;&gt;&#x2F;‘ file   # “&lt;&gt;”包裹行   <strong>&amp;</strong></p>
+</li>
+<li><p>sed ‘s&#x2F;Paul|Addy&#x2F;[&amp;]&#x2F;g’ file # <strong>|需转义</strong>,sed中正则需转义字符</p>
+</li>
+<li><p>echo “string”|sed  ‘s&#x2F;string&#x2F;S\LTRING&#x2F;‘ # \L将后边字符小写;\l将后边第一个字符小写</p>
+</li>
+<li><p>echo “string”|sed  ‘s&#x2F;string&#x2F;\Ustring&#x2F;‘ # \U将后边字符大写;\u将后边第一个字符大写</p>
+</li>
+<li><p>echo “string”|sed  ‘s&#x2F;string&#x2F;\Us\Etring&#x2F;‘ # \E能打断\L或者\U改变大小写</p>
+</li>
+<li><p>sed –in-place&#x3D;bak ‘s&#x2F;Ian&#x2F;IAN&#x2F;‘ source.txt # 边替换边备份<br>  sed -ibak ‘s&#x2F;Ian&#x2F;IAN&#x2F;‘ source.txt</p>
+</li>
+<li><p>sed ‘y&#x2F;AB&#x2F;ab&#x2F;‘ file # <strong>转换字符</strong></p>
+</li>
+</ul>
+<h3 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h3><ul>
+<li><p><code>last -5|awk &#39;{print  $1 &quot;\t&quot;</code> $3}’ #截取用户和ip格式化显示</p>
+</li>
+<li><p><code>last -5|awk &#39;{print  $1 &quot;\t&quot; line:&quot;NR&quot; &quot;\t&quot; col:&quot;NF&quot;}&#39;</code> #截取用户和ip格式化显示</p>
+</li>
+<li><p><code>last -5|awk &#39;{print  $1 &quot;\t line:&quot;NR &quot;\t col:&quot;NF &quot;\t delimiter:&quot;FS}&#39;</code> #内置变数</p>
+</li>
+<li><p><code>cat /etc/passwd|awk &#39;BEGIN{FS=&quot;:&quot;} $3&lt;10 {print $1 &quot;\t&quot; $3}&#39;</code> #预设分隔符，并取出UID&lt;10的用户名</p>
+</li>
+<li><p><code>cat pay.txt|awk &#39;NR==1{printf &quot;%10s %10s %10s %10s %10s\n&quot;,$1,$2,$3,$4,&quot;Total&quot;};NR&gt;=2{total=$2+$3+$4;printf &quot;%10s %10s %10s %10s %10s\n&quot;,$1,$2,$3,$4,total}&#39;</code> #计算总合,”;”可用 enter 替换</p>
+</li>
+</ul>
+<h3 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h3><ul>
+<li>-d ‘分隔符’ -fN #默认tab分隔，N为第几列</li>
+</ul>
+<h3 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h3><ul>
+<li>-b #只是空白不同不列出</li>
+</ul>
+<h3 id="cmp"><a href="#cmp" class="headerlink" title="cmp"></a>cmp</h3><ul>
+<li>-s #不同位置都列出来</li>
+</ul>
+<h3 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h3><ul>
+<li>diff -Naur t t2 &gt;t.patch #生成patch</li>
+<li>patch  -pN  &lt; file.patch #更新旧档案,N代表要去掉几个 <code>&quot;/&quot;</code></li>
+<li>patch -R -pN  &lt; file.patch #还原旧档案</li>
+</ul>
+<h2 id="shell-script"><a href="#shell-script" class="headerlink" title="shell script"></a>shell script</h2><h3 id="test"><a href="#test" class="headerlink" title="test"></a>test</h3><ul>
+<li><code>test -z str</code> #判断字符串是否为空</li>
+<li><code>[ -z  &quot;$HOME&quot; ];echo $?</code> #注意空格</li>
+<li><code>test -e filename &amp;&amp; echo &#39;exist&#39; || echo &#39;not exist&#39;</code> #判断文件是否存在</li>
+</ul>
+<h3 id="seq"><a href="#seq" class="headerlink" title="seq"></a>seq</h3><ul>
+<li>seq start end #生成一个end-start的range数组</li>
+</ul>
+<h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3><ul>
+<li>$((cal_expr))</li>
+</ul>
+<h3 id="脚本相关变量"><a href="#脚本相关变量" class="headerlink" title="脚本相关变量"></a>脚本相关变量</h3><ul>
+<li>$0 #脚本名</li>
+<li>$# #脚本参数个数</li>
+<li>$@ #全部脚本参数，空格分隔</li>
+<li>$1 #第一个参数</li>
+<li>$$ #bash的PID</li>
+</ul>
+<h3 id="shift"><a href="#shift" class="headerlink" title="shift"></a>shift</h3><ul>
+<li>shift N #偏移几个，参数从左到右拿掉几个</li>
+</ul>
+<h3 id="判断执行结果"><a href="#判断执行结果" class="headerlink" title="判断执行结果"></a>判断执行结果</h3><ul>
+<li><code>ping -c 1 -w 1 192.168.1.1 &amp;&gt;/dev/null &amp;&amp; result=0 || result=1</code></li>
+</ul>
+<h3 id="sh"><a href="#sh" class="headerlink" title="sh"></a>sh</h3><ul>
+<li>sh -n file.sh #检查语法</li>
+<li>sh -v file.sh #执行前吧内容输出</li>
+<li>sh -v file.sh #将使用到的script内容输出</li>
+</ul>
+<h3 id="判断式"><a href="#判断式" class="headerlink" title="判断式"></a>判断式</h3><ul>
+<li><p>if</p>
+<pre><code>  if ;then
+  fi
+  ---
+  if ;then
+  elif ;then
+  fi
+  ---
+  if ;then else
+  fi
+</code></pre>
+</li>
+<li><p>case</p>
+<pre><code>  case $var in
+  &quot;case1&quot;)
+      ...
+      ;;
+  *)  #default
+      ...
+      ;;
+  esac
+</code></pre>
+</li>
+<li><p>while</p>
+<pre><code>  while [cond]
+  do
+      ...
+  done
+</code></pre>
+</li>
+<li><p>until</p>
+<pre><code>  until [cond]
+  do
+      ...
+  done
+</code></pre>
+</li>
+<li><p>for</p>
+<pre><code>  for v in $arrs
+  do
+      ...
+  done
+  ---
+  for((i=1;i&lt;$nu;i=i+1))
+  do
+      ...
+  done
+</code></pre>
+</li>
+</ul>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;niaoge-linux-desktop-guide-notes-bash-zh.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;niaoge-linux-desktop-guide-notes-bash-zh.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html" data-id="cuid7GaRv_A78FKwN0CpyUPd4" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T03:06:05.875Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="flt-dev-rewards" data-title-en="Fluence FLT drop — claim guide for eligible GitHub Web3 devs" data-title-zh="FLT空投：2023年参与过web3的开发能领" data-href-en="/flt-dev-rewards.html" data-href-zh="/flt-dev-rewards-zh.html">
+            <a href="/flt-dev-rewards.html">Fluence FLT drop — claim guide for eligible GitHub Web3 devs</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="5">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@7.1.2/dist/mermaid.min.js',
+    options: {"startOnLoad":true}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

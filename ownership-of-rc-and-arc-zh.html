@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'en',
+    url: '/ownership-of-rc-and-arc.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>聊聊共享所有权之Rc和Arc | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,ownership,rc,arc" />
+  
+  
+  <meta name="description" content="聊聊所有权之Rc和Arc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊共享所有权之Rc和Arc">
+<meta property="og:url" content="https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="聊聊所有权之Rc和Arc">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-07T11:44:05.000Z">
+<meta property="article:modified_time" content="2026-11-21T02:57:16.056Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="rust-rc-arc">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/ownership-of-rc-and-arc.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/ownership-of-rc-and-arc.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"聊聊共享所有权之Rc和Arc","description":"聊聊所有权之Rc和Arc","url":"https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html"},"datePublished":"2023-10-07T11:44:05.000Z","dateModified":"2026-11-21T02:57:16.056Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"zh-CN","image":["https://newbmiao.github.io/images/qrcode/newbmiao.webp"],"keywords":"rust-rc-arc"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/ownership-of-rc-and-arc-zh.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/ownership-of-rc-and-arc-zh.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-rust/ownership-of-rc-and-arc" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh" data-lang-pair="ownership-of-rc-and-arc">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:zh"></span>
+    <span data-pagefind-meta="lang">zh</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/ownership-of-rc-and-arc-zh.html" class="article-date">
+  <time datetime="2023-10-07T11:44:05.000Z" itemprop="datePublished">2023-10-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      聊聊共享所有权之Rc和Arc
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1v1-%E6%89%80%E6%9C%89%E6%9D%83"><span class="toc-number">1.</span> <span class="toc-text">1v1 所有权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D%EF%BC%88clone%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">深拷贝（clone）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0-%EF%BC%88reference-count%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">引用计数 （reference count）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E6%97%B6%E5%A4%8D%E5%88%B6%EF%BC%88copy-on-write%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">写时复制（copy on write）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">循环引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%B1%E5%BC%95%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">弱引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-number">7.</span> <span class="toc-text">线程安全</span></a></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <!-- **文章目录** -->
+<!-- [TOC] -->
+
+<h2 id="1v1-所有权"><a href="#1v1-所有权" class="headerlink" title="1v1 所有权"></a>1v1 所有权</h2><p><code>Rust</code>中所有权约束了值只能有一个所有者，当值离开作用域时，它将被销毁。</p>
+<p>像如下代码，字符串<code>a</code>如果直接移动给<code>b</code>后就没法后边再去打印，因为它的所有权已经转移给了<code>b</code>。</p>
+<span id="more"></span>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">a</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">b</span> = a;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;a = &#123;&#125;, b = &#123;&#125;&quot;</span>, a, b);</span><br><span class="line"></span><br><span class="line"><span class="comment">// got error:</span></span><br><span class="line"><span class="comment">// error[E0382]: borrow of moved value: `a`</span></span><br><span class="line"><span class="comment">// 3 |     let a = String::from(&quot;hello&quot;);</span></span><br><span class="line"><span class="comment">//   |         - move occurs because `a` has type `String`, which does not implement the `Copy` trait</span></span><br><span class="line"><span class="comment">// 4 |     let b = a;</span></span><br><span class="line"><span class="comment">//   |             - value moved here</span></span><br><span class="line"><span class="comment">// 5 |     println!(&quot;a = &#123;&#125;, b = &#123;&#125;&quot;, a, b);</span></span><br><span class="line"><span class="comment">//   |                                ^ value borrowed here after move</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="深拷贝（clone）"><a href="#深拷贝（clone）" class="headerlink" title="深拷贝（clone）"></a>深拷贝（clone）</h2><p>如果<code>clone</code>的话可以复制一份，但是这样的话就需要开辟一块新的内存，不是很高效。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">a</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="comment">// let b = a;</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">b</span> = a.<span class="title function_ invoke__">clone</span>();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;a = &#123;&#125;, b = &#123;&#125;&quot;</span>, a, b);</span><br><span class="line"><span class="comment">// output: a = hello, b = hello</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="引用计数-（reference-count）"><a href="#引用计数-（reference-count）" class="headerlink" title="引用计数 （reference count）"></a>引用计数 （reference count）</h2><p>想要实现多个所有者，又开销小，可以用引用计数，对应的类型是<code>Rc</code>。</p>
+<p><code>Rc</code>只会在复制时增加引用计数，当引用计数为0时，会自动调用<code>drop</code>方法，释放内存。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">a</span> = Rc::<span class="title function_ invoke__">new</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">_b</span> = Rc::<span class="title function_ invoke__">clone</span>(&amp;a);</span><br><span class="line">&#123;   </span><br><span class="line">    <span class="keyword">let</span> <span class="variable">_b</span> = Rc::<span class="title function_ invoke__">clone</span>(&amp;a);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;reference count &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;a)); </span><br><span class="line">    <span class="comment">// 3, will be 2 after this block out of scope</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;reference count &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;a)); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="写时复制（copy-on-write）"><a href="#写时复制（copy-on-write）" class="headerlink" title="写时复制（copy on write）"></a>写时复制（copy on write）</h2><p><code>Rc</code>引用的值是不可变的，如果想要修改，可以使用<code>Rc::make_mut</code>方法，它会检查引用计数，在有别的有效引用（<code>strong</code>）时，会复制一份，然后修改。否则就直接修改原来的值。这也是写时复制，只有在需要修改时才会复制。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">a</span> = Rc::<span class="title function_ invoke__">new</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">b</span> = Rc::<span class="title function_ invoke__">clone</span>(&amp;a);</span><br><span class="line"><span class="comment">//  allocate a new string (copy on write)</span></span><br><span class="line">(*Rc::<span class="title function_ invoke__">make_mut</span>(&amp;<span class="keyword">mut</span> a)).<span class="title function_ invoke__">push_str</span>( <span class="string">&quot; world&quot;</span>);</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>,  a, b); </span><br><span class="line"><span class="comment">// hello world hello</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">c</span> = Rc::<span class="title function_ invoke__">clone</span>(&amp;a);</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125; &#123;&#125;&quot;</span>,  a, b, c); </span><br><span class="line"><span class="comment">// hello world hello hello world</span></span><br></pre></td></tr></table></figure>
+
+<p>所以这么用有一个好处，如果有修改，修改是独立于之前的引用的，不用担心修改会影响之前引用的值。</p>
+<blockquote>
+<p>当然，如果想保持值修改的同步，可以使用之前提到的<code>Cell</code>和<code>RefCell</code>，这两个类型可以实现内部可变性，可以在不可变引用的情况下修改值。</p>
+</blockquote>
+<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><p><code>Rc</code>是不允许循环引用的，因为它的引用计数是在编译时就确定的，如果有循环引用，那么引用计数永远不会为0，也就永远不会调用<code>drop</code>方法，导致内存泄漏。</p>
+<p>这里用官方的一个例子说明：下边代码用来描述工具（gadget）和工具所有者（owner）的关系，一个工具可以有一个个所有者，一个所有者可以有多个工具。</p>
+<p>如果用<code>Rc</code>来实现的话，会出现循环引用，工具和工具所有者互相引用，导致谁都无法对引用计数减一，也就无法释放对应的内存。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;rc::Rc, cell::RefCell&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Owner</span> &#123;</span><br><span class="line">    name: <span class="type">String</span>,</span><br><span class="line">    gadgets: RefCell&lt;<span class="type">Vec</span>&lt;Rc&lt;Gadget&gt;&gt;&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Gadget</span> &#123;</span><br><span class="line">    id: <span class="type">i32</span>,</span><br><span class="line">    owner: Rc&lt;Owner&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">gadget_owner</span> : Rc&lt;Owner&gt; = Rc::<span class="title function_ invoke__">new</span>(</span><br><span class="line">            Owner &#123; name: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Gadget Man&quot;</span>), gadgets: RefCell::<span class="title function_ invoke__">new</span>(<span class="built_in">vec!</span>[]) &#125;</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 两个工具，都有同一个所有者</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">gadget1</span> = Rc::<span class="title function_ invoke__">new</span>(Gadget &#123; id: <span class="number">1</span>, owner: gadget_owner.<span class="title function_ invoke__">clone</span>() &#125;);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">gadget2</span> =Rc::<span class="title function_ invoke__">new</span>(Gadget &#123; id: <span class="number">2</span>, owner: gadget_owner.<span class="title function_ invoke__">clone</span>() &#125;);</span><br><span class="line"></span><br><span class="line">    gadget_owner.gadgets.<span class="title function_ invoke__">borrow_mut</span>().<span class="title function_ invoke__">push</span>(gadget1.<span class="title function_ invoke__">clone</span>());</span><br><span class="line">    gadget_owner.gadgets.<span class="title function_ invoke__">borrow_mut</span>().<span class="title function_ invoke__">push</span>(gadget2.<span class="title function_ invoke__">clone</span>());</span><br><span class="line">    <span class="comment">// 释放gadget_owner的引用计数，保留工具的owner引用计数</span></span><br><span class="line">    <span class="title function_ invoke__">drop</span>(gadget_owner);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;strong count of gadget1: &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;gadget1));</span><br><span class="line">    <span class="comment">// strong count of gadget1: 2</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;strong count of gadget1.owner: &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;gadget1.owner));</span><br><span class="line">    <span class="comment">// strong count of gadget1.owner: 2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 释放gadget1的引用计数，正常没有引用循环的话，owner对应的引用计数也需要释放</span></span><br><span class="line">    <span class="comment">// 但是gadget1的owner的引用计数不会减一，导致内存泄漏</span></span><br><span class="line">    <span class="title function_ invoke__">drop</span>(gadget1);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;strong count of gadget2.owner: &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;gadget2.owner));</span><br><span class="line">    <span class="comment">// strong count of gadget2.owner: 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>循环引用如下图所示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">gadgets和owner的引用形成了一个环，谁也没法释放，对应的引用计数无法减到0，也就没法释放</span><br><span class="line"></span><br><span class="line">+-----------+       +-----------+</span><br><span class="line">|   Owner   |&lt;------|  Gadget   |</span><br><span class="line">|           |       |           |</span><br><span class="line">|   Rc      |       |   Rc      |</span><br><span class="line">|           |       |           |</span><br><span class="line">| gadgets --|------&gt;| owner ----+</span><br><span class="line">+-----------+       +-----------+</span><br></pre></td></tr></table></figure>
+
+<h2 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h2><p>这个时候就是弱引用的用武之地了，弱引用不会增加引用计数，所以不会导致循环引用。</p>
+<p>但是它也不能保证引用的值一定存在，因为它的引用计数可能为0，所以用时，需要用<code>upgrade</code>方法来获取<code>Option</code>类型的引用。</p>
+<p>也就是说引用的值释放与否只取决于强引用的引用计数。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::rc::Rc;</span><br><span class="line"><span class="keyword">use</span> std::rc::Weak;</span><br><span class="line"><span class="keyword">use</span> std::cell::RefCell;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Owner</span> &#123;</span><br><span class="line">    name: <span class="type">String</span>,</span><br><span class="line">    gadgets: RefCell&lt;<span class="type">Vec</span>&lt;Weak&lt;Gadget&gt;&gt;&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Gadget</span> &#123;</span><br><span class="line">    id: <span class="type">i32</span>,</span><br><span class="line">    owner: Rc&lt;Owner&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">gadget_owner</span> : Rc&lt;Owner&gt; = Rc::<span class="title function_ invoke__">new</span>(</span><br><span class="line">            Owner &#123;</span><br><span class="line">                name: <span class="string">&quot;Gadget Man&quot;</span>.<span class="title function_ invoke__">to_string</span>(),</span><br><span class="line">                gadgets: RefCell::<span class="title function_ invoke__">new</span>(<span class="type">Vec</span>::<span class="title function_ invoke__">new</span>())</span><br><span class="line">            &#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">gadget1</span> = Rc::<span class="title function_ invoke__">new</span>(Gadget&#123;id: <span class="number">1</span>, owner: gadget_owner.<span class="title function_ invoke__">clone</span>()&#125;);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">gadget2</span> = Rc::<span class="title function_ invoke__">new</span>(Gadget&#123;id: <span class="number">2</span>, owner: gadget_owner.<span class="title function_ invoke__">clone</span>()&#125;);</span><br><span class="line"></span><br><span class="line">    gadget_owner.gadgets.<span class="title function_ invoke__">borrow_mut</span>().<span class="title function_ invoke__">push</span>(Rc::<span class="title function_ invoke__">downgrade</span>(&amp;gadget1.<span class="title function_ invoke__">clone</span>()));</span><br><span class="line">    gadget_owner.gadgets.<span class="title function_ invoke__">borrow_mut</span>().<span class="title function_ invoke__">push</span>(Rc::<span class="title function_ invoke__">downgrade</span>(&amp;gadget2.<span class="title function_ invoke__">clone</span>()));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">gadget_opt</span> <span class="keyword">in</span> gadget_owner.gadgets.<span class="title function_ invoke__">borrow</span>().<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">gadget</span> = gadget_opt.<span class="title function_ invoke__">upgrade</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;Gadget &#123;&#125; owned by &#123;&#125;&quot;</span>, gadget.id, gadget.owner.name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">drop</span>(gadget_owner);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;strong count of gadget1: &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;gadget1));</span><br><span class="line">    <span class="comment">// strong count of gadget1: 1</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;strong count of gadget1.owner: &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;gadget1.owner));</span><br><span class="line">    <span class="comment">// strong count of gadget1.owner: 2</span></span><br><span class="line">    <span class="title function_ invoke__">drop</span>(gadget1);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;strong count of gadget2.owner: &#123;&#125;&quot;</span>, Rc::<span class="title function_ invoke__">strong_count</span>(&amp;gadget2.owner));</span><br><span class="line">    <span class="comment">// strong count of gadget2.owner: 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p><code>Rc</code>是线程不安全的，如果想要在多线程中使用，可以使用<code>Arc</code>，它是<code>Rc</code>的线程安全版本。 （<code>A</code>代表<code>atomic</code>）</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::Arc;</span><br><span class="line"><span class="keyword">use</span> std::thread;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">val</span> = Arc::<span class="title function_ invoke__">new</span>(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">_</span> <span class="keyword">in</span> <span class="number">0</span>..<span class="number">3</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">val</span> = Arc::<span class="title function_ invoke__">clone</span>(&amp;val);</span><br><span class="line">        thread::<span class="title function_ invoke__">spawn</span>(<span class="keyword">move</span> || &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">v</span> = *val.<span class="title function_ invoke__">as_ref</span>() + <span class="number">1</span>;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;&#123;v:?&#125;&quot;</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    thread::<span class="title function_ invoke__">sleep</span>(std::time::Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而如果想要在多线程中修改值，可以使用<code>Mutex</code>和<code>RwLock</code>，它们都是线程安全的。 如<code>Arc&lt;Mutex&lt;T&gt;&gt;</code>。</p>
+<hr>
+<p>最后还有一点想提下，<code>Rc&lt;T&gt;</code>和<code>Arc&lt;T&gt;</code>都实现了自动解引用<code>Deref</code>到<code>T</code>，所以可以直接在<code>Rc&lt;T&gt;</code>和<code>Arc&lt;T&gt;</code>上调用<code>T</code>的方法。而为了防止方法名冲突，一般习惯用全限定语法调用方法来调用<code>Rc&lt;T&gt;</code>和<code>Arc&lt;T&gt;</code>的方法，如<code>Rc::clone</code>。</p>
+<!-- ---
+
+文章首发公众号：newbmiao
+
+推荐阅读：[OPA系列](https://newbmiao.github.io/categories/opa/)
+
+[Dig101-Go系列](https://newbmiao.github.io/categories/go/)
+
+![欢迎关注，获取及时更新内容](images/qrcode/newbmiao.webp) -->
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;ownership-of-rc-and-arc-zh.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;ownership-of-rc-and-arc-zh.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html" data-id="cuidUtfVsq1DuTR0cNZ2Mjv7I" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-rc-arc/" rel="tag">rust-rc-arc</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:57:16.056Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="flt-dev-rewards" data-title-en="Fluence FLT drop — claim guide for eligible GitHub Web3 devs" data-title-zh="FLT空投：2023年参与过web3的开发能领" data-href-en="/flt-dev-rewards.html" data-href-zh="/flt-dev-rewards-zh.html">
+            <a href="/flt-dev-rewards.html">Fluence FLT drop — claim guide for eligible GitHub Web3 devs</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="5">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@7.1.2/dist/mermaid.min.js',
+    options: {"startOnLoad":true}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+
