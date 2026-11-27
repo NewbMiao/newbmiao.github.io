@@ -1,0 +1,804 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux" />
+  
+  
+  <meta name="description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:type" content="website">
+<meta property="og:title" content="newbmiao">
+<meta property="og:url" content="https://newbmiao.github.io/page/12/index.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/">
+
+
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/page/12/index.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/page/12/index.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+  
+    
+
+<article id="post-web/js/html5-drag-api-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="html5-drag-api">
+  
+  <div class="article-meta">
+    <a href="/html5-drag-api.html" class="article-date">
+  <time datetime="2015-02-22T10:29:00.000Z" itemprop="datePublished">2015-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/html5-drag-api.html">HTML5 drag and drop API</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/html5-drag-api-zh.html">html5的拖拽api</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Two common cases:</p>
+<ul>
+<li>Dragging <strong>in-page</strong> elements or data</li>
+<li>Dragging <strong>files</strong> from the OS into the page</li>
+</ul>
+<p>You need:</p>
+<ul>
+<li>A <strong>source</strong> (draggable element)</li>
+<li>A <strong>target</strong> (drop zone)</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>首先拖拽分两种：</p>
+<ul>
+<li>网页资源拖拽</li>
+<li>本地资源拖拽</li>
+</ul>
+<p>然后拖拽实现需要：</p>
+<ul>
+<li>拖动放的设定</li>
+<li>释放方的设定<br>知道这两点就好弄了。</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/html5-drag-api.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/html5-drag-api-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/html5-drag-api.html" data-id="cuidN7dVeNrKdIJ5gN2lzHnV8" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html5-drag/" rel="tag">html5-drag</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T01:20:00.000Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-web/legacy/hide-lamp-server-info" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh">
+  
+  <div class="article-meta">
+    <a href="/hide-lamp-server-info.html" class="article-date">
+  <time datetime="2015-02-13T03:34:00.000Z" itemprop="datePublished">2015-02-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/hide-lamp-server-info.html">隐藏服务器信息</a>
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h3 id="隐藏-Apache-版本信息"><a href="#隐藏-Apache-版本信息" class="headerlink" title="隐藏 Apache 版本信息"></a>隐藏 Apache 版本信息</h3><p> &#x2F;etc&#x2F;httpd&#x2F;conf&#x2F;httpd.conf(找不到可查看apache配置目录下的extra&#x2F;httpd-default.conf,记得修改后引入此文件)<br>	<br>	ServerTokens Prod<br>	ServerSignature Off</p>
+<h3 id="隐藏-php-版本"><a href="#隐藏-php-版本" class="headerlink" title="隐藏 php 版本"></a>隐藏 php 版本</h3><p>php.ini</p>
+<pre><code>expose_php On
+改成
+expose_php Off
+</code></pre>
+<p>重启apache后，php版本和apache版本在http头中隐藏了。</p>
+<hr>
+<blockquote>
+<p>详解 ：<br>ServerTokens<br>用于控制服务器是否响应来自客户端的请求，向客户端输出服务器系统类型或内置模块等重要的系统信息。<br>在主配置文件中提供全局控制默认阀值为”Full”(ServerTokens Full），所以，如果你的Linux发行版本没有更改过这个阀值的话，所有与你的系统有关的敏感信息都会向全世界公开。比如RHEL会将该 阀值更改为”ServerTokens OS”，而Debian依然使用默认的”Full”阀值</p>
+<pre><code>	以apache-2.0.55为例，阀值可以设定为以下某项（后面为相对应的Banner Header)：
+Prod &gt;&gt;Server: Apache
+Major &gt;&gt;Server: Apache/2
+Minor &gt;&gt;Server: Apache/2.0
+Minimal &gt;&gt;Server: Apache/2.0.55
+OS &gt;&gt;Server: Apache/2.0.55 (Debian)
+Full (or not specified) default &gt;&gt;Server: Apache/2.0.55 (Debian) php/5.1.2-1+b1 mod_ssl/2.0.55 OpenSSL/0.9.8b
+</code></pre>
+<p>ServerSignature<br>控制由系统生成的页面（错误信息，mod_proxy ftp directory listing等等）的页脚中如何显示信息。<br>可在全局设置文件中控制，或是通过.htaccess文件控制<br>默认为”off”(ServerSignature Off),有些Linux发行版本可能会打开这个阀门，比如Debian在默认的虚拟主机上默认将这个阀门设置为开放<br>全局阀门的阀值会被虚拟主机或目录单位的配置文件中的阀值所覆盖，所以，必须确保这样的事情不应该发生 .</p>
+<p>参考自：<a href="http://www.path8.net/tn/archives/5074">http://www.path8.net/tn/archives/5074</a></p>
+</blockquote>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/hide-lamp-server-info.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;hide-lamp-server-info.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;hide-lamp-server-info.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/hide-lamp-server-info.html" data-id="cuid_u-NJccpVVcxYN9lGGDTo" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:30:41.033Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-web/legacy/php-jump-out-of-the-frameset" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh">
+  
+  <div class="article-meta">
+    <a href="/php-jump-out-of-the-frameset.html" class="article-date">
+  <time datetime="2015-01-11T14:14:00.000Z" itemprop="datePublished">2015-01-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/php-jump-out-of-the-frameset.html">php后台跳出框架集</a>
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <p>在后台管理系统中，一般使用框架集来分隔显示管理页面，但是若检测到session过期需要跳出框架集时，php后台要怎么操作？</p>
+<pre><code>if(no_login()){
+    exit(&quot;&lt;script&gt;top.location.href=&#39;login.php&#39;;&lt;/script&gt;&quot;);
+}
+</code></pre>
+<blockquote>
+<p>这里的top其实就是a标签的target&#x3D;’_top’的对应。</p>
+</blockquote>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>2015.7.28<br>无独有偶，今天又遇到了跳转没反应，这回是登陆跳转，怎么会，我也不信，先看代码！</p>
+<pre><code>    &lt;?php
+    if (!empty($_POST)) {
+        header(&#39;location: https://newbmiao.github.io&#39;);
+        exit;
+    }
+    ?&gt;
+
+
+    &lt;form method=&#39;post&#39; target=&#39;hiddenwin&#39;&gt;
+        &lt;table&gt;
+            &lt;tr&gt;
+                &lt;th&gt;用户名&lt;/th&gt;
+                &lt;td&gt;&lt;input type=&#39;text&#39; name=&#39;account&#39; id=&#39;account&#39;/&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;th&gt;密码&lt;/th&gt;
+                &lt;td&gt;&lt;input type=&#39;password&#39; name=&#39;password&#39;/&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;th&gt;&lt;/th&gt;
+                &lt;td&gt;
+                    &lt;button type=&#39;submit&#39; id=&#39;submit&#39;&gt;登录&lt;/button&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/form&gt;
+    &lt;iframe frameborder=&#39;0&#39; name=&#39;hiddenwin&#39; id=&#39;hiddenwin&#39; scrolling=&#39;no&#39;&gt;&lt;/iframe&gt;
+</code></pre>
+<p>看到没，<code>form</code>里的那个<code>target</code>，请求内容要呈现的目标容器指定，所以header请求的跳转是生效了，但是放到了，那个隐藏的<code>iframe</code>里，所以感觉没有跳转。坑爹的<code>iframe</code>伪装不刷新！</p>
+<p>要解决，还是要用<code>top</code>或者<code>parent</code>去作为目标容器。</p>
+<hr>
+<blockquote>
+<p>附target列表：</p>
+<ul>
+<li>_blank 	在新窗口中打开被链接文档。</li>
+<li>_self 	默认。在相同的框架中打开被链接文档。</li>
+<li>_parent 	在父框架集中打开被链接文档。</li>
+<li>_top 	在整个窗口中打开被链接文档。 framename 	在指定的框架中打开被链接文档。</li>
+</ul>
+</blockquote>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/php-jump-out-of-the-frameset.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;php-jump-out-of-the-frameset.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;php-jump-out-of-the-frameset.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/php-jump-out-of-the-frameset.html" data-id="cuidew1yoUgJ1r_YRvR8EfmUO" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:30:41.034Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-web/legacy/ci-load-class-source-code-analysis" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh">
+  
+  <div class="article-meta">
+    <a href="/ci-load-class-source-code-analysis.html" class="article-date">
+  <time datetime="2015-01-08T09:20:00.000Z" itemprop="datePublished">2015-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/ci-load-class-source-code-analysis.html">CI加载类源码分析</a>
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <blockquote>
+<p>今天用到CI的library加载，发现同一controller多次load同一library，并期望传入的参数（构造函数接收的参数）生效是不行的，没搞明白，就看了下他的源码</p>
+</blockquote>
+<p>原来CI在load类初始化前，先判断CI这个全局对象已加载的类实例有无已加载过的，若有，便忽略不再加载，期望多次加载的以构造函数构造不同实例自然是不可得。<br>于是将构造函数修改属性替换为公有方法去操作。</p>
+<p><strong>总之，CI加载类只加载一次，不会重复加载，也就像单例模式了，应避免构造传参式修改类属性。</strong></p>
+        
+        
+          <p class="article-more-link">
+            
+            <a href="/ci-load-class-source-code-analysis.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/ci-load-class-source-code-analysis.html" data-id="cuid3noVZSOTGiTKMI0g9qr9E" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:30:41.033Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-linux/build-your-git-server-on-linux-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="build-your-git-server">
+  
+  <div class="article-meta">
+    <a href="/build-your-git-server-on-linux.html" class="article-date">
+  <time datetime="2014-12-28T08:01:00.000Z" itemprop="datePublished">2014-12-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/build-your-git-server-on-linux.html">Git server on Linux — bare repo, SSH keys, and post-receive deploy</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/build-your-git-server-on-linux-zh.html">Git搭建自己的网站服务器（Linux)</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Took a while to get this working the first time; writing it down so I do not have to rediscover it.</p>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p><strong>Server</strong></p>
+<ul>
+<li>Git layout<ul>
+<li>Dedicated <code>git</code> user and group for repos</li>
+<li>SSH keys so pushes do not need a password</li>
+<li><code>post-receive</code> hook deploys into the site directory</li>
+</ul>
+</li>
+<li>Web directory<ul>
+<li>Empty target tree ready to receive checkouts</li>
+</ul>
+</li>
+</ul>
+<p><strong>Client</strong></p>
+<ul>
+<li>Local dev directory</li>
+<li>Generate SSH keys</li>
+<li>Normal <code>git</code> workflow</li>
+</ul>
+<hr>
+<h2 id="Hands-on"><a href="#Hands-on" class="headerlink" title="Hands-on"></a>Hands-on</h2></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>弄了半天终于搞定了，还是记录下吧，不然下次有得忘了</p>
+<h2 id="流程："><a href="#流程：" class="headerlink" title="流程："></a>流程：</h2><p><strong>服务器</strong></p>
+<ul>
+<li>构建git目录<ul>
+<li>git用户，git组作为仓库管理</li>
+<li>ssh授权（远程无需密码接入）</li>
+<li>hook（post-receive）自动部署代码到网站目录</li>
+</ul>
+</li>
+<li>网站目录<ul>
+<li>准备接代码就行啦</li>
+</ul>
+</li>
+</ul>
+<p><strong>客户端</strong></p>
+<ul>
+<li>建立开发目录</li>
+<li>ssh连接key生成</li>
+<li>git操作。。。</li>
+</ul>
+<hr>
+<p>开始实作吧！</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/build-your-git-server-on-linux.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/build-your-git-server-on-linux-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/build-your-git-server-on-linux.html" data-id="cuidAPqsIziN75IzkPdsxyAfr" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/11/">« Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span>
+    </nav>
+  
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

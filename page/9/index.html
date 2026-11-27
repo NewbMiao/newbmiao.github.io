@@ -1,0 +1,1260 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux" />
+  
+  
+  <meta name="description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:type" content="website">
+<meta property="og:title" content="newbmiao">
+<meta property="og:url" content="https://newbmiao.github.io/page/9/index.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/">
+
+
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/page/9/index.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/page/9/index.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+  
+    
+
+<article id="post-database/mysql/remember-once-mysql-optimize-operations-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="remember-once-mysql-optimize-operations">
+  
+  <div class="article-meta">
+    <a href="/remember-once-mysql-optimize-operations.html" class="article-date">
+  <time datetime="2015-09-25T06:14:20.000Z" itemprop="datePublished">2015-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/remember-once-mysql-optimize-operations.html">MySQL — pulling gender from OAuth JSON with LOCATE and MID</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/remember-once-mysql-optimize-operations-zh.html">记一次mysql优化操作</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>I needed user source and gender for reporting. Gender lived in third-party OAuth JSON in <code>user_info</code>. I did not want to parse it in PHP, so I pushed the work into MySQL. Tell me if you have a cleaner approach.</p>
+</blockquote>
+<h1 id="Setup-simplified"><a href="#Setup-simplified" class="headerlink" title="Setup (simplified)"></a>Setup (simplified)</h1><h2 id="Schema"><a href="#Schema" class="headerlink" title="Schema"></a>Schema</h2><p>OAuth bindings for Weibo, QQ, and WeChat; profile blob in <code>user_info</code>.</p>
+<ul>
+<li><code>user_platform</code><ul>
+<li><code>weibo_id</code>, <code>qq_id</code>, <code>weixin_id</code>, <code>user_info</code>, <code>uid</code>, <code>user_platform_id</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Gender-encodings"><a href="#Gender-encodings" class="headerlink" title="Gender encodings"></a>Gender encodings</h2><ul>
+<li>Weibo <code>gender</code>: <code>m</code> &#x2F; <code>f</code> &#x2F; <code>n</code></li>
+<li>QQ <code>gender</code>: localized male&#x2F;female labels in the payload (not ASCII <code>m</code>&#x2F;<code>f</code>)</li>
+<li>WeChat <code>sex</code>: <code>1</code> &#x2F; <code>2</code></li>
+</ul>
+<h2 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints"></a>Constraints</h2><ul>
+<li>On the order of a million rows — queries had to stay practical on production hardware.</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>这次操作，起因是需要获取用户来源及用户性别，而用户的性别信息在第三方授权的中有，存为JSON格式，<br>不想用php去解析获取，所以试试mysql操作<br>如果你有更好的解决方案，请留言告诉我！</p>
+</blockquote>
+<h1 id="情景简化"><a href="#情景简化" class="headerlink" title="情景简化"></a>情景简化</h1><h2 id="表结构"><a href="#表结构" class="headerlink" title="表结构"></a>表结构</h2><p>记录用户授权信息，有微博、QQ、微信，个人信息存为user_info</p>
+<ul>
+<li>user_platform<ul>
+<li>weibo_id,qq_id,weixin_id,user_info,uid,user_platform_id</li>
+</ul>
+</li>
+</ul>
+<h2 id="性别格式"><a href="#性别格式" class="headerlink" title="性别格式"></a>性别格式</h2><ul>
+<li>微博 【gender】(‘m’ &#x3D;&gt;男,’f’ &#x3D;&gt; 女,’n’ &#x3D;&gt; 未知)</li>
+<li>QQ 【gender】 (‘男’ ,’女’ )</li>
+<li>微信 【sex】(1 &#x3D;&gt;男,2 &#x3D;&gt; 女)</li>
+</ul>
+<h2 id="附加条件"><a href="#附加条件" class="headerlink" title="附加条件"></a>附加条件</h2><ul>
+<li>数据量近百万行，处理不能太耗时</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/remember-once-mysql-optimize-operations.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/remember-once-mysql-optimize-operations-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/remember-once-mysql-optimize-operations.html" data-id="cuidz2A-zTawUBdbBnJQ6Rwez" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql-optimize/" rel="tag">mysql-optimize</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T13:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-web/legacy/a-tribute-to-the-great-god-of-php" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh">
+  
+  <div class="article-meta">
+    <a href="/a-tribute-to-the-great-god-of-php.html" class="article-date">
+  <time datetime="2015-09-24T04:59:24.000Z" itemprop="datePublished">2015-09-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/a-tribute-to-the-great-god-of-php.html">向php大神致敬</a>
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <p><strong>向鸟哥（laruence）致敬，向所有php大神致敬</strong></p>
+<p>PHP7正式版就要发布了，鸟哥2015在Qcon中演讲<a href="http://pan.baidu.com/s/1o6lCXRk">PHP7 – The New Engine for old good train .pdf</a> 已经透露了许多性能提升。</p>
+<p>今天才看了一些，虽然目前还不能get到很多点，但是内心还是很受鼓舞。附文一篇帮助了解。</p>
+<p><a href="http://hansionxu.blog.163.com/blog/static/24169810920158704014772/">PHP 7 的革新与性能优化</a></p>
+<blockquote>
+<p>关于鸟哥 ,再附一文与phper共勉</p>
+</blockquote>
+<p><a href="http://www.oschina.net/news/59059/laruence-interview">PHP 鸟哥：我也曾经是“不适合”编程的人</a></p>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/a-tribute-to-the-great-god-of-php.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;a-tribute-to-the-great-god-of-php.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;a-tribute-to-the-great-god-of-php.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/a-tribute-to-the-great-god-of-php.html" data-id="cuidOvk-DLTJoXZMjWNGX3Qv1" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:30:41.032Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-database/mysql/mysql-common-function-accumulation-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="mysql-common-function-accumulation">
+  
+  <div class="article-meta">
+    <a href="/mysql-common-function-accumulation.html" class="article-date">
+  <time datetime="2015-09-23T13:56:47.000Z" itemprop="datePublished">2015-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/mysql-common-function-accumulation.html">MySQL — date and string functions worth keeping nearby</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/mysql-common-function-accumulation-zh.html">mysql常用函数积累</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><h2 id="Dates-and-time"><a href="#Dates-and-time" class="headerlink" title="Dates and time"></a>Dates and time</h2><ul>
+<li>FROM_UNIXTIME</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Unix timestamp to datetime:</span><br><span class="line">  select FROM_UNIXTIME(1156219870);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>UNIX_TIMESTAMP</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Datetime string to Unix timestamp:</span><br><span class="line">  select UNIX_TIMESTAMP(&#x27;2006-11-04 12:23:00&#x27;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>date_format</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Rows for today:</span><br><span class="line">  DATE_FORMAT(FROM_UNIXTIME(ctime),&#x27;%Y-%m-%d&#x27;) = curdate()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Records in the last N days</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from table_name</span><br><span class="line">where datediff(curdate(), from_unixtime(timestamp_colname,&#x27;%Y-%m-%d&#x27;)) &gt;= N;</span><br></pre></td></tr></table></figure></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><h2 id="时间处理"><a href="#时间处理" class="headerlink" title="时间处理"></a>时间处理</h2><ul>
+<li>FROM_UNIXTIME</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UNIX时间戳转换为日期用函数：</span><br><span class="line">	select FROM_UNIXTIME(1156219870);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>UNIX_TIMESTAMP</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">日期转换为UNIX时间戳用函数：</span><br><span class="line">	select UNIX_TIMESTAMP(&#x27;2006-11-04 12:23:00&#x27;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>date_format</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查询当天的记录数：</span><br><span class="line">	DATE_FORMAT(FROM_UNIXTIME(ctime),&#x27;%Y-%m-%d&#x27;) = curdate()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>N天内记录</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select *  from table_name where datediff(curdate(),from_unixtime(timestamp_colname,&#x27;%Y-%m-%d&#x27;))&gt;=N;</span><br></pre></td></tr></table></figure></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/mysql-common-function-accumulation.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/mysql-common-function-accumulation-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/mysql-common-function-accumulation.html" data-id="cuidM08GWZ_-2uMdG4oY2KBXH" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T13:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-web/legacy/some-code-when-use-jquery-fileupload" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh">
+  
+  <div class="article-meta">
+    <a href="/some-code-when-use-jquery-fileupload.html" class="article-date">
+  <time datetime="2015-09-23T03:58:21.000Z" itemprop="datePublished">2015-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web/">web</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/some-code-when-use-jquery-fileupload.html">jquery图片上传</a>
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <blockquote>
+<p>图片上传在web中也是经常用到，这里整理下</p>
+</blockquote>
+<h1 id="jquery-fileupload"><a href="#jquery-fileupload" class="headerlink" title="jquery-fileupload"></a>jquery-fileupload</h1><blockquote>
+<p>File Upload widget with multiple file selection, drag&amp;drop support, progress bars, validation and preview images, audio and video for jQuery.<br>Supports cross-domain, chunked and resumable file uploads and client-side image resizing. Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.</p>
+</blockquote>
+        
+        
+          <p class="article-more-link">
+            
+            <a href="/some-code-when-use-jquery-fileupload.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/some-code-when-use-jquery-fileupload.html" data-id="cuidqK9O3zqkSIGQbG6hErKFU" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:30:41.034Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-linux/niaoge-linux-desktop-guide-notes-daemon-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="niaoge-linux-desktop-guide-notes-daemon">
+  
+  <div class="article-meta">
+    <a href="/niaoge-linux-desktop-guide-notes-daemon.html" class="article-date">
+  <time datetime="2015-09-16T09:41:50.000Z" itemprop="datePublished">2015-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-daemon.html">Linux daemons — stand-alone services, xinetd, logging, and runlevels</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-daemon-zh.html">鸟哥的Linux私房菜-系统服务</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Notes from <em>Bird’s Linux Private Kitchen</em> (3rd edition), kept for quick review.</p>
+</blockquote>
+<h2 id="System-services-daemons"><a href="#System-services-daemons" class="headerlink" title="System services (daemons)"></a>System services (daemons)</h2><ul>
+<li>Modes<ul>
+<li>stand alone — self-started, resident in memory; <code>/etc/init.d/*</code> (httpd, vsftpd)</li>
+<li>super daemon — <strong>xinetd</strong> stays in memory and manages others via <code>/etc/xinetd.d/*</code> (telnet)<ul>
+<li>multi-threaded — one service handles multiple programs</li>
+<li>single-threaded — one at a time; extras queue</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Services<ul>
+<li>signal control</li>
+<li>interval control — cron and similar schedulers</li>
+</ul>
+</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>笔记记录于《鸟哥的Linux私房菜-第三版》,以备多看。</p>
+</blockquote>
+<h2 id="系统服务-daemon"><a href="#系统服务-daemon" class="headerlink" title="系统服务-daemon"></a>系统服务-daemon</h2><ul>
+<li>方式<ul>
+<li>stand alone #独立启动常驻内存  <code>/etc/init.d/*</code> (httpd,vsftpd)</li>
+<li>super daemon #常驻内存的 <strong>xinetd</strong> 统一管理 <code>/etc/xinetd.d/*</code> (telnet)<ul>
+<li>multi-threaded #一个服务负责多个程序</li>
+<li>single-threaded #一个一个处理，多的排队</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>服务<ul>
+<li>signal control</li>
+<li>interval control #排程等服务</li>
+</ul>
+</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/niaoge-linux-desktop-guide-notes-daemon.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/niaoge-linux-desktop-guide-notes-daemon-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-daemon.html" data-id="cuiddLXZMmaYld-lTqhkumMka" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-linux/niaoge-linux-desktop-guide-notes-process-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="niaoge-linux-desktop-guide-notes-process">
+  
+  <div class="article-meta">
+    <a href="/niaoge-linux-desktop-guide-notes-process.html" class="article-date">
+  <time datetime="2015-09-15T09:41:50.000Z" itemprop="datePublished">2015-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-process.html">Linux process management — jobs, signals, ps, top, and load</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-process-zh.html">鸟哥的Linux私房菜-程序管理</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Notes from <em>Bird’s Linux Private Kitchen</em> (3rd edition), kept for quick review.</p>
+</blockquote>
+<h1 id="Process-management"><a href="#Process-management" class="headerlink" title="Process management"></a>Process management</h1><h3 id=""><a href="#" class="headerlink" title="&amp;"></a>&amp;</h3><ul>
+<li>Run in the background</li>
+<li>Stress test (fork bomb): <code>:(){ :|:&amp; };:</code></li>
+</ul>
+<h3 id="ctrl-z"><a href="#ctrl-z" class="headerlink" title="ctrl+z"></a>ctrl+z</h3><ul>
+<li>Stop the process and push it to the background</li>
+</ul>
+<h3 id="bg"><a href="#bg" class="headerlink" title="bg"></a>bg</h3><ul>
+<li>Resume stopped background jobs</li>
+</ul>
+<h3 id="fg"><a href="#fg" class="headerlink" title="fg"></a>fg</h3><ul>
+<li>Bring jobs to the foreground; the job marked with <code>+</code> is the default</li>
+<li><code>fg [%]num</code> — pick a job number</li>
+<li><code>fg -</code> — switch to the other job in the rotation</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>笔记记录于《鸟哥的Linux私房菜-第三版》,以备多看。</p>
+</blockquote>
+<h1 id="程序管理"><a href="#程序管理" class="headerlink" title="程序管理"></a>程序管理</h1><h3 id=""><a href="#" class="headerlink" title="&amp;"></a>&amp;</h3><ul>
+<li>后台执行</li>
+<li>试试这个 <code>:(){ :|:&amp; };:</code></li>
+</ul>
+<h3 id="ctrl-z"><a href="#ctrl-z" class="headerlink" title="ctrl+z"></a>ctrl+z</h3><ul>
+<li>程序stop，并切到后台</li>
+</ul>
+<h3 id="bg"><a href="#bg" class="headerlink" title="bg"></a>bg</h3><ul>
+<li>查看后台程序</li>
+</ul>
+<h3 id="fg"><a href="#fg" class="headerlink" title="fg"></a>fg</h3><ul>
+<li>查看前台程序,job前有+的会被调到前台</li>
+<li>fg [%]num #指定job切换</li>
+<li>fg - #切换到-对应的job</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/niaoge-linux-desktop-guide-notes-process.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/niaoge-linux-desktop-guide-notes-process-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-process.html" data-id="cuid8pgAuqOb18VfKZgOfpD6m" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-linux/niaoge-linux-desktop-guide-notes-cron-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="niaoge-linux-desktop-guide-notes-cron">
+  
+  <div class="article-meta">
+    <a href="/niaoge-linux-desktop-guide-notes-cron.html" class="article-date">
+  <time datetime="2015-09-15T09:39:47.000Z" itemprop="datePublished">2015-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-cron.html">Cron, at, and anacron — Bird&#39;s Linux Private Kitchen</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-cron-zh.html">鸟哥的Linux私房菜-排程</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Notes from <em>Bird’s Linux Private Kitchen</em> (3rd edition), kept for quick review.</p>
+</blockquote>
+<h2 id="Job-scheduling"><a href="#Job-scheduling" class="headerlink" title="Job scheduling"></a>Job scheduling</h2><h3 id="at"><a href="#at" class="headerlink" title="at"></a>at</h3><ul>
+<li>start service: &#x2F;etc&#x2F;init.d&#x2F;atd restart; chkconfig atd on</li>
+<li>-m # email when job completes</li>
+<li>-l # same as atq; list this user’s jobs</li>
+<li>-d num # same as atrm; cancel job</li>
+<li>-v # show schedule in time format</li>
+<li>-c num # show job contents</li>
+</ul>
+<h3 id="batch"><a href="#batch" class="headerlink" title="batch"></a>batch</h3><ul>
+<li>runs when load average is below 0.8</li>
+<li>HH:MM YYYY-MM-DD # run at specific time</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>笔记记录于《鸟哥的Linux私房菜-第三版》,以备多看。</p>
+</blockquote>
+<h2 id="排程"><a href="#排程" class="headerlink" title="排程"></a>排程</h2><h3 id="at"><a href="#at" class="headerlink" title="at"></a>at</h3><ul>
+<li>启动服务 &#x2F;etc&#x2F;init.d&#x2F;atd restart chkconfig atd on</li>
+<li>-m #完成后email通知</li>
+<li>-l #相当于atq，列出该使用者排程</li>
+<li>-d num #相当于atrm，取消一个排程</li>
+<li>-v #以时间格式列出排程</li>
+<li>-c num #列出该指令内容</li>
+</ul>
+<h3 id="batch"><a href="#batch" class="headerlink" title="batch"></a>batch</h3><ul>
+<li>在系统负载小于0.8时进行排程</li>
+<li>HH:MM YYYY-M-DD #指定时间执行</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/niaoge-linux-desktop-guide-notes-cron.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/niaoge-linux-desktop-guide-notes-cron-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-cron.html" data-id="cuidSyY7Oa_RNgI00wSaowo6G" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-linux/niaoge-linux-desktop-guide-notes-quota-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="niaoge-linux-desktop-guide-notes-quota">
+  
+  <div class="article-meta">
+    <a href="/niaoge-linux-desktop-guide-notes-quota.html" class="article-date">
+  <time datetime="2015-09-15T09:37:30.000Z" itemprop="datePublished">2015-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-quota.html">Linux disk quotas — fstab, quotacheck, edquota, journaled quota</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-quota-zh.html">鸟哥的Linux私房菜-配额</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Notes from <em>Bird’s Linux Private Kitchen</em> (3rd edition), kept for quick review.</p>
+</blockquote>
+<h2 id="Disk-quotas"><a href="#Disk-quotas" class="headerlink" title="Disk quotas"></a>Disk quotas</h2><blockquote>
+<p>One-shot enable:<br>mount -o remount,usrquota,grpquota <filesystem>  # matches &#x2F;etc&#x2F;mtab</p>
+</blockquote>
+<blockquote>
+<p>Persist across boots — edit <code>/etc/fstab</code><br>UUID&#x3D;<del>XXX</del>  <filesystem>                      ext4    defaults,<strong>usrquota,grpquota</strong>       0 0<br>umount <filesystem><br>mount -a<br>mount | grep <filesystem>  # confirm quota options</p>
+</blockquote>
+<h3 id="quota"><a href="#quota" class="headerlink" title="quota"></a>quota</h3><ul>
+<li><code>-auvg</code> — scan filesystems that need quotas [a: from &#x2F;etc&#x2F;mtab; u: user; g: group]</li>
+<li><code>-mf</code> — force check and write quota files</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>笔记记录于《鸟哥的Linux私房菜-第三版》,以备多看。</p>
+</blockquote>
+<h2 id="配额"><a href="#配额" class="headerlink" title="配额"></a>配额</h2><blockquote>
+<p>单次生效：<br>mount -o remount,usrquota,grpquota 单独的filesystem  #对应&#x2F;etc&#x2F;mtab</p>
+</blockquote>
+<blockquote>
+<p>每次开机有效 编辑&#x2F;etc&#x2F;fstab<br>UUID&#x3D;<del>XXX</del> 单独的filesystem                      ext4    defaults,<strong>usrquota,grpquota</strong>       0 0<br>umount 单独的filesystem<br>mount -a<br>mount|grep 单独的filesystem #确认是否添加quota</p>
+</blockquote>
+<h3 id="quota"><a href="#quota" class="headerlink" title="quota"></a>quota</h3><ul>
+<li>-auvg #扫描需要quota的filesystem [a-&#x2F;etc&#x2F;mtab中找需要quota的filesystem;u-user;g-group]</li>
+<li>-mf #强制执行检查写入</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/niaoge-linux-desktop-guide-notes-quota.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/niaoge-linux-desktop-guide-notes-quota-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-quota.html" data-id="cuidCxxCbUrLt97XmQElS1jbF" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-linux/niaoge-linux-desktop-guide-notes-acl-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="niaoge-linux-desktop-guide-notes-acl">
+  
+  <div class="article-meta">
+    <a href="/niaoge-linux-desktop-guide-notes-acl.html" class="article-date">
+  <time datetime="2015-09-15T09:34:48.000Z" itemprop="datePublished">2015-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-acl.html">Linux user permissions and ACL — Bird&#39;s Linux Private Kitchen</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-acl-zh.html">鸟哥的Linux私房菜-权限管理</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Notes from <em>Bird’s Linux Private Kitchen</em> (3rd edition), kept for quick review.</p>
+</blockquote>
+<h1 id="Permission-management"><a href="#Permission-management" class="headerlink" title="Permission management"></a>Permission management</h1><h2 id="User-permissions"><a href="#User-permissions" class="headerlink" title="User permissions"></a>User permissions</h2><h3 id="Understanding-etc-shadow"><a href="#Understanding-etc-shadow" class="headerlink" title="Understanding &#x2F;etc&#x2F;shadow"></a>Understanding &#x2F;etc&#x2F;shadow</h3><ul>
+<li><a href="http://www.cyberciti.biz/faq/understanding-etcshadow-file/">Reference article</a></li>
+</ul>
+<h3 id="useradd"><a href="#useradd" class="headerlink" title="useradd"></a>useradd</h3><ul>
+<li>-u UID</li>
+<li>-c ‘msg’</li>
+<li>-g initial group</li>
+<li>-G supplementary groups</li>
+<li>-d home directory</li>
+<li>-s shell</li>
+<li>-e YYYY-MM-DD # password expiration date</li>
+<li>-f num # days after password expiry the account may still be used; -1 &#x3D; never lock; 0 &#x3D; lock immediately</li>
+<li>-D # show defaults</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>笔记记录于《鸟哥的Linux私房菜-第三版》,以备多看。</p>
+</blockquote>
+<h1 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h1><h2 id="用户权限"><a href="#用户权限" class="headerlink" title="用户权限"></a>用户权限</h2><h3 id="etc-shadow理解"><a href="#etc-shadow理解" class="headerlink" title="&#x2F;etc&#x2F;shadow理解"></a>&#x2F;etc&#x2F;shadow理解</h3><ul>
+<li><a href="http://www.cyberciti.biz/faq/understanding-etcshadow-file/">参考文章</a></li>
+</ul>
+<h3 id="useradd"><a href="#useradd" class="headerlink" title="useradd"></a>useradd</h3><ul>
+<li>-u UID</li>
+<li>-c ‘msg’</li>
+<li>-g 初始群组</li>
+<li>-G 附加次要群组</li>
+<li>-d 指定家目录</li>
+<li>-s 指定shell</li>
+<li>-e YYYY-MM-DD #指定密码失效日期</li>
+<li>-f num #密码失效多少天内账号还可以使用，-1永久可以；0立马不能使用</li>
+<li>-D #显示预设</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/niaoge-linux-desktop-guide-notes-acl.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/niaoge-linux-desktop-guide-notes-acl-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-acl.html" data-id="cuid2wOZ9jMPBAnFFhRAe36Bj" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-linux/niaoge-linux-desktop-guide-notes-bash-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="niaoge-linux-desktop-guide-notes-bash">
+  
+  <div class="article-meta">
+    <a href="/niaoge-linux-desktop-guide-notes-bash.html" class="article-date">
+  <time datetime="2015-09-15T09:28:15.000Z" itemprop="datePublished">2015-09-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-bash.html">Bash scripting and text tools — Bird&#39;s Linux Private Kitchen</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/niaoge-linux-desktop-guide-notes-bash-zh.html">鸟哥的Linux私房菜-bash</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Notes from <em>Bird’s Linux Private Kitchen</em> (3rd edition), kept for quick review.</p>
+</blockquote>
+<h2 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h2><h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><ul>
+<li>-t # command type</li>
+<li>-a # every matching name on PATH</li>
+</ul>
+<h3 id="env"><a href="#env" class="headerlink" title="env"></a>env</h3><ul>
+<li>print environment</li>
+</ul>
+<h3 id="export"><a href="#export" class="headerlink" title="export"></a>export</h3><ul>
+<li>put a shell variable into the environment for child processes</li>
+</ul>
+<h3 id="declare"><a href="#declare" class="headerlink" title="declare"></a>declare</h3><ul>
+<li>declare -i num&#x3D;$RANDOM*10&#x2F;32768 # random digit 0-9</li>
+<li>-x variable # export to environment</li>
+<li>-r variable # read-only</li>
+<li>+x variable # stop exporting (does not clear -a or -r)</li>
+</ul></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>笔记记录于《鸟哥的Linux私房菜-第三版》,以备多看。</p>
+</blockquote>
+<h2 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h2><h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><ul>
+<li>-t #查看指令类型</li>
+<li>-a #显示PATH中所有指令</li>
+</ul>
+<h3 id="env"><a href="#env" class="headerlink" title="env"></a>env</h3><ul>
+<li>查看当前环境变量</li>
+</ul>
+<h3 id="export"><a href="#export" class="headerlink" title="export"></a>export</h3><ul>
+<li>将自定义变量导入当前环境(子程序)</li>
+</ul>
+<h3 id="declare"><a href="#declare" class="headerlink" title="declare"></a>declare</h3><ul>
+<li>declare -i num&#x3D;$RANDOM*10&#x2F;32768 #选取0-9随机数</li>
+<li>-x variable #将变量导入环境变量</li>
+<li>-r variable #只读变量</li>
+<li>+x variable #取消导入到环境变量(除 a,r 不会取消)</li>
+</ul></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/niaoge-linux-desktop-guide-notes-bash.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/niaoge-linux-desktop-guide-notes-bash-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash.html" data-id="cuidLjOY5ntCUsnJDf99QBXrn" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/8/">« Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/10/">Next »</a>
+    </nav>
+  
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,558 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'zh',
+    url: '/rust-sync-atomic-zh.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>Rust atomics — Atomic types and memory Ordering | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,sync,atomic,ordering,acquire,release,seqcst,acqrel,relaxed" />
+  
+  
+  <meta name="description" content="Mutex vs lock-free atomics, instruction reordering, Acquire&#x2F;Release&#x2F;SeqCst, fences, and lazy init with AtomicPtr.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust atomics — Atomic types and memory Ordering">
+<meta property="og:url" content="https://newbmiao.github.io/rust-sync-atomic.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="Mutex vs lock-free atomics, instruction reordering, Acquire&#x2F;Release&#x2F;SeqCst, fences, and lazy init with AtomicPtr.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-16T08:23:50.000Z">
+<meta property="article:modified_time" content="2026-11-20T12:00:00.000Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="rust-atomic">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/rust-sync-atomic.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/rust-sync-atomic.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/rust-sync-atomic-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/rust-sync-atomic.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Rust atomics — Atomic types and memory Ordering","description":"Mutex vs lock-free atomics, instruction reordering, Acquire/Release/SeqCst, fences, and lazy init with AtomicPtr.","url":"https://newbmiao.github.io/rust-sync-atomic.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/rust-sync-atomic.html"},"datePublished":"2023-12-16T08:23:50.000Z","dateModified":"2026-11-20T12:00:00.000Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"en","keywords":"rust-atomic"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/rust-sync-atomic.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/rust-sync-atomic.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-rust/rust-sync-atomic-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-sync-atomic">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:en"></span>
+    <span data-pagefind-meta="lang">en</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/rust-sync-atomic.html" class="article-date">
+  <time datetime="2023-12-16T08:23:50.000Z" itemprop="datePublished">2023-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      Rust atomics — Atomic types and memory Ordering
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mutex-vs-Atomic"><span class="toc-number">1.</span> <span class="toc-text">Mutex vs Atomic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#First-look-at-Atomic"><span class="toc-number">2.</span> <span class="toc-text">First look at Atomic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Instruction-reordering"><span class="toc-number">3.</span> <span class="toc-text">Instruction reordering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ordering"><span class="toc-number">4.</span> <span class="toc-text">Ordering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Seeing-the-difference-in-visibility"><span class="toc-number">5.</span> <span class="toc-text">Seeing the difference in visibility</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fence"><span class="toc-number">6.</span> <span class="toc-text">fence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lazy-initialization"><span class="toc-number">7.</span> <span class="toc-text">Lazy initialization</span></a></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <p><code>Mutex</code> and <code>Condvar</code> are higher-level ways to share data between threads in Rust. Lower down the stack you have <strong>atomics</strong> — hardware-backed operations on individual locations.</p>
+<p>Below: <code>Atomic*</code> types and <code>Ordering</code>, mostly through runnable examples.</p>
+<span id="more"></span>
+
+<p>Why bother with atomics if <code>Mutex</code> already exists? Compare the two.</p>
+<h2 id="Mutex-vs-Atomic"><a href="#Mutex-vs-Atomic" class="headerlink" title="Mutex vs Atomic"></a>Mutex vs Atomic</h2><p><strong>1. How they touch data</strong></p>
+<p><code>Mutex</code> enforces <strong>exclusive access</strong>: many threads may try to write, but only one holds the lock at a time. Everyone else waits until it is released.</p>
+<p><code>Atomic</code> operations are indivisible at the machine level — built on CPU primitives like load, store, compare-and-swap (CAS), and fetch-add. Each operation completes fully or not at all; there is no halfway state where another thread can tear the update apart.</p>
+<p>So atomics lean on non-splittable instructions for <strong>lock-free</strong> access to a single memory location.</p>
+<p><strong>2. Critical sections</strong></p>
+<p>With <code>Mutex</code>, the protected region sits between <code>lock()</code> and <code>unlock()</code>.</p>
+<p>An atomic only guarantees atomicity for <strong>that one address</strong>. If your critical section involves more state, you typically combine load&#x2F;store&#x2F;CAS with a spin loop — the lower-level cousin of a mutex. That shows up when you care about every nanosecond.</p>
+<p>Pseudo-code for a flag-based critical section (the <code>Ordering</code> section below makes this concrete):</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">thread <span class="number">1</span>: </span><br><span class="line">    <span class="comment">// set flag when condition is ready</span></span><br><span class="line">    store/CAS flag: <span class="literal">false</span><span class="punctuation">-&gt;</span><span class="literal">true</span></span><br><span class="line">thread <span class="number">2</span>: </span><br><span class="line">    <span class="comment">// spin until flag is set (like blocking on a lock)</span></span><br><span class="line">    <span class="keyword">while</span> load flag == <span class="literal">false</span> &#123;&#125;;</span><br><span class="line">    <span class="comment">// critical section</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<h2 id="First-look-at-Atomic"><a href="#First-look-at-Atomic" class="headerlink" title="First look at Atomic"></a>First look at Atomic</h2><p>A minimal two-thread example:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicBool, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">static</span> FLAG: AtomicBool = AtomicBool::<span class="title function_ invoke__">new</span>(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = thread::<span class="title function_ invoke__">spawn</span>(|| &#123;</span><br><span class="line">        FLAG.<span class="title function_ invoke__">store</span>(<span class="literal">true</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = thread::<span class="title function_ invoke__">spawn</span>(|| &#123;</span><br><span class="line">        <span class="keyword">if</span> FLAG.<span class="title function_ invoke__">load</span>(Ordering::Relaxed) &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;Relaxed: Flag is set!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    a.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    b.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Two threads store and load <code>FLAG</code>. The reader prints when it sees <code>true</code>.</p>
+<p>You might run this and <strong>not</strong> see the print. Scheduling could run <code>load</code> before <code>store</code>, and that alone would explain a miss — but that is not the whole story.</p>
+<p>The rest involves <strong>instruction reordering</strong> and atomic <code>Ordering</code>.</p>
+<h2 id="Instruction-reordering"><a href="#Instruction-reordering" class="headerlink" title="Instruction reordering"></a>Instruction reordering</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">f</span>(a: &amp;<span class="keyword">mut</span> <span class="type">i32</span>, b: &amp;<span class="keyword">mut</span> <span class="type">i32</span>) &#123;</span><br><span class="line">    *a += <span class="number">1</span>;</span><br><span class="line">    *b += <span class="number">1</span>;</span><br><span class="line">    *a += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>You write one sequence; the CPU or compiler may execute an equivalent faster one:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">f</span>(a: &amp;<span class="keyword">mut</span> <span class="type">i32</span>, b: &amp;<span class="keyword">mut</span> <span class="type">i32</span>) &#123;</span><br><span class="line">    *a += <span class="number">2</span>;</span><br><span class="line">    *b += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Why?</p>
+<p><strong>As long as single-thread semantics stay the same, instructions may be reordered for speed</strong> — execution order is not guaranteed to match source order.</p>
+<p>On one thread that is often fine. Across threads, even two atomics in the same thread can be reordered relative to each other, so “I used atomics” does not automatically mean “I fixed the order other threads observe.”</p>
+<p>Example — steps 1 and 2 in thread <code>b</code> are independent, so they may swap:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicI32, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> X: AtomicI32 = AtomicI32::<span class="title function_ invoke__">new</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">static</span> Y: AtomicI32 = AtomicI32::<span class="title function_ invoke__">new</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = thread::<span class="title function_ invoke__">spawn</span>(|| &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = X.<span class="title function_ invoke__">load</span>(Ordering::Relaxed);</span><br><span class="line">        Y.<span class="title function_ invoke__">store</span>(x, Ordering::Relaxed);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = thread::<span class="title function_ invoke__">spawn</span>(|| &#123;</span><br><span class="line">        <span class="comment">// 1</span></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">y</span> = Y.<span class="title function_ invoke__">load</span>(Ordering::Relaxed);</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        X.<span class="title function_ invoke__">store</span>(<span class="number">42</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;);</span><br><span class="line">    a.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    b.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="built_in">assert_eq!</span>(X.<span class="title function_ invoke__">load</span>(Ordering::Relaxed), <span class="number">42</span>);</span><br><span class="line">    <span class="comment">// possible: b&#x27;s 1 and 2 reordered to 2 then 1</span></span><br><span class="line">    <span class="built_in">assert_eq!</span>(Y.<span class="title function_ invoke__">load</span>(Ordering::Relaxed), <span class="number">42</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Ordering</code> constrains <strong>when</strong> an atomic’s effect becomes visible to other threads, so concurrent updates are more predictable.</p>
+<h2 id="Ordering"><a href="#Ordering" class="headerlink" title="Ordering"></a>Ordering</h2><p>Rust’s <code>Ordering</code> aligns with <a href="https://en.cppreference.com/w/cpp/atomic/memory_order">C++20 memory order</a> for the most part. The variants:</p>
+<ul>
+<li><strong>Relaxed</strong></li>
+</ul>
+<p>The weakest guarantee: the operation itself is atomic, but there is <strong>no ordering</strong> promise for how this store&#x2F;load relates to other memory accesses on other threads (as in the reordering example).</p>
+<ul>
+<li><strong>Acquire</strong></li>
+</ul>
+<p>For <strong>loads</strong>. No other reads or writes on this thread may be reordered <strong>before</strong> this load. Release stores to the same location from other threads that happened before you see the loaded value are visible.</p>
+<ul>
+<li><strong>Release</strong></li>
+</ul>
+<p>For <strong>stores</strong>. No other reads or writes on this thread may be reordered <strong>after</strong> this store. Threads that later do an Acquire load on the same location will see this write.</p>
+<p>So pairing Release (writer) with Acquire (reader) is the usual handoff: “data is ready” on the flag, payload writes before the Release, reads after the Acquire.</p>
+<p>See comments in the code for where reordering is forbidden:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicBool, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="comment">// For stricter exploration, consider `loom`</span></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">_</span> <span class="keyword">in</span> <span class="number">0</span>..<span class="number">100000</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">acquire_release</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">acquire_release</span>() &#123;</span><br><span class="line">    <span class="keyword">static</span> FLAG: AtomicBool = AtomicBool::<span class="title function_ invoke__">new</span>(<span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">mut</span> DATA: <span class="type">u64</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = thread::<span class="title function_ invoke__">spawn</span>(|| &#123;</span><br><span class="line">        <span class="keyword">unsafe</span> &#123; DATA = <span class="number">42</span> &#125;;</span><br><span class="line">        FLAG.<span class="title function_ invoke__">store</span>(<span class="literal">true</span>, Ordering::Release);</span><br><span class="line">        <span class="comment">// no reads/writes reordered after this store</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = thread::<span class="title function_ invoke__">spawn</span>(|| &#123;</span><br><span class="line">        <span class="comment">// no reads/writes reordered before this load</span></span><br><span class="line">        <span class="keyword">while</span> !FLAG.<span class="title function_ invoke__">load</span>(Ordering::Acquire) &#123;&#125;</span><br><span class="line">        <span class="built_in">assert_eq!</span>(<span class="keyword">unsafe</span> &#123; DATA &#125;, <span class="number">42</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    a.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    b.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>AcqRel</strong></li>
+</ul>
+<p>For read-modify-write ops: Acquire semantics on the read side, Release on the write side.</p>
+<ul>
+<li><strong>SeqCst</strong></li>
+</ul>
+<p>Acquire&#x2F;Release plus a <strong>single total order</strong> of all SeqCst atomics that every thread agrees on. Interleavings can still vary run to run, but once a particular execution has happened, there is no alternate consistent ordering of those SeqCst operations — as if they ran on one global timeline.</p>
+<p>Strictness ramp: Relaxed → Acquire&#x2F;Release → SeqCst, with cost usually going up as well.</p>
+<p>Building a critical section with explicit orderings:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::atomic::&#123;AtomicBool, Ordering&#125;;</span><br><span class="line"><span class="keyword">use</span> std::sync::Arc;</span><br><span class="line"><span class="keyword">use</span> std::thread;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">lock</span> = Arc::<span class="title function_ invoke__">new</span>(AtomicBool::<span class="title function_ invoke__">new</span>(<span class="literal">false</span>));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">lock_clone_read</span> = lock.<span class="title function_ invoke__">clone</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">lock_clone_store</span> = lock.<span class="title function_ invoke__">clone</span>();</span><br><span class="line">    thread::<span class="title function_ invoke__">spawn</span>(<span class="keyword">move</span> || &#123;</span><br><span class="line">        lock.<span class="title function_ invoke__">store</span>(<span class="literal">true</span>, Ordering::SeqCst);</span><br><span class="line">        <span class="comment">// critical section work</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> !lock_clone_read.<span class="title function_ invoke__">load</span>(Ordering::Acquire) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Critical section!&quot;</span>);</span><br><span class="line"></span><br><span class="line">    lock_clone_store.<span class="title function_ invoke__">store</span>(<span class="literal">false</span>, Ordering::Release);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Seeing-the-difference-in-visibility"><a href="#Seeing-the-difference-in-visibility" class="headerlink" title="Seeing the difference in visibility"></a>Seeing the difference in visibility</h2><p>Does the ordering strength matter in practice? Try <code>Relaxed</code> first:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::&#123;</span><br><span class="line">        atomic::&#123;AtomicBool, AtomicU64, Ordering&#125;,</span><br><span class="line">        Arc,</span><br><span class="line">    &#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> S: AtomicU64 = AtomicU64::<span class="title function_ invoke__">new</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">relaxed</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = Arc::<span class="title function_ invoke__">new</span>(AtomicBool::<span class="title function_ invoke__">new</span>(<span class="literal">false</span>));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = Arc::<span class="title function_ invoke__">new</span>(AtomicBool::<span class="title function_ invoke__">new</span>(<span class="literal">false</span>));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a_clone</span> = a.<span class="title function_ invoke__">clone</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b_clone</span> = b.<span class="title function_ invoke__">clone</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">t1</span> = thread::<span class="title function_ invoke__">spawn</span>(<span class="keyword">move</span> || &#123;</span><br><span class="line">        a.<span class="title function_ invoke__">store</span>(<span class="literal">true</span>, Ordering::Relaxed);</span><br><span class="line">        <span class="keyword">if</span> !b.<span class="title function_ invoke__">load</span>(Ordering::Relaxed) &#123;</span><br><span class="line">            S.<span class="title function_ invoke__">fetch_add</span>(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">t2</span> = thread::<span class="title function_ invoke__">spawn</span>(<span class="keyword">move</span> || &#123;</span><br><span class="line">        b_clone.<span class="title function_ invoke__">store</span>(<span class="literal">true</span>, Ordering::Relaxed);</span><br><span class="line">        <span class="keyword">if</span> !a_clone.<span class="title function_ invoke__">load</span>(Ordering::Relaxed) &#123;</span><br><span class="line">            S.<span class="title function_ invoke__">fetch_add</span>(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    t1.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    t2.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">cnt</span> = <span class="number">100000</span>;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">_</span> <span class="keyword">in</span> <span class="number">0</span>..cnt &#123;</span><br><span class="line">        <span class="title function_ invoke__">relaxed</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// result can be greater than 100000</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">s</span> = S.<span class="title function_ invoke__">load</span>(Ordering::SeqCst);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;s: &#123;&#125;&quot;</span>, s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>S</code> often ends up <strong>above</strong> 100000. Why?</p>
+<p>Both <code>AtomicBool</code>s start false. Each thread stores its flag true with <code>Relaxed</code>, then loads the other. If the load still sees false, it increments <code>S</code>.</p>
+<p>Possibilities:</p>
+<ol>
+<li><p>Other thread’s instructions reordered  </p>
+<ul>
+<li>Store happens after the load; increment (under Relaxed).</li>
+</ul>
+</li>
+<li><p>No reordering  </p>
+<ul>
+<li>Other thread has not stored yet → increment.  </li>
+<li>Other thread stored but load does not see it yet → increment (Relaxed).  </li>
+<li>Load sees the store → no increment.</li>
+</ul>
+</li>
+</ol>
+<p>Reordering plus weak visibility both push <code>S</code> up. Run 100000 iterations and overshooting 100000 is easy with <code>Relaxed</code>.</p>
+<p>Switch the bool ops to <code>SeqCst</code>: no reordering like above, and a global order on those atomics. If the other thread’s store is before your load in that order, you see it — you do not get both threads thinking the partner is still false. <code>S</code> tops out at 100000.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">t1</span> = thread::<span class="title function_ invoke__">spawn</span>(<span class="keyword">move</span> || &#123;</span><br><span class="line">    a.<span class="title function_ invoke__">store</span>(<span class="literal">true</span>, Ordering::SeqCst);</span><br><span class="line">    <span class="keyword">if</span> !b.<span class="title function_ invoke__">load</span>(Ordering::SeqCst) &#123;</span><br><span class="line">        S.<span class="title function_ invoke__">fetch_add</span>(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">t2</span> = thread::<span class="title function_ invoke__">spawn</span>(<span class="keyword">move</span> || &#123;</span><br><span class="line">    b_clone.<span class="title function_ invoke__">store</span>(<span class="literal">true</span>, Ordering::SeqCst);</span><br><span class="line">    <span class="keyword">if</span> !a_clone.<span class="title function_ invoke__">load</span>(Ordering::SeqCst) &#123;</span><br><span class="line">        S.<span class="title function_ invoke__">fetch_add</span>(<span class="number">1</span>, Ordering::Relaxed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="fence"><a href="#fence" class="headerlink" title="fence"></a>fence</h2><p><code>Ordering</code> applies per atomic op. <code>fence</code> adds a <strong>memory barrier</strong> across multiple atomics (and surrounding accesses), blocking certain reorders — another way to stitch a critical section together.</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a.<span class="title function_ invoke__">store</span>(<span class="number">1</span>, Release);</span><br><span class="line"><span class="comment">// equivalent pattern:</span></span><br><span class="line"><span class="title function_ invoke__">fence</span>(Release);</span><br><span class="line">a.<span class="title function_ invoke__">store</span>(<span class="number">1</span>, Relaxed);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a.<span class="title function_ invoke__">load</span>(Acquire);</span><br><span class="line"><span class="comment">// equivalent pattern:</span></span><br><span class="line">a.<span class="title function_ invoke__">load</span>(Relaxed);</span><br><span class="line"><span class="title function_ invoke__">fence</span>(Acquire);</span><br></pre></td></tr></table></figure>
+
+<p>Fences help when several locations need a coordinated visibility story. You can mix Relaxed ops with a fence instead of tagging every operation AcqRel&#x2F;SeqCst.</p>
+<p>Toy mutex built from CAS + fences:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::sync::atomic::AtomicBool;</span><br><span class="line"><span class="keyword">use</span> std::sync::atomic::fence;</span><br><span class="line"><span class="keyword">use</span> std::sync::atomic::Ordering;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">Mutex</span> &#123;</span><br><span class="line">    flag: AtomicBool,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Mutex</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">new</span>() <span class="punctuation">-&gt;</span> Mutex &#123;</span><br><span class="line">        Mutex &#123;</span><br><span class="line">            flag: AtomicBool::<span class="title function_ invoke__">new</span>(<span class="literal">false</span>),</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">lock</span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="comment">// Relaxed CAS + Acquire fence to sync with prior Release unlock</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">self</span></span><br><span class="line">            .flag</span><br><span class="line">            .<span class="title function_ invoke__">compare_exchange_weak</span>(<span class="literal">false</span>, <span class="literal">true</span>, Ordering::Relaxed, Ordering::Relaxed)</span><br><span class="line">            .<span class="title function_ invoke__">is_err</span>()</span><br><span class="line">        &#123;&#125;</span><br><span class="line">        <span class="title function_ invoke__">fence</span>(Ordering::Acquire);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">unlock</span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.flag.<span class="title function_ invoke__">store</span>(<span class="literal">false</span>, Ordering::Release);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Lazy-initialization"><a href="#Lazy-initialization" class="headerlink" title="Lazy initialization"></a>Lazy initialization</h2><p>Atomics often back <strong>lazy init</strong> of shared static-like data:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::&#123;</span><br><span class="line">    sync::atomic::&#123;AtomicPtr, Ordering&#125;,</span><br><span class="line">    thread,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Data</span> &#123;&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">generate_data</span>() <span class="punctuation">-&gt;</span> Data &#123;</span><br><span class="line">    Data &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">get_data</span>() <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;static</span> Data &#123;</span><br><span class="line">    <span class="keyword">static</span> PTR: AtomicPtr&lt;Data&gt; = AtomicPtr::<span class="title function_ invoke__">new</span>(std::ptr::<span class="title function_ invoke__">null_mut</span>());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">p</span> = PTR.<span class="title function_ invoke__">load</span>(Ordering::Acquire);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> p.<span class="title function_ invoke__">is_null</span>() &#123;</span><br><span class="line">        p = <span class="type">Box</span>::<span class="title function_ invoke__">into_raw</span>(<span class="type">Box</span>::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">generate_data</span>()));</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Err</span>(e) = PTR.<span class="title function_ invoke__">compare_exchange</span>(</span><br><span class="line">            std::ptr::<span class="title function_ invoke__">null_mut</span>(),</span><br><span class="line">            p,</span><br><span class="line">            Ordering::Release,</span><br><span class="line">            Ordering::Acquire,</span><br><span class="line">        ) &#123;</span><br><span class="line">            <span class="comment">// Safety: p comes from Box::into_raw right above,</span></span><br><span class="line">            <span class="comment">// and wasn&#x27;t shared with any other thread.</span></span><br><span class="line">            <span class="title function_ invoke__">drop</span>(<span class="keyword">unsafe</span> &#123; <span class="type">Box</span>::<span class="title function_ invoke__">from_raw</span>(p) &#125;);</span><br><span class="line">            p = e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Safety: p is not null and points to a properly initialized value.</span></span><br><span class="line">    <span class="keyword">unsafe</span> &#123; &amp;*p &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">t1</span> = thread::<span class="title function_ invoke__">spawn</span>(|| <span class="title function_ invoke__">get_data</span>());</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">t2</span> = thread::<span class="title function_ invoke__">spawn</span>(|| <span class="title function_ invoke__">get_data</span>());</span><br><span class="line">    <span class="keyword">let</span> (ret1, ret2) = (t1.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>(), t2.<span class="title function_ invoke__">join</span>().<span class="title function_ invoke__">unwrap</span>());</span><br><span class="line">    <span class="built_in">assert_eq!</span>(ret1 <span class="keyword">as</span> *<span class="keyword">const</span> _, ret2 <span class="keyword">as</span> *<span class="keyword">const</span> _);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In real code you rarely hand-roll this — crates like <a href="https://docs.rs/once_cell/latest/once_cell/#lazy-initialized-global-data">once_cell</a> cover the pattern.</p>
+<hr>
+<p>Atomics are the low-level layer. <code>Ordering</code> ties atomic results to what other threads can observe and pushes back on compiler&#x2F;CPU reordering. You might never ship your own lock-free structure, but knowing this makes library code and the ordering names far easier to read.</p>
+<p>Solid follow-ups:</p>
+<ul>
+<li><a href="https://marabos.nl/atomics/memory-ordering.html">Rust Atomics and Locks: memory ordering</a></li>
+<li><a href="https://www.youtube.com/watch?v=rMGWeSjctlY">Crust of Rust: Atomics and Memory Ordering</a></li>
+</ul>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/rust-sync-atomic.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;rust-sync-atomic.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;rust-sync-atomic.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-sync-atomic.html" data-id="cuid7Gphuj0prNZQtWkSTGR_U" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-atomic/" rel="tag">rust-atomic</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

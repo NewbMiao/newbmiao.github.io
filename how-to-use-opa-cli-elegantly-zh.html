@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'en',
+    url: '/how-to-use-opa-cli-elegantly.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>如何优雅的使用opa进行开发 | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="opa,vscode,rego,REPL" />
+  
+  
+  <meta name="description" content="如何优雅的使用opa进行开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何优雅的使用opa进行开发">
+<meta property="og:url" content="https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="如何优雅的使用opa进行开发">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://newbmiao.github.io/images/opa/vscode-opa.webp">
+<meta property="article:published_time" content="2020-03-14T02:56:26.000Z">
+<meta property="article:modified_time" content="2026-11-21T02:53:39.438Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="opa-local-dev">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://newbmiao.github.io/images/opa/vscode-opa.webp">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/how-to-use-opa-cli-elegantly.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/how-to-use-opa-cli-elegantly.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"如何优雅的使用opa进行开发","description":"如何优雅的使用opa进行开发","url":"https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html"},"datePublished":"2020-03-14T02:56:26.000Z","dateModified":"2026-11-21T02:53:39.438Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"zh-CN","keywords":"opa-local-dev"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/how-to-use-opa-cli-elegantly-zh.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/how-to-use-opa-cli-elegantly-zh.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-opa/opa-how-to-develop-elegantly" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh" data-lang-pair="how-to-use-opa-cli-elegantly">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:zh"></span>
+    <span data-pagefind-meta="lang">zh</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/how-to-use-opa-cli-elegantly-zh.html" class="article-date">
+  <time datetime="2020-03-14T02:56:26.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/opa/">opa</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      如何优雅的使用opa进行开发
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#opa"><span class="toc-number">1.</span> <span class="toc-text">opa</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#run"><span class="toc-number">1.1.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#eval"><span class="toc-number">1.2.</span> <span class="toc-text">eval</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#deps"><span class="toc-number">1.3.</span> <span class="toc-text">deps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#test"><span class="toc-number">1.4.</span> <span class="toc-text">test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#check-fmt"><span class="toc-number">1.5.</span> <span class="toc-text">check &amp; fmt</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vscode-opa"><span class="toc-number">2.</span> <span class="toc-text">vscode-opa</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD"><span class="toc-number">2.1.</span> <span class="toc-text">功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.</span> <span class="toc-text">快捷键配置</span></a></li></ol></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <!-- **文章目录** -->
+<!-- [TOC] -->
+<p>上文<a href="/opa-quick-start-zh.html">OPA-重新定义规则引擎-入门篇</a>一个简单的例子介绍了<code>OPA</code>如何使用。也提供了在线运行版代码供大家尝试。</p>
+<p>本文趁热打铁，介绍如何优雅的使用<code>opa</code>进行开发。</p>
+<span id="more"></span>
+
+<h2 id="opa"><a href="#opa" class="headerlink" title="opa"></a>opa</h2><p><code>opa</code>（命令行工具）现在迭代比较快，为了性能和一些丰富的内置函数，推荐使用最新版</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">mac</span></span><br><span class="line">curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_darwin_amd64</span><br><span class="line">chmod +x opa</span><br><span class="line">mv opa /usr/local/bin/opa</span><br></pre></td></tr></table></figure>
+
+<p>查看命令帮助</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">opa -h</span></span><br><span class="line">An open source project to policy-enable your service.</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  opa [command]</span><br><span class="line"></span><br><span class="line">Available Commands:</span><br><span class="line">  build       Compile Rego policy queries</span><br><span class="line">  check       Check Rego source files</span><br><span class="line">  deps        Analyze Rego query dependencies</span><br><span class="line">  eval        Evaluate a Rego query</span><br><span class="line">  fmt         Format Rego source files</span><br><span class="line">  help        Help about any command</span><br><span class="line">  parse       Parse Rego source file</span><br><span class="line">  run         Start OPA in interactive or server mode</span><br><span class="line">  test        Execute Rego test cases</span><br><span class="line">  version     Print the version of OPA</span><br></pre></td></tr></table></figure>
+
+<p>看介绍能知道每个命令是干啥的，用到时具体看help就行</p>
+<p>这里边挑常用的命令讲下：</p>
+<h3 id="run"><a href="#run" class="headerlink" title="run"></a>run</h3><p><code>opa run</code>是<code>OPA</code>实现的<strong>交互式运行</strong>（<code>REPL</code>）命令，本地学习或者调试会很方便</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">opa run quick-start</span></span><br><span class="line">OPA 0.17.3 (commit 28ca58f3, built at 2020-03-03T18:07:55Z)</span><br><span class="line">Run &#x27;help&#x27; to see a list of commands.</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">data  <span class="comment">#获取上下文</span></span></span><br></pre></td></tr></table></figure>
+
+<p>你会得到json格式的data下的所有节点内容</p>
+<p>主要有两类，所有<code>quick-start</code>目录下的</p>
+<ul>
+<li>配置文件（<code>.json|.yaml|.yml</code>）</li>
+</ul>
+<p>对应的父节点是<code>data</code></p>
+<ul>
+<li><code>Rego</code>文件(包括test文件)</li>
+</ul>
+<p>对应的父节点是<code>data.&lt;package name&gt;</code></p>
+<blockquote>
+<p>Tips: 这样配置文件都挂在<code>data</code>这个根节点下了，如果想加载配置文件时增加父节点（如<code>data.example.file</code>）该怎么办？<br>可以文件的路径映射前缀 <code>opa run example.file:quick-start</code><br>注意<strong>只会改变配置文件</strong>的父节点<br>这一点很有用，以后讲<code>bundle</code>也会提到</p>
+</blockquote>
+<p>当然也可以指定输入文件<code>input</code>。这个比较特殊，命令行保留了包前缀<code>repl.input</code>给<code>input</code></p>
+<p>也就是说，可以用<code>repl.input:&lt;path to input.json&gt;</code>的方式传递输入，而避免挂载到<code>data</code>根节点下</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ opa run  quick-start  repl.input<span class="punctuation">:</span>quick-start/input.json</span><br><span class="line">&gt; data.example_rbac</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;role_has_permission&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;widget-reader&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;user_has_role&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;widget-reader&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tips: <code>-w</code>支持交互式窗口内实时文件变更reload<br><code>-s</code>支持服务常驻式启动，启动后可以REST-Api查询；</p>
+</blockquote>
+<h3 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h3><p><code>opa eval</code>是用来查询策略结果</p>
+<p><code>-d</code> 指定上下文，<code>-i</code> 指定输入</p>
+<p><code>-f</code> 指定返回格式，默认json，还支持<code>values,bindings,pretty,source</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">opa eval -f values -d quick-start -i quick-start/input.json <span class="string">&quot;data.example_rbac&quot;</span></span><br><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;role_has_permission&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;widget-reader&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;user_has_role&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;widget-reader&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>--explain=notes</code> 配合 <code>trace(msg)</code> 可以<strong>调试</strong>执行过程</p>
+<p>如下边规则增加<code>trace(role_name)</code>调用</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">allow &#123;</span><br><span class="line">  trace(role_name)</span><br><span class="line">  user_has_role[role_name]</span><br><span class="line">  role_has_permission[role_name]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>--explain=notes</code>时可以看到所有调用点note</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">opa eval -f pretty -d quick-start -i quick-start/input.json <span class="string">&quot;data.example_rbac.allow&quot;</span> --explain=notes</span><br><span class="line"></span><br><span class="line">query:<span class="number">1</span>             Enter data.example_rbac.allow = _</span><br><span class="line">quick-start/exa:<span class="number">6</span>   | Enter data.example_rbac.allow</span><br><span class="line">note                | | Note <span class="string">&quot;widget-reader&quot;</span></span><br><span class="line"><span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>除此，默认<code>--explain</code>支持<code>full</code>和<code>fails</code>的<code>trace</code>打印</p>
+<blockquote>
+<p>Tips: 还支持性能分析 <code>--metrics</code>, <code>--instrument</code>, <code>--profile</code></p>
+</blockquote>
+<h3 id="deps"><a href="#deps" class="headerlink" title="deps"></a>deps</h3><p><code>opa deps</code> 用来分析查询依赖</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">opa deps -d quick-start <span class="string">&quot;data.example_rbac&quot;</span></span></span><br><span class="line">+------------------------+---------------------------------------+</span><br><span class="line">|     BASE DOCUMENTS     |           VIRTUAL DOCUMENTS           |</span><br><span class="line">+------------------------+---------------------------------------+</span><br><span class="line">| data.bindings          | data.example_rbac.allow               |</span><br><span class="line">| data.roles             | data.example_rbac.role_has_permission |</span><br><span class="line">| input.action.operation | data.example_rbac.user_has_role       |</span><br><span class="line">| input.action.resource  |                                       |</span><br><span class="line">| input.subject.user     |                                       |</span><br><span class="line">+------------------------+---------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<h3 id="test"><a href="#test" class="headerlink" title="test"></a>test</h3><p><code>opa test</code> 用来跑测试，<code>-c</code>支持输出覆盖率，<code>--threshold</code> 可指定通过覆盖率</p>
+<h3 id="check-fmt"><a href="#check-fmt" class="headerlink" title="check &amp; fmt"></a>check &amp; fmt</h3><p><code>opa check</code> 是语法检查;<code>opa fmt</code>是格式化</p>
+<h2 id="vscode-opa"><a href="#vscode-opa" class="headerlink" title="vscode-opa"></a>vscode-opa</h2><p>命令虽少可还是要记啊，有没有不用敲命令这么费劲的</p>
+<p>有！官方强大的交互式编辑器扩展<a href="https://marketplace.visualstudio.com/items?itemName=tsandall.opa">vscode-opa</a>，了解下~~</p>
+<p>安装后只要在<code>vscode</code>的配置里指定<code>OPA</code>执行文件路径就可以用了</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;opa.path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/local/bin/opa&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>它基本支持上述大部分命令功能：</p>
+<ul>
+<li>在保存时检查语法（Check Syntax on Save）</li>
+<li>计算包结果（Evaluate Packages）</li>
+<li>计算选择部分结果（Evaluate Selections）</li>
+<li>部分评估选择（Partially Evaluate Selections）</li>
+<li>对选择部分代码运行追踪（Trace Selections）</li>
+<li>对选择部分性能分析（Profile Selections）</li>
+<li>在工作区中运行测试（Run Tests in Workspace）</li>
+<li>切换工作区的测试覆盖（Toggle Coverage in Workspace）</li>
+<li>切换选择部分的测试覆盖（Toggle Coverage of Selections）</li>
+</ul>
+<p>其中评估（<code>Evaluate</code>)和测试覆盖显示（<code>Coverage</code>）在日常开发中很实用</p>
+<p>具体如下图：</p>
+<p><img decoding="async" loading="lazy" src="/images/opa/vscode-opa.webp" alt="插件效果"></p>
+<h3 id="快捷键配置"><a href="#快捷键配置" class="headerlink" title="快捷键配置"></a>快捷键配置</h3><p>这里可以配置用户快捷键方便直接调起命令：</p>
+<p>（官方推荐的前两个<code>Evaluate</code>的，后边<code>Test</code>相关的也可以加上）</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cmd+e&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;opa.eval.selection&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;editorLangId == rego&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;shift+cmd+a&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;opa.eval.package&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;editorLangId == rego&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;shift+cmd+c&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;opa.test.coverage.workspace&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;editorLangId == rego&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;shift+cmd+t&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;opa.test.workspace&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;editorLangId == rego&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tip: 插件默认<strong>只取项目根目录</strong>的<code>input.json</code>作为输入<br>配置<code>opa.bundleMode</code>默认为true，则会<strong>只获取目录</strong>里的所有<code>data.{json|yaml}</code><br>如果设置为false，则会获取目录中所有<code>.{json|yaml}</code></p>
+</blockquote>
+<p>好了，现在可以优雅的使用<code>opa</code>开发了。</p>
+<p>下一篇我们来讲讲<code>OPA</code>的函数和虚拟文档，了解下他们各自适用的场景。</p>
+<blockquote>
+<p>本文代码详见:<a href="https://github.com/NewbMiao/opa-koans/tree/master/quick-start">NewbMiao&#x2F;opa-koans</a></p>
+</blockquote>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;how-to-use-opa-cli-elegantly-zh.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;how-to-use-opa-cli-elegantly-zh.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html" data-id="cuidoC5qfrlYPoxoIm3_Gf_bM" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opa-local-dev/" rel="tag">opa-local-dev</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:53:39.438Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

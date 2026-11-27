@@ -1,0 +1,1067 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux" />
+  
+  
+  <meta name="description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:type" content="website">
+<meta property="og:title" content="newbmiao">
+<meta property="og:url" content="https://newbmiao.github.io/page/4/index.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/">
+
+
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/page/4/index.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/page/4/index.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+  
+    
+
+<article id="post-devops/tech-behind-authentication-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="tech-behind-authentication">
+  
+  <div class="article-meta">
+    <a href="/tech-behind-authentication.html" class="article-date">
+  <time datetime="2021-09-19T15:00:09.000Z" itemprop="datePublished">2021-09-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/devops/">devops</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/tech-behind-authentication.html">Authentication vs authorization — OAuth2, OIDC, JWT, and Keycloak</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/tech-behind-authentication-zh.html">简单聊聊鉴权背后的那些技术</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>I put together a small <a href="https://github.com/NewbMiao/keycloak-authN">Keycloak auth demo</a> so folks who’ve never touched Keycloak can see the moving parts without drowning in docs.</p>
+<p>Goes with the Keycloak demo above: <strong>authentication</strong> vs <strong>authorization</strong>, OAuth2, OpenID Connect, JWT, JWKS—and where each shows up in that code.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>最近弄了一个<code>keycloak</code>鉴权相关demo(地址附文末)， 可以让不熟悉的<code>keycloak</code>的同学有一个快速、直观的了解。</p>
+<p>今天结合背后的技术概念，简单聊聊：鉴权（<code>authentication</code>）和授权（<code>authorization</code>）以及<code>Oauth2</code>、<code>OpenID Connect</code>、<code>JWT</code> 和 <code>JWKS</code>。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/tech-behind-authentication.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/tech-behind-authentication-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/tech-behind-authentication.html" data-id="cuidwyTgozBvcD3uWNjcNEC6P" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keycloak/" rel="tag">keycloak</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T07:10:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/how-to-build-ringbuffer-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="how-to-build-ringbuffer">
+  
+  <div class="article-meta">
+    <a href="/how-to-build-ringbuffer.html" class="article-date">
+  <time datetime="2021-09-01T12:43:16.000Z" itemprop="datePublished">2021-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/how-to-build-ringbuffer.html">Ring buffer — counter pointers and mirror indexing</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/how-to-build-ringbuffer-zh.html">聊聊ringbuffer</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>A <strong>ring buffer</strong> (circular queue) joins head and tail: read&#x2F;write cursors advance around a fixed slice instead of shifting elements on every dequeue.</p>
+<p>The payoff: after a dequeue you do not slide the rest of the queue forward; the next enqueue overwrites the freed slot.</p>
+<p>Below is a common pattern—<strong>separate read&#x2F;write counters</strong>—with a diagram-friendly walkthrough. Code is adapted from <a href="https://github.com/smallnest/chanx/blob/main/ringbuffer.go">chanx ringbuffer</a>.</p>
+<h2 id="Counter-based-implementation"><a href="#Counter-based-implementation" class="headerlink" title="Counter-based implementation"></a>Counter-based implementation</h2><p>Skim the code first; a picture afterward makes the flow obvious.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p><code>ringbuffer</code>，是环形缓存区, 或叫环形队列。</p>
+<p>不同于一般常见的队列，环形队列收尾相连，通过移动指针来控制队列中内容的读写。</p>
+<p>这样做有什么好处呢？</p>
+<p>最大的好处是环形队列出队（读取）后，不需要对后续队列内容进行搬移，可以后续由入队（写入）覆盖。</p>
+<p>下面来看下一种常见的实现方式， 通过读写指针计数来实现环形队列</p>
+<h2 id="计数法实现"><a href="#计数法实现" class="headerlink" title="计数法实现"></a>计数法实现</h2><p>先过一遍代码，后边会有图解版说明，方便理解</p>
+<p>代码参考自<a href="https://github.com/smallnest/chanx/blob/main/ringbuffer.go">鸟窝无限缓存 channel-chanx</a></p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/how-to-build-ringbuffer.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/how-to-build-ringbuffer-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/how-to-build-ringbuffer.html" data-id="cuidQIr6_90LZ5z_bO7mYczM_" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ringbuffer/" rel="tag">ringbuffer</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/fanin-and-fanout-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="fanin-and-fanout">
+  
+  <div class="article-meta">
+    <a href="/fanIn-and-fanOut.html" class="article-date">
+  <time datetime="2021-08-25T12:49:10.000Z" itemprop="datePublished">2021-08-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/fanIn-and-fanOut.html">Fan-in and fan-out — merging and broadcasting on channels</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/fanIn-and-fanOut-zh.html">说说fanIn和fanOut</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Two common <strong>channel</strong> patterns: <strong>fan-in</strong> (merge many channels of the same element type into one) and <strong>fan-out</strong> (broadcast one stream to many outputs).</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>今天回顾下常用的两种<code>channel</code>应用模式: <code>fanIn</code>和<code>fanOut</code>,</p>
+<p>分别对应了，对一组相同类型<code>chan</code>的合并和广播。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/fanIn-and-fanOut.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/fanIn-and-fanOut-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/fanIn-and-fanOut.html" data-id="cuidASa2tqRh1E33jSdWmwWy1" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-fan-patterns/" rel="tag">go-fan-patterns</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/dig101/recursive-orDone-issue-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="recursive-ordone-issue">
+  
+  <div class="article-meta">
+    <a href="/recursive-ordone-issue.html" class="article-date">
+  <time datetime="2021-08-22T13:04:19.000Z" itemprop="datePublished">2021-08-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/recursive-ordone-issue.html">Recursive orDone — goroutine leaks and infinite recursion with three channels</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/recursive-ordone-issue-zh.html">二分递归版or-channel模式的问题</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>While fixing benchmarks for “two ways to implement orDone”, I found bugs in the binary-recursive version — mainly <strong>goroutine leaks</strong>. See also <a href="https://zhuanlan.zhihu.com/p/367824324">learning orDone the hard way</a>.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>今天在修正昨天的文章《orDone的两种实现》中的压测代码时，无意发现其中的二分递归版的代码是有问题的。</p>
+<p>主要是<code>goroutine</code>泄露的问题，下边简单说明下，也参考自文章<a href="https://zhuanlan.zhihu.com/p/367824324">记一次学习 orDone 模式爬坑经历</a></p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/recursive-ordone-issue.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/recursive-ordone-issue-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/recursive-ordone-issue.html" data-id="cuidPJcGV-ubrrrMbEKahGv4j" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/or-done/" rel="tag">or-done</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/dig101/2-way-of-or-done-pattern-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="2-way-of-or-done-pattern">
+  
+  <div class="article-meta">
+    <a href="/2-way-of-or-done-pattern.html" class="article-date">
+  <time datetime="2021-08-19T14:08:01.000Z" itemprop="datePublished">2021-08-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/2-way-of-or-done-pattern.html">Go or-channel pattern — recursive select vs reflect.Select</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/2-way-of-or-done-pattern-zh.html">or-channel模式的两种实现</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>The <strong>or-channel</strong> pattern waits on several concurrent tasks and proceeds as soon as <strong>any one</strong> completes.</p>
+<p>Two implementations:</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p><code>or</code> channel模式是一种并发控制模式，旨在多任务场景下实现，有一个任务成功返回即立即结束等待。</p>
+<p>今天我们来看下两种不同的实现方式：</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/2-way-of-or-done-pattern.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/2-way-of-or-done-pattern-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/2-way-of-or-done-pattern.html" data-id="cuidKfdiQ-SUbZ0WMKvQNCE_s" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/or-done/" rel="tag">or-done</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/dig101/one-example-to-learn-cond-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="one-example-to-learn-cond">
+  
+  <div class="article-meta">
+    <a href="/one-example-to-learn-cond.html" class="article-date">
+  <time datetime="2021-08-09T13:04:19.000Z" itemprop="datePublished">2021-08-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/one-example-to-learn-cond.html">sync.Cond by example — wait, signal, and broadcast</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/one-example-to-learn-cond-zh.html">举例来学cond原语</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>I recently read Ma Que’s <em>Go Concurrency in Practice</em> course and plan to revisit the concurrency primitives with small examples. Today: <strong><code>sync.Cond</code></strong>.</p>
+<p><code>Cond</code> is for wait&#x2F;notify patterns: goroutines block in <code>Wait</code> while a condition is false; when it becomes true, <code>Signal</code> wakes one waiter or <code>Broadcast</code> wakes all of them.</p>
+<p>Picture ten athletes on the track — the starter fires the gun only after everyone is ready:</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>最近看了鸟窝的《Go并发编程实战课》，写的挺有意思的，打算后边弄些例子再回顾下并发原语。</p>
+<p>今天来看看<code>cond</code>原语。</p>
+<p><code>cond</code> 是用于等待或通知场景下的并发原语，条件不满足时，阻塞(<code>wait</code>)一组<code>goroutine</code>；条件满足后，唤醒单个（<code>signal</code>）或所有(<code>broadcast</code>)阻塞的<code>goroutine</code>.</p>
+<p>比如10个运动员跑步，都准备好了，裁判才发令的例子：</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/one-example-to-learn-cond.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/one-example-to-learn-cond-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/one-example-to-learn-cond.html" data-id="cuidfO9XHQWG95JbjMrHtvpd-" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-cond/" rel="tag">go-cond</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/dig101/one-8-bytes-optimization-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="one-8-bytes-optimization">
+  
+  <div class="article-meta">
+    <a href="/one-8-bytes-optimization.html" class="article-date">
+  <time datetime="2021-08-07T07:36:13.000Z" itemprop="datePublished">2021-08-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/one-8-bytes-optimization.html">Go runtime — the 24-byte size class and an 8-byte allocation win</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/one-8-bytes-optimization-zh.html">一个8bytes的内存优化</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>While reading <a href="https://dave.cheney.net/2021/01/05/a-few-bytes-here-a-few-there-pretty-soon-youre-talking-real-memor">Dave Cheney’s post</a>, I noticed a benchmark that highlights an eight-byte allocation improvement.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkSortStrings</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line"> s := []<span class="type">string</span>&#123;<span class="string">&quot;heart&quot;</span>, <span class="string">&quot;lungs&quot;</span>, <span class="string">&quot;brain&quot;</span>, <span class="string">&quot;kidneys&quot;</span>, <span class="string">&quot;pancreas&quot;</span>&#125;</span><br><span class="line"> b.ReportAllocs()</span><br><span class="line"> <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">  <span class="keyword">var</span> ss sort.StringSlice = s</span><br><span class="line">  <span class="keyword">var</span> si sort.Interface = ss</span><br><span class="line">  sort.Sort(si)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>最近看<a href="https://dave.cheney.net/2021/01/05/a-few-bytes-here-a-few-there-pretty-soon-youre-talking-real-memor">Dave Cheney的一篇文章</a>，发现一个有趣的代码片段，里面展示了一个8byte的内存优化。</p>
+<p>代码片段是这样的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkSortStrings</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line"> s := []<span class="type">string</span>&#123;<span class="string">&quot;heart&quot;</span>, <span class="string">&quot;lungs&quot;</span>, <span class="string">&quot;brain&quot;</span>, <span class="string">&quot;kidneys&quot;</span>, <span class="string">&quot;pancreas&quot;</span>&#125;</span><br><span class="line"> b.ReportAllocs()</span><br><span class="line"> <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">  <span class="keyword">var</span> ss sort.StringSlice = s</span><br><span class="line">  <span class="keyword">var</span> si sort.Interface = ss</span><br><span class="line">  sort.Sort(si)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/one-8-bytes-optimization.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/one-8-bytes-optimization-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/one-8-bytes-optimization.html" data-id="cuidncbbCoVjkazi7ubGt5qeC" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/size-class/" rel="tag">size-class</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-thoughts/summary-of-2020" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh">
+  
+  <div class="article-meta">
+    <a href="/summary-of-2020.html" class="article-date">
+  <time datetime="2021-01-02T09:23:34.000Z" itemprop="datePublished">2021-01-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/thoughts/">thoughts</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/summary-of-2020.html">2020年回顾</a>
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>不知不觉，2020年就过去了，是时候说一声再见了。</p>
+<p>2020对于我还是有比较多的新体验。</p>
+        
+        
+          <p class="article-more-link">
+            
+            <a href="/summary-of-2020.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/summary-of-2020.html" data-id="cuidkkdbitGWdaDx2BipPhF09" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:50:30.030Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/dig101/dig101-golang-understanding-mutex-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="dig101-golang-understanding-mutex">
+  
+  <div class="article-meta">
+    <a href="/dig101-golang-understanding-mutex.html" class="article-date">
+  <time datetime="2020-06-30T23:38:33.000Z" itemprop="datePublished">2020-07-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/dig101-golang-understanding-mutex.html">Go sync.Mutex — atomics, barriers, and starvation mode</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/dig101-golang-understanding-mutex-zh.html">Dig101-Go之深入理解mutex</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Dig101: dig more, simplified more and know more</p>
+</blockquote>
+<p><code>sync.Mutex</code> is Go’s mutex — simple to use, but how is it implemented, and why those choices?</p>
+<p>A few questions, no wall of assembly — just enough to read the source later with context.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>Dig101: dig more, simplified more and know more</p>
+</blockquote>
+<!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p><code>sync.Mutex</code>是<code>Go</code>实现的互斥锁，提供了基本的同步操作，使用很方便。</p>
+<p>不过，你是否好奇过，<code>Go</code>是如何实现的<code>Mutex</code>，又是为什么要这样实现？</p>
+<p>今天跟随几个问题，我们一起探索下<code>Mutex</code>背后的设计。</p>
+<p>（不用担心，不会有大段的源码分析出现在本文😳）</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/dig101-golang-understanding-mutex.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/dig101-golang-understanding-mutex-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/dig101-golang-understanding-mutex.html" data-id="cuidNRHl3Gh_SFrYhDyDKiUvP" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-mutex/" rel="tag">go-mutex</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-golang/dig101/dig101-golang-reflect-handle-unexport-field-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="dig101-golang-reflect-handle-unexport-field">
+  
+  <div class="article-meta">
+    <a href="/dig101-golang-reflect-handle-unexport-field.html" class="article-date">
+  <time datetime="2020-06-13T14:42:03.000Z" itemprop="datePublished">2020-06-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/dig101-golang-reflect-handle-unexport-field.html">Go reflect — unexported struct fields from outside the package</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/dig101-golang-reflect-handle-unexport-field-zh.html">Go之如何操作结构体的非导出字段</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Dig101: dig more, simplified more and know more</p>
+</blockquote>
+<p>Lowercase struct fields are unexported — other packages cannot name them in ordinary code. Reflection can still reach them. Here is how <code>reflect</code> does it from outside the defining package.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>Dig101: dig more, simplified more and know more</p>
+</blockquote>
+<p>我们都知道<code>Go</code>的<code>struct</code>里，小写字段是非导出的，即不可从包外部访问。</p>
+<p>但非导出字段在外部也并不是没有办法访问，也不是不可以修改。</p>
+<p>今天看下<code>reflect</code>包如何在包外操作非导出字段。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/dig101-golang-reflect-handle-unexport-field.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/dig101-golang-reflect-handle-unexport-field-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/dig101-golang-reflect-handle-unexport-field.html" data-id="cuidX5tJRJisJ6gT_QAF5Nb_z" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-reflect/" rel="tag">go-reflect</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/3/">« Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/">Next »</a>
+    </nav>
+  
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

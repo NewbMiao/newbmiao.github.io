@@ -1,0 +1,103 @@
+# newbmiao
+
+> newbmiao's personal blog, Devops, Terraform, Azure, Rust, Golang
+
+- Site: https://newbmiao.github.io/
+- Author: newbmiao
+- Languages: English (canonical URLs) and Chinese (`*-zh.html` siblings via `lang_pair`)
+- Atom feed: https://newbmiao.github.io/atom.xml
+- Sitemap: https://newbmiao.github.io/sitemap.xml
+
+## Topics
+
+- DevOps, Azure, Terraform, authentication (OAuth2/OIDC/JWT/Keycloak)
+- Open Policy Agent (Rego, bundles, policy testing)
+- Rust (async, ownership, tower)
+- Go (internals, concurrency, memory)
+
+## Recent posts (newest first)
+
+- [en] AI-Driven Terraform: Move Fast Without Losing Control — Keep AI-authored Terraform inside a defined scope, verify it with scripts and policy, and reserve production writes for approved CI/CD runs.
+  https://newbmiao.github.io/what-matters-in-aiops.html
+- [zh] AI 搞 Terraform，怎么管才不会翻车？ — 让 AI 在有限范围内生成 Terraform 变更，用脚本和 Policy 验证结果，生产写操作仍由人审批、CI/CD 执行。
+  https://newbmiao.github.io/what-matters-in-aiops-zh.html
+- [en] Subnets Preview — plan and split VNet subnets in the browser — A small tool for slicing VNet address space before the meeting, not after.
+  https://newbmiao.github.io/devops-subnets-preview-tool.html
+- [zh] 运维划子网很麻烦？试试这个工具 — 运维划子网很麻烦？试试这个工具
+  https://newbmiao.github.io/devops-subnets-preview-tool-zh.html
+- [en] Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks — tfpolicy GA, Agent Skills, and why I’m glad I’m not writing Rego for plan JSON anymore.
+  https://newbmiao.github.io/terraform-with-tfpolicy.html
+- [zh] 没学过 Sentinel / OPA？Terraform 规则这回直接换了！
+  https://newbmiao.github.io/terraform-with-tfpolicy-zh.html
+- [en] Is Terraform still worth using for DevOps in 2026? — Clickops, bad providers, state drift—and when Terraform is still worth it.
+  https://newbmiao.github.io/does-terraform-matter-to-devops.html
+- [zh] 这年头运维，还有人用terraform么?!
+  https://newbmiao.github.io/does-terraform-matter-to-devops-zh.html
+- [en] Terraform VPC splits across accounts — simple HCL beats clever locals — When splitting VPCs across accounts, boring Terraform beats clever locals.
+  https://newbmiao.github.io/iac-loves-simple.html
+- [zh] IaC：简洁 or 灵活 — IaC：简洁 or 灵活
+  https://newbmiao.github.io/iac-loves-simple-zh.html
+- [en] Fluence FLT drop — claim guide for eligible GitHub Web3 devs — GitHub eligibility on claim.fluence.network, proof CLI, ETH mainnet gas, and OKX top-up gotchas.
+  https://newbmiao.github.io/flt-dev-rewards.html
+- [zh] FLT空投：2023年参与过web3的开发能领 — FLT空投：2023年参与过web3的开发能领
+  https://newbmiao.github.io/flt-dev-rewards-zh.html
+- [en] arc-swap — atomic Arc swaps vs RwLock for config — Read-heavy config with a background updater — when RwLock deadlocks on held read guards, and how ArcSwap fixes it.
+  https://newbmiao.github.io/rust-arc-swap.html
+- [zh] Rust工具集之arc-swap — Rust工具集之arc-swap
+  https://newbmiao.github.io/rust-arc-swap-zh.html
+- [zh] Rust设计模式：sealed trait续篇 — Rust设计模式：sealed trait续篇
+  https://newbmiao.github.io/rust-sealed-trait-2-zh.html
+- [en] Sealed traits in oauth2-rs — closing the typestate loophole — How oauth2-rs uses sealing on endpoint state so outsiders cannot fake configured URLs.
+  https://newbmiao.github.io/rust-sealed-trait-2.html
+- [zh] Rust设计模式：typestate — Rust设计模式：typestate
+  https://newbmiao.github.io/rust-typestate-pattern-zh.html
+- [en] Rust typestate — compile-time checks for OAuth2 client setup — Encode auth and token URL configuration in generic state so missing setup fails at compile time.
+  https://newbmiao.github.io/rust-typestate-pattern.html
+- [en] Rust sealed traits — limiting who can implement your trait — A private supertrait restricts implementations, with compiler errors when callers overstep.
+  https://newbmiao.github.io/rust-sealed-trait.html
+- [zh] Rust设计模式：sealed trait — Rust设计模式：sealed trait
+  https://newbmiao.github.io/rust-sealed-trait-zh.html
+- [zh] 如何用Rust快速构建AWS Lambda Function — 如何用Rust快速构建Aws lambda
+  https://newbmiao.github.io/rust-lambda-zh.html
+- [en] AWS Lambda in Rust — cargo-lambda, local watch, and LocalStack deploy — Install cargo-lambda, run an HTTP handler locally, build bootstrap.zip, and deploy with Terraform against LocalStack.
+  https://newbmiao.github.io/rust-lambda.html
+- [en] Tower Service and Layer — HTTP middleware chains with hyper — How tower’s Service and Layer traits compose Logger, Timeout, and hyper handlers.
+  https://newbmiao.github.io/rust-tower-service.html
+- [zh] Rust之tower如何构建请求中间件 — Rust之tower如何构建请求中间件
+  https://newbmiao.github.io/rust-tower-service-zh.html
+- [en] tokio-console — observe Tokio task scheduling and runtime behavior — Wire console-subscriber and tokio-console to inspect async tasks, polls, and resource waits.
+  https://newbmiao.github.io/rust-tokio-task-tracing.html
+- [zh] tokio之如何观测Rust异步任务的调度 — tokio之如何观测Rust异步任务的调度
+  https://newbmiao.github.io/rust-tokio-task-tracing-zh.html
+- [en] Rayon — data parallelism with par_iter and work stealing — Turn sequential iterators into parallel ones with Rayon’s thread pool and work stealing.
+  https://newbmiao.github.io/rust-rayon-parallel.html
+- [zh] Rayon魔法：使Rust并行编程变得轻而易举 — Rayon魔法：使Rust并行编程变得轻而易举
+  https://newbmiao.github.io/rust-rayon-parallel-zh.html
+- [en] Tokio — join, spawn, and select for concurrent Futures — join!, try_join!, spawn, and select! patterns for overlapping async work in Tokio.
+  https://newbmiao.github.io/rust-async-multi-future-concurrency.html
+- [zh] Rust异步编程之Future并发处理 — Rust异步编程之Future并发处理
+  https://newbmiao.github.io/rust-async-multi-future-concurrency-zh.html
+- [en] Rust Future — poll, state machines, Tokio runtime, and Pin — How Rust models async work with Future, executors, Tokio, and why Pin matters.
+  https://newbmiao.github.io/rust-async-future.html
+- [zh] Rust异步编程之Future初探 — Rust异步编程之Future
+  https://newbmiao.github.io/rust-async-future-zh.html
+- [zh] 深入理解Rust的Atomic及Ordering — Rust并发控制之Atomic
+  https://newbmiao.github.io/rust-sync-atomic-zh.html
+- [en] Rust atomics — Atomic types and memory Ordering — Mutex vs lock-free atomics, instruction reordering, Acquire/Release/SeqCst, fences, and lazy init with AtomicPtr.
+  https://newbmiao.github.io/rust-sync-atomic.html
+- [en] Rust mpsc — sync_channel buffers and unbounded channel — std::sync::mpsc send/recv rules, buffer size zero for back-pressure, and Send/Sync on Sender and Receiver.
+  https://newbmiao.github.io/rust-sync-channel.html
+- [zh] Rust并发控制之Channel — Rust并发控制之Channel
+  https://newbmiao.github.io/rust-sync-channel-zh.html
+- [en] Tokio Semaphore — alternating 1 and 2 with two threads — Resource limits with permits — naive single-permit semaphores vs a two-bucket handshake for strict ordering.
+  https://newbmiao.github.io/rust-sync-semaphore.html
+- [zh] Rust并发控制之Semaphore-两线程交替打印 — Rust并发控制之Semaphore-两线程交替打印
+  https://newbmiao.github.io/rust-sync-semaphore-zh.html
+- [en] Rust Condvar — alternating 1 and 2 with two threads — Classic interview puzzle — two threads printing 1 and 2 in turn using Mutex and Condvar.
+  https://newbmiao.github.io/rust-sync-condvar-2.html
+- [zh] Rust并发控制之Condvar-两线程交替打印 — Rust并发控制之Condvar-两线程交替打印
+  https://newbmiao.github.io/rust-sync-condvar-2-zh.html
+
+## Optional
+
+- Full HTML articles at https://newbmiao.github.io/

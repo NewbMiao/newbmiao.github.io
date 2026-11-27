@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'en',
+    url: '/dig101-golang-struct-memory-align.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>Dig101-Go之聊聊struct的内存对齐 | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="golang,struct,memory-align,atomic" />
+  
+  
+  <meta name="description" content="dig101-golang-struct">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dig101-Go之聊聊struct的内存对齐">
+<meta property="og:url" content="https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="dig101-golang-struct">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-10T09:13:11.000Z">
+<meta property="article:modified_time" content="2026-11-21T02:50:30.012Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="go-struct">
+<meta property="article:tag" content="memory-align">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/dig101-golang-struct-memory-align.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/dig101-golang-struct-memory-align.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Dig101-Go之聊聊struct的内存对齐","description":"dig101-golang-struct","url":"https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html"},"datePublished":"2020-02-10T09:13:11.000Z","dateModified":"2026-11-21T02:50:30.012Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"zh-CN","keywords":"go-struct, memory-align"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/dig101-golang-struct-memory-align-zh.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/dig101-golang-struct-memory-align-zh.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-golang/dig101/dig101-golang-struct" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="zh" data-lang-pair="dig101-golang-struct-memory-align">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:zh"></span>
+    <span data-pagefind-meta="lang">zh</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/dig101-golang-struct-memory-align-zh.html" class="article-date">
+  <time datetime="2020-02-10T09:13:11.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      Dig101-Go之聊聊struct的内存对齐
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AF%B9%E9%BD%90"><span class="toc-number">1.</span> <span class="toc-text">0x01 为什么要对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AF%B9%E9%BD%90"><span class="toc-number">2.</span> <span class="toc-text">0x02 数据结构对齐</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E4%BF%9D%E8%AF%81%EF%BC%88size-guarantee%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">大小保证（size guarantee）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E9%BD%90%E4%BF%9D%E8%AF%81%EF%BC%88align-guarantee%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">对齐保证（align guarantee）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E9%9B%B6%E5%A4%A7%E5%B0%8F%E5%AD%97%E6%AE%B5%E5%AF%B9%E9%BD%90"><span class="toc-number">3.</span> <span class="toc-text">0x03 零大小字段对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%E5%AF%B9%E9%BD%90"><span class="toc-number">4.</span> <span class="toc-text">0x04 内存地址对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-64%E4%BD%8D%E5%AD%97%E5%AE%89%E5%85%A8%E8%AE%BF%E9%97%AE%E4%BF%9D%E8%AF%81"><span class="toc-number">5.</span> <span class="toc-text">0x05 64位字安全访问保证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BF%9D%E8%AF%81"><span class="toc-number">5.1.</span> <span class="toc-text">为什么要保证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81"><span class="toc-number">5.2.</span> <span class="toc-text">怎么保证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E4%B8%BA%E5%8A%A0%E9%94%81"><span class="toc-number">5.3.</span> <span class="toc-text">改为加锁</span></a></li></ol></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <p>Update:</p>
+<p>增加<a href="https://github.com/talk-go/night/issues/588">Go夜读</a>slide</p>
+<ul>
+<li><a href="https://docs.google.com/presentation/d/1XUA8WfgTHCF_8XdfPEuNvs-WZ0DshFHKFEEqHRd3Tzg/edit?usp=sharing">google-doc</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>Dig101: dig more, simplified more and know more</p>
+</blockquote>
+<p>经过前边几篇文章，相信你也发现了，struct几乎无处不在。</p>
+<p>string，slice和map底层都用到了struct。</p>
+<p>今天我们来重点关注下struct的内存对齐，</p>
+<p>理解它，对更好的运用struct和读懂一些源码库的实现会有很大的帮助。</p>
+<!-- **文章目录** -->
+<!-- [[TOC]] -->
+<span id="more"></span>
+<p>在此之前，我们先明确几个术语，便于后续分析。</p>
+<ul>
+<li>字（word）</li>
+</ul>
+<p>是用于表示其自然的数据单位，也叫<code>machine word</code>。字是电脑用来一次性处理事务的一个固定长度。</p>
+<ul>
+<li>字长</li>
+</ul>
+<p>一个字的位数（即字长）。</p>
+<p>现代电脑的字长通常为16、32、64位。（一般N位系统的字长是 <code>N/8</code> 字节。）</p>
+<p>电脑中大多数寄存器的大小是一个字长。CPU和内存之间的数据传送单位也通常是一个字长。还有而内存中用于指明一个存储位置的地址也经常是以字长为单位。</p>
+<blockquote>
+<p>参见维基百科中 <a href="https://zh.wikipedia.org/wiki/%E5%AD%97_(%E8%AE%A1%E7%AE%97%E6%9C%BA)">字</a></p>
+</blockquote>
+<h2 id="0x01-为什么要对齐"><a href="#0x01-为什么要对齐" class="headerlink" title="0x01 为什么要对齐"></a>0x01 为什么要对齐</h2><p>简单来说，操作系统的cpu不是一个字节一个字节访问内存的，是按2,4,8这样的字长来访问的。</p>
+<p>所以当处理器从存储器子系统读取数据至寄存器，或者，写寄存器数据到存储器，传送的数据长度通常是字长。</p>
+<p>如32位系统访问粒度是4字节（bytes），64位系统的是8字节。</p>
+<p>当被访问的数据长度为 <code>n</code> 字节且该数据地址为<code>n</code>字节对齐，那么操作系统就可以一次定位到数据，这样会更加高效。无需多次读取、处理对齐运算等额外操作。</p>
+<h2 id="0x02-数据结构对齐"><a href="#0x02-数据结构对齐" class="headerlink" title="0x02 数据结构对齐"></a>0x02 数据结构对齐</h2><p>我们先看下基础数据结构的大小定义</p>
+<h3 id="大小保证（size-guarantee）"><a href="#大小保证（size-guarantee）" class="headerlink" title="大小保证（size guarantee）"></a>大小保证（size guarantee）</h3><p>如Go官方的文档<a href="https://golang.org/ref/spec#Size_and_alignment_guarantees">size and alignment guarantees</a>所示：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>size in bytes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>byte, uint8, int8</td>
+<td>1</td>
+</tr>
+<tr>
+<td>uint16, int16</td>
+<td>2</td>
+</tr>
+<tr>
+<td>uint32, int32, float32</td>
+<td>4</td>
+</tr>
+<tr>
+<td>uint64, int64, float64, complex64</td>
+<td>8</td>
+</tr>
+<tr>
+<td>complex128</td>
+<td>16</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>A struct or array type has size zero if it contains no fields (or elements, respectively) that have a size greater than zero. Two distinct zero-size variables may have the same address in memory.</p>
+</blockquote>
+<p><code>struct{}</code> 和<code>[0]T{}</code> 的大小为0; 不同的大小为0的变量可能指向同一块地址。</p>
+<h3 id="对齐保证（align-guarantee）"><a href="#对齐保证（align-guarantee）" class="headerlink" title="对齐保证（align guarantee）"></a>对齐保证（align guarantee）</h3><blockquote>
+<ul>
+<li>For a variable x of any type: unsafe.Alignof(x) is at least 1.</li>
+<li>For a variable x of struct type: unsafe.Alignof(x) is the largest of all the values unsafe.Alignof(x.f) for each field f of x, but at least 1.</li>
+<li>For a variable x of array type: unsafe.Alignof(x) is the same as the alignment of a variable of the array’s element type.</li>
+</ul>
+</blockquote>
+<p>对这段描述翻译到对应类型的对齐就是下表</p>
+<blockquote>
+<p>参考<a href="https://go101.org/article/memory-layout.html">go101-memory layout</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>alignment guarantee</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bool, byte, uint8, int8</td>
+<td>1</td>
+</tr>
+<tr>
+<td>uint16, int16</td>
+<td>2</td>
+</tr>
+<tr>
+<td>uint32, int32</td>
+<td>4</td>
+</tr>
+<tr>
+<td>float32, complex64</td>
+<td>4</td>
+</tr>
+<tr>
+<td>arrays</td>
+<td>由其元素（<strong>element</strong>）类型决定</td>
+</tr>
+<tr>
+<td>structs</td>
+<td>由其字段（<strong>field</strong>）类型决定</td>
+</tr>
+<tr>
+<td>other types</td>
+<td>一个机器字（<strong>machine word</strong>）的大小</td>
+</tr>
+</tbody></table>
+<p>这里机器字（machine word）对应的大小, 在32位系统上是4bytes，64位系统上是8bytes</p>
+<p>下面代码验证下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T1 <span class="keyword">struct</span> &#123;</span><br><span class="line">    a [<span class="number">2</span>]<span class="type">int8</span></span><br><span class="line">    b <span class="type">int64</span></span><br><span class="line">    c <span class="type">int16</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> T2 <span class="keyword">struct</span> &#123;</span><br><span class="line">    a [<span class="number">2</span>]<span class="type">int8</span></span><br><span class="line">    c <span class="type">int16</span></span><br><span class="line">    b <span class="type">int64</span></span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;arrange fields to reduce size:\n&quot;</span>+</span><br><span class="line">    <span class="string">&quot;T1 align: %d, size: %d\n&quot;</span>+</span><br><span class="line">    <span class="string">&quot;T2 align: %d, size: %d\n&quot;</span>,</span><br><span class="line">    unsafe.Alignof(T1&#123;&#125;), unsafe.Sizeof(T1&#123;&#125;),</span><br><span class="line">    unsafe.Alignof(T2&#123;&#125;), unsafe.Sizeof(T2&#123;&#125;))</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">output:</span></span><br><span class="line"><span class="comment">arrange fields to reduce size:</span></span><br><span class="line"><span class="comment">T1 align: 8, size: 24</span></span><br><span class="line"><span class="comment">T2 align: 8, size: 16</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>以64位系统为例，分析如下：</p>
+<p><code>T1,T2</code>内字段最大的都是<code>int64</code>, 大小为8bytes，对齐按机器字确定，64位下是8bytes，所以将按8bytes对齐</p>
+<p><code>T1.a</code> 大小2bytes,填充6bytes使对齐（后边字段已对齐，所以直接填充）</p>
+<p><code>T1.b</code> 大小8bytes,已对齐</p>
+<p><code>T1.c</code> 大小2bytes，填充6bytes使对齐（后边无字段，所以直接填充）</p>
+<p>总大小为 <code>8+8+8=24</code></p>
+<p><code>T2</code>中将<code>c</code>提前后，<code>a</code>和<code>c</code>总大小4bytes,在填充4bytes使对齐</p>
+<p>总大小为 <code>8+8=16</code></p>
+<p>所以，<strong>合理重排字段可以减少填充，使struct字段排列更紧密</strong></p>
+<h2 id="0x03-零大小字段对齐"><a href="#0x03-零大小字段对齐" class="headerlink" title="0x03 零大小字段对齐"></a>0x03 零大小字段对齐</h2><p>零大小字段（<code>zero sized field</code>）是指<code>struct{}</code>,</p>
+<p>大小为0，按理作为字段时不需要对齐，但当在作为结构体最后一个字段（<code>final field</code>）时需要对齐的。</p>
+<p>为什么？</p>
+<p>因为，如果有指针指向这个<code>final zero field</code>, 返回的地址将在结构体之外（即指向了别的内存），</p>
+<p>如果此指针一直存活不释放对应的内存，就会有内存泄露的问题（该内存不因结构体释放而释放）</p>
+<p>所以，Go就对这种<code>final zero field</code>也做了填充，使对齐。</p>
+<p>代码验证如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T1 <span class="keyword">struct</span> &#123;</span><br><span class="line">    a <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    x <span class="type">int64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> T2 <span class="keyword">struct</span> &#123;</span><br><span class="line">    x <span class="type">int64</span></span><br><span class="line">    a <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">a1 := T1&#123;&#125;</span><br><span class="line">a2 := T2&#123;&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;zero size struct&#123;&#125; in field:\n&quot;</span>+</span><br><span class="line">    <span class="string">&quot;T1 (not as final field) size: %d\n&quot;</span>+</span><br><span class="line">    <span class="string">&quot;T2 (as final field) size: %d\n&quot;</span>,</span><br><span class="line">    <span class="comment">// 8</span></span><br><span class="line">    unsafe.Sizeof(a1),</span><br><span class="line">    <span class="comment">// 64位：16；32位：12</span></span><br><span class="line">    unsafe.Sizeof(a2))</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-内存地址对齐"><a href="#0x04-内存地址对齐" class="headerlink" title="0x04 内存地址对齐"></a>0x04 内存地址对齐</h2><p>从<a href="https://golang.org/ref/spec#Package_unsafe">unsafe包规范</a>中，有如下说明：</p>
+<blockquote>
+<p>Computer architectures may require memory addresses to be aligned; that is, for addresses of a variable to be a multiple of a factor, the variable’s type’s alignment. The function Alignof takes an expression denoting a variable of any type and returns the alignment of the (type of the) variable in bytes. For a variable x:</p>
+<p>uintptr(unsafe.Pointer(&amp;x)) % unsafe.Alignof(x) &#x3D;&#x3D; 0</p>
+</blockquote>
+<p>大致意思就是，如果类型 <code>t</code> 的对齐保证是 <code>n</code>，那么类型 <code>t</code> 的每个值的地址在运行时必须是 <code>n</code> 的倍数。</p>
+<p>这一点在<code>sync.WaitGroup</code>有很好的应用：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> WaitGroup <span class="keyword">struct</span> &#123;</span><br><span class="line">  noCopy noCopy</span><br><span class="line">  state1 [<span class="number">3</span>]<span class="type">uint32</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// state returns pointers to the state and sema fields stored within wg.state1.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(wg *WaitGroup)</span></span> state() (statep *<span class="type">uint64</span>, semap *<span class="type">uint32</span>) &#123;</span><br><span class="line">  <span class="comment">// 判定地址是否8位对齐</span></span><br><span class="line">  <span class="keyword">if</span> <span class="type">uintptr</span>(unsafe.Pointer(&amp;wg.state1))%<span class="number">8</span> == <span class="number">0</span> &#123;</span><br><span class="line">    <span class="comment">// 前8bytes做uint64指针statep，后4bytes做sema</span></span><br><span class="line">    <span class="keyword">return</span> (*<span class="type">uint64</span>)(unsafe.Pointer(&amp;wg.state1)), &amp;wg.state1[<span class="number">2</span>]</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 后8bytes做uint64指针statep，前4bytes做sema</span></span><br><span class="line">    <span class="keyword">return</span> (*<span class="type">uint64</span>)(unsafe.Pointer(&amp;wg.state1[<span class="number">1</span>])), &amp;wg.state1[<span class="number">0</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重点是<code>WaitGroup.state1</code>这个字段，</p>
+<p>我们知道<code>uint64</code>的对齐是由机器字决定，32位系统是4bytes，64位系统是8bytes</p>
+<p>为保证在32位系统上，也可以返回一个64位对齐（<code>8bytes aligned</code>）的指针（<code>*uint64</code>）</p>
+<p>就巧妙的使用了<code>[3]uint32</code>。</p>
+<p>首先在64位系统和32位系统上，<code>uint32</code>能保证是4bytes对齐</p>
+<p>即<code>state1</code>地址是4N: <code>uintptr(unsafe.Pointer(&amp;wg.state1))%4 == 0</code></p>
+<p>而为保证8位对齐，我们只需要判断<code>state1</code>地址是否为8的倍数</p>
+<ul>
+<li>如果是（N为偶数），那前8bytes就是64位对齐</li>
+<li>否则（N为奇数），那后8bytes是64位对齐</li>
+</ul>
+<p>而且剩余的4bytes可以给<code>sema</code>字段用，也不浪费内存</p>
+<p>可是为什么要在32位系统上也要保证一个64位对齐的<code>uint64</code>指针呢?</p>
+<p>答案是，为了保证在32位系统上也能原子访问64位对齐的64位字。我们下边来详细看下。</p>
+<h2 id="0x05-64位字安全访问保证"><a href="#0x05-64位字安全访问保证" class="headerlink" title="0x05 64位字安全访问保证"></a>0x05 64位字安全访问保证</h2><p>在<a href="https://golang.org/pkg/sync/atomic/#pkg-note-BUG">atomic-bug</a>中提到：</p>
+<blockquote>
+<p>On x86-32, the 64-bit functions use instructions unavailable before the Pentium MMX.<br>On non-Linux ARM, the 64-bit functions use instructions unavailable before the ARMv6k core.</p>
+<p>On ARM, x86-32, and 32-bit MIPS, it is the caller’s responsibility to arrange for 64-bit alignment of 64-bit words accessed atomically. The first word in a variable or in an allocated struct, array, or slice can be relied upon to be 64-bit aligned.</p>
+</blockquote>
+<p>大致意思是，在32位系统上想要原子操作64位字（如uint64）的话，需要由调用方保证其数据地址是64位对齐的，否则原子访问会有异常。</p>
+<p>为什么呢？</p>
+<h3 id="为什么要保证"><a href="#为什么要保证" class="headerlink" title="为什么要保证"></a>为什么要保证</h3><p>这里简单分析如下：</p>
+<p>还拿<code>uint64</code>来说，大小为8bytes，32位系统上按4bytes对齐，64位系统上按8bytes对齐。</p>
+<p>在64位系统上，8bytes刚好和其字长相同，所以可以一次完成原子的访问，不被其他操作影响或打断。</p>
+<p>而32位系统，4byte对齐，字长也为4bytes，可能出现<code>uint64</code>的数据分布在<strong>两个数据块</strong>中，需要两次操作才能完成访问。</p>
+<p>如果两次操作中间有可能别其他操作修改，不能保证原子性。</p>
+<p>这样的访问方式也是不安全的。</p>
+<p>这一点<a href="https://github.com/golang/go/issues/6404#issuecomment-66085602">issue-6404</a>中也有提到：</p>
+<blockquote>
+<p>This is because the int64 is not aligned following the bool.<br>It is 32-bit aligned but not 64-bit aligned, because we’re on a 32-bit<br>system so it’s really just two 32-bit values side by side.</p>
+</blockquote>
+<h3 id="怎么保证"><a href="#怎么保证" class="headerlink" title="怎么保证"></a>怎么保证</h3><blockquote>
+<p>The first word in a variable or in an allocated struct, array, or slice can be relied upon to be 64-bit aligned.</p>
+</blockquote>
+<p><strong>变量或开辟的结构体、数组和切片值中的第一个64位字可以被认为是8字节对齐</strong></p>
+<p>这一句中<strong>开辟</strong>的意思是通过声明，make，new方式创建的，就是说这样创建的64位字可以保证是64位对齐的。</p>
+<p>但还是比较抽象，我们举例分析下</p>
+<p>32位系统下可原子安全访问的64位字有：</p>
+<ul>
+<li>64位字本身</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// GOARCH=386 go run types/struct/struct.go</span></span><br><span class="line"><span class="keyword">var</span> c0 <span class="type">int64</span></span><br><span class="line">fmt.Println(<span class="string">&quot;64位字本身：&quot;</span>,</span><br><span class="line">    atomic.AddInt64(&amp;c0, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>64位字数组、切片</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">c1 := [<span class="number">5</span>]<span class="type">int64</span>&#123;&#125;</span><br><span class="line">fmt.Println(<span class="string">&quot;64位字数组、切片:&quot;</span>,</span><br><span class="line">    atomic.AddInt64(&amp;c1[:][<span class="number">0</span>], <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结构体首字段为对齐的64位字及相邻的64位字</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">c2 := <span class="keyword">struct</span> &#123;</span><br><span class="line">    val   <span class="type">int64</span> <span class="comment">// pos 0</span></span><br><span class="line">    val2  <span class="type">int64</span> <span class="comment">// pos 8</span></span><br><span class="line">    valid <span class="type">bool</span>  <span class="comment">// pos 16</span></span><br><span class="line">&#125;&#123;&#125;</span><br><span class="line">fmt.Println(<span class="string">&quot;结构体首字段为对齐的64位字及相邻的64位字:&quot;</span>,</span><br><span class="line">    atomic.AddInt64(&amp;c2.val, <span class="number">1</span>),</span><br><span class="line">    atomic.AddInt64(&amp;c2.val2, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结构体中首字段为嵌套结构体，且其首元素为64位字</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T <span class="keyword">struct</span> &#123;</span><br><span class="line">    val2 <span class="type">int64</span></span><br><span class="line">    _    <span class="type">int16</span></span><br><span class="line">&#125;</span><br><span class="line">c3 := <span class="keyword">struct</span> &#123;</span><br><span class="line">    val   T</span><br><span class="line">    valid <span class="type">bool</span></span><br><span class="line">&#125;&#123;&#125;</span><br><span class="line">fmt.Println(<span class="string">&quot;结构体中首字段为嵌套结构体，且其首元素为64位字:&quot;</span>,</span><br><span class="line">    atomic.AddInt64(&amp;c3.val.val2, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结构体增加填充使对齐的64位字</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">c4 := <span class="keyword">struct</span> &#123;</span><br><span class="line">    val   <span class="type">int64</span>   <span class="comment">// pos 0</span></span><br><span class="line">    valid <span class="type">bool</span>    <span class="comment">// pos 8</span></span><br><span class="line">    <span class="comment">// 或者 _ uint32</span></span><br><span class="line">    <span class="comment">// 使32位系统上多填充 4bytes</span></span><br><span class="line">    _     [<span class="number">4</span>]<span class="type">byte</span> <span class="comment">// pos 9</span></span><br><span class="line">    val2  <span class="type">int64</span>   <span class="comment">// pos 16</span></span><br><span class="line">&#125;&#123;&#125;</span><br><span class="line">fmt.Println(<span class="string">&quot;结构体增加填充使对齐的64位字:&quot;</span>,</span><br><span class="line">    atomic.AddInt64(&amp;c4.val2, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结构体中64位字切片</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c5 := <span class="keyword">struct</span> &#123;</span><br><span class="line">    val   <span class="type">int64</span></span><br><span class="line">    valid <span class="type">bool</span></span><br><span class="line">    val2 []<span class="type">int64</span></span><br><span class="line">&#125;&#123;val2: []<span class="type">int64</span>&#123;<span class="number">0</span>&#125;&#125;</span><br><span class="line">fmt.Println(<span class="string">&quot;结构体中64位字切片:&quot;</span>,</span><br><span class="line">    atomic.AddInt64(&amp;c5.val2[<span class="number">0</span>], <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>The first element in slices of 64-bit elements will be correctly aligned</p>
+</blockquote>
+<p>此处切片相当指针，数据是指向底层堆上开辟的64位字数组，如c1</p>
+<p>如果换成数组则会panic，</p>
+<p>因为结构体的数组的对齐还是依赖于结构体内字段</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c51 := <span class="keyword">struct</span> &#123;</span><br><span class="line">  val   <span class="type">int64</span></span><br><span class="line">  valid <span class="type">bool</span></span><br><span class="line">  val2  [<span class="number">3</span>]<span class="type">int64</span></span><br><span class="line">&#125;&#123;val2: [<span class="number">3</span>]<span class="type">int64</span>&#123;<span class="number">0</span>&#125;&#125;</span><br><span class="line"><span class="comment">// will panic</span></span><br><span class="line">atomic.AddInt64(&amp;c51.val2[<span class="number">0</span>], <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结构体中64位字指针</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c6 := <span class="keyword">struct</span> &#123;</span><br><span class="line">    val   <span class="type">int64</span></span><br><span class="line">    valid <span class="type">bool</span></span><br><span class="line">    val2  *<span class="type">int64</span></span><br><span class="line">&#125;&#123;val2: <span class="built_in">new</span>(<span class="type">int64</span>)&#125;</span><br><span class="line">fmt.Println(<span class="string">&quot;结构体中64位字指针:&quot;</span>,</span><br><span class="line">    atomic.AddInt64(c6.val2, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>不过研究这块时发现有个坑：</p>
+<p>如果包含首个64位字的结构体是12byte大小时，不一定能保证64未对齐</p>
+<p>详见<a href="https://github.com/golang/go/issues/37262#issuecomment-587576192">issue-37262</a></p>
+<h3 id="改为加锁"><a href="#改为加锁" class="headerlink" title="改为加锁"></a>改为加锁</h3><p>是不是有些复杂，要在32位系统上保证8bytes对齐的64位字, 确实不是很方便</p>
+<p>当然也可以选择不使用原子访问(<code>atomic</code>)，用加锁(<code>mutex</code>)的方式避免此bug</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">c := <span class="keyword">struct</span>&#123;</span><br><span class="line">    val <span class="type">int16</span></span><br><span class="line">    val2 <span class="type">int64</span></span><br><span class="line">&#125;&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> mu sync.Mutex</span><br><span class="line">mu.Lock()</span><br><span class="line">c.val2 += <span class="number">1</span></span><br><span class="line">mu.Unlock()</span><br></pre></td></tr></table></figure>
+
+<p>最后，其实前边<code>WaitGroup.state1</code>那样保证8bytes对齐还有有个有点点没有分析：</p>
+<p>就是为啥state原子访问不直接用<code>uint64</code>，并使用上边提到的64位字对齐保证?</p>
+<p>答案相信你也想到了：如果<code>WaitGroup</code>嵌套到别的结构体时，如果不放到结构体首位会有问题， 这会使其使用受限。</p>
+<p>总结一下:</p>
+<ul>
+<li>内存对齐是为了cpu更高效访问内存中数据</li>
+<li>struct的对齐是：如果类型 t 的对齐保证是 n，那么类型 t 的每个值的<strong>地址</strong>在运行时必须是 n 的倍数。</li>
+</ul>
+<p>即 <code>uintptr(unsafe.Pointer(&amp;x)) % unsafe.Alignof(x) == 0</code></p>
+<ul>
+<li>struct内字段如果填充过多，可以尝试重排，使字段排列更紧密，减少内存浪费</li>
+<li>零大小字段要避免作为struct最后一个字段，会有内存浪费</li>
+<li>32位系统上对64位字的原子访问要保证其是8bytes对齐的；当然如果不必要的话，还是用加锁（<code>mutex</code>）的方式更清晰简单</li>
+</ul>
+<p>推荐一个工具包：<a href="https://github.com/dominikh/go-tools">dominikh&#x2F;go-tools</a> ，里边 structlayout, structlayout-optimize, structlayout-pretty 三个工具比较有意思</p>
+<blockquote>
+<p>本文代码见 <a href="https://github.com/NewbMiao/Dig101-Go/blob/master/types/struct/struct.go">NewbMiao&#x2F;Dig101-Go</a></p>
+<p>See more: <a href="https://ms2008.github.io/2019/08/01/golang-memory-alignment/">Golang 是否有必要内存对齐？</a></p>
+</blockquote>
+<!-- 欢迎关注公众号留言交流。
+![菜鸟Miao](https://user-gold-cdn.xitu.io/2020/1/4/16f7028db5a275ad?w=258&h=258&f=jpeg&s=17900)
+-->
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;dig101-golang-struct-memory-align-zh.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;dig101-golang-struct-memory-align-zh.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html" data-id="cuidMNu0ugKh7rfUNUZ6KV2P6" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go-struct/" rel="tag">go-struct</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/memory-align/" rel="tag">memory-align</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-21T02:50:30.012Z" itemprop="dateModify">2026-11-21</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

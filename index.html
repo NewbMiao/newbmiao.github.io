@@ -1,0 +1,1103 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux" />
+  
+  
+  <meta name="description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:type" content="website">
+<meta property="og:title" content="newbmiao">
+<meta property="og:url" content="https://newbmiao.github.io/index.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="newbmiao&#39;s personal blog, Devops, Terraform, Azure, Rust, Golang">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="newbmiao,devops,terraform,azure,opa,rust,golang,linux">
+<meta name="twitter:card" content="summary">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/">
+
+
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/index.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/index.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+  
+    
+
+<article id="post-devops/what-matters-in-aiops-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="what-matters-in-aiops">
+  
+  <div class="article-meta">
+    <a href="/what-matters-in-aiops.html" class="article-date">
+  <time datetime="2026-11-26T12:00:00.000Z" itemprop="datePublished">2026-11-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/devops/">devops</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/what-matters-in-aiops-zh.html">AI 搞 Terraform，怎么管才不会翻车？</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Having AI write IaC is no longer unusual. It can add a module, change a few resources, and draft policy much faster than a person.</p>
+<p>That speed brings a different problem. A change can pull in unrelated resources. Terraform that is perfectly valid can still delete or replace resources, or loosen permissions. Those issues are not always obvious in code review.</p>
+<p>As the volume grows, reviewing every line by hand stops scaling. Handing the review to another AI adds another opinion, not another guarantee.</p>
+<p>The real question is this: how can AI keep writing and iterating while its mistakes are caught consistently and kept out of production?</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>千丈之堤，以蝼蚁之穴溃；百尺之室，以突隙之烟焚。 - 韩非子·喻老</p>
+</blockquote>
+<p>现在让 AI 写 IaC 已经不算新鲜事。补一个 Module、改几个资源、顺手生成 Policy，速度通常比人工快得多。</p>
+<p>麻烦也跟着变了。一次改动可能混进无关资源，语法完全正确的 Terraform，也可能带来 Delete、Replace 或权限放宽。这些问题不一定能在 Code Review 里一眼看出来。</p>
+<p>代码越来越多，全部靠人逐行检查不太现实；把 Review 再交给 AI，也只是多了一层判断，并没有多一层保证。</p>
+<p>其实根本问题是：AI 可以继续写、继续试，但它的错误怎么被稳定地发现，又怎么避免进入生产环境？</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/what-matters-in-aiops.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/what-matters-in-aiops-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/what-matters-in-aiops.html" data-id="cuidyMvr4WPnDx6hDfzkJqFeF" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aiops/" rel="tag">aiops</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/terraform/" rel="tag">terraform</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-27T01:10:00.000Z" itemprop="dateModify">2026-11-27</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-devops/devops-subnets-preview-tool-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool">
+  
+  <div class="article-meta">
+    <a href="/devops-subnets-preview-tool.html" class="article-date">
+  <time datetime="2026-11-20T02:43:15.000Z" itemprop="datePublished">2026-11-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/devops/">devops</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/devops-subnets-preview-tool-zh.html">运维划子网很麻烦？试试这个工具</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><!-- synced-from-wechat: devops-subnets-preview-tool-en.md -->
+
+<p>If you’ve planned a VNet, you know the drill. Wiki holds the “official” diagram. Excel is where you actually try cuts. IPAM kicks in once people agree on addresses. That’s fine until you need to split a <code>/22</code> three different ways the night before a meeting.</p>
+<p>I just wanted something you could open, chop up, undo, and send to someone—without hunting down who changed which <code>/27</code> two weeks ago.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- synced-from-wechat: devops-subnets-preview-tool-zh.md -->
+
+<p>做网络规划的人，大概都维护过子网。</p>
+<p>有人放在 Wiki，有人放在 Excel，也有人用云上的 IPAM 或 IP Range Manager。各有各的用处，但真要临时调整网段，总觉得不够顺手。</p>
+<p>Wiki 适合记结果，不太适合来回试。一个人改了 CIDR，另一个人补了备注，过两周再打开，先得同步线上确认最新的。</p>
+<p>Excel 灵活，大家也熟。只是网段一多，表格很快就从「规划」变成「考古」：这一段是谁留的，为什么是 <code>/27</code>，旁边还能不能继续拆，都得回头翻聊天记录。</p>
+<p>云上的 IPAM 更适合管已经定下来的地址。开会前想把一块 <code>/22</code> 换几种切法看看，用它又有点重。</p>
+<p>我想要的只是一个趁手一点的工具：打开就能切，切完就能给别人看。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/devops-subnets-preview-tool.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/devops-subnets-preview-tool-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/devops-subnets-preview-tool.html" data-id="cuidbR799XVPnPR4fGK_G0CBM" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/subnetting/" rel="tag">subnetting</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T07:47:44.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-devops/terraform-with-tfpolicy-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy">
+  
+  <div class="article-meta">
+    <a href="/terraform-with-tfpolicy.html" class="article-date">
+  <time datetime="2026-11-17T06:25:44.000Z" itemprop="datePublished">2026-11-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/devops/">devops</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/terraform-with-tfpolicy-zh.html">没学过 Sentinel / OPA？Terraform 规则这回直接换了！</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>Something I’ve picked up in ops: <strong>some tech you never learn—and that’s fine.</strong></p>
+<p>Terraform policy used to mean Sentinel or OPA. Different languages, different mental models.</p>
+<p>This year HashiCorp shipped <strong>tfpolicy</strong> to GA. If you already write HCL, the bar to entry is a lot lower.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+
+<p>这些年做运维有个东西深有体会：有些技术，没学过就不用学了。</p>
+<p>以前管 Terraform 规矩，老路子要啃 Sentinel &#x2F; OPA。</p>
+<p>今年倒好，官方 tfpolicy GA 了——规则治理的新选项，会写 HCL 就能上手。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/terraform-with-tfpolicy.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/terraform-with-tfpolicy-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/terraform-with-tfpolicy.html" data-id="cuidc1OoOOFF1fcmkvpc_FwGO" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/terraform/" rel="tag">terraform</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tfpolicy/" rel="tag">tfpolicy</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T05:15:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-devops/does-terraform-matter-to-devops-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops">
+  
+  <div class="article-meta">
+    <a href="/does-terraform-matter-to-devops.html" class="article-date">
+  <time datetime="2026-11-14T02:51:01.000Z" itemprop="datePublished">2026-11-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/devops/">devops</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/does-terraform-matter-to-devops-zh.html">这年头运维，还有人用terraform么?!</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><blockquote>
+<p>Nothing is fixed. It depends when and where.</p>
+</blockquote>
+<p>I’ve watched DevOps engineers <strong>hate</strong> on Terraform and I’ve watched others treat it like scripture.</p>
+<p>Debating an IaC tool without context is pointless—like arguing whether coffee is good based on someone else’s hangover.</p>
+<p>Still, a Reddit thread on clickops vs IaC nudged me to write down how I think about Terraform <strong>as an ops person</strong> right now.</p>
+<p>I first touched Terraform on an AWS project in 2019. Declaring infra in code felt like cheating in the best way.</p>
+<p>I was mostly dev then, but everything after that gravitated toward Terraform—Aliyun, GCP, Azure, the whole tour.</p>
+<p>Before the nice parts, here’s what I keep hearing from people actually running platforms.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><blockquote>
+<p>事无定势，因时制宜。</p>
+</blockquote>
+<p>运维工作这几年，见过有devops对terraform嗤之以鼻的，也见过对其奉为圭<strong>臬</strong>的。</p>
+<p>诚然脱离场景讨论一个IaC工具本身是没有意义的。这就如同了每个人自顾自的描述自己的感受，旁人是无法感同身受的。</p>
+<p>但最近看到一个reddit上clickops vs IaC的讨论，我还是想浅谈下我现在对terraform是否对运维有用的看法。</p>
+<p>最初接触terrform是19年一个aws的项目，第一次发现云上的基础设施资源可以像代码声明一样去管理，确实很方便。像打开了新世界的大门。</p>
+<p>虽然那会主要还是开发，但后边一路基础设施也都习惯了用terraform管理，直到如今做运维了，逐渐一年年也接触过了多个诸如aliyun，gcp，azure云的IaC.</p>
+<p>先不论terraform的种种在我看来便利的方向，我想先从我接触到运维抱怨的问题开始。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/does-terraform-matter-to-devops.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/does-terraform-matter-to-devops-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/does-terraform-matter-to-devops.html" data-id="cuid-Puw4_PyiVGd0RbbMozyc" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/terraform/" rel="tag">terraform</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T05:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-devops/iac-loves-simple-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="iac-loves-simple">
+  
+  <div class="article-meta">
+    <a href="/iac-loves-simple.html" class="article-date">
+  <time datetime="2024-08-17T06:42:25.000Z" itemprop="datePublished">2024-08-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/devops/">devops</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/iac-loves-simple-zh.html">IaC：简洁 or 灵活</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>I’ve been neck-deep in DevOps lately, and one thing keeps coming back: <strong>Infrastructure as Code reads better when it’s boring.</strong></p>
+<p>Let me show you what I mean—one migration, two ways to wire it.</p>
+<p>Say you’ve got several networks in one account and you want each VPC living in its own account going forward.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># network.auto.tfvars</span><br><span class="line">vpcs = &#123;</span><br><span class="line">  network1 = &#123;</span><br><span class="line">    name = &quot;vpc-1&quot;</span><br><span class="line">  &#125;</span><br><span class="line">  network2 = &#123;</span><br><span class="line">    name = &quot;vpc-2&quot;</span><br><span class="line">  &#125;</span><br><span class="line">  network3 = &#123;</span><br><span class="line">    name = &quot;vpc-3&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>You’ll reuse a <code>module</code> per account. Fair.</p>
+<p>And no, you can’t dynamically pick a <code>provider</code> at runtime—Terraform doesn’t do that.</p>
+<p>The real question is how you <strong>shard</strong> that <code>vpcs</code> map so each module gets the right slice.</p>
+<p>Two patterns I’ve seen a lot of teams reach for:</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<!-- 
+
+---
+
+**欢迎关注公众号：[newbmiao](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzUxNzA2NzEzNw==&action=getalbum&album_id=2145763210988224521&scene=173&subscene=91&sessionid=1702900175&enterid=1702900179&from_msgid=2247484338&from_itemidx=1&count=3&nolastread=1#wechat_redirect), 获取及时更新**
+
+-->
+
+<p>最近在搞<code>devops</code>，有一点对<code>Infrastructure as code</code>代码风格的感悟</p>
+<p>直接从一个例子展开吧</p>
+<p>假如需要将原来单账号下以下多网络分别创建到单独的账号下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># network.auto.tfvars</span><br><span class="line">vpcs = &#123;</span><br><span class="line">  network1 = &#123;</span><br><span class="line">    name     = &quot;vpc-1&quot;</span><br><span class="line">  &#125;</span><br><span class="line">  network2 = &#123;</span><br><span class="line">    name     = &quot;vpc-2&quot;</span><br><span class="line">  &#125;</span><br><span class="line">  network3 = &#123;</span><br><span class="line">    name     = &quot;vpc-3&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了网络创建复用自然需要使用<code>module</code>去按账号构建</p>
+<p>（别想动态指定<code>provider</code>，<code>terraform</code>不支持！）</p>
+<p>那问题是怎么将<code>vpc</code>的配置按账号分组传递给对应的<code>module</code></p>
+<p>来看两种方案</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/iac-loves-simple.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/iac-loves-simple-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/iac-loves-simple.html" data-id="cuiduMnwCurBaGPLzkW7PHu-6" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/terraform/" rel="tag">terraform</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T05:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-tool/flt-dev-rewards-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="flt-dev-rewards">
+  
+  <div class="article-meta">
+    <a href="/flt-dev-rewards.html" class="article-date">
+  <time datetime="2024-07-20T00:59:22.000Z" itemprop="datePublished">2024-07-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tool/">tool</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/flt-dev-rewards.html">Fluence FLT drop — claim guide for eligible GitHub Web3 devs</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/flt-dev-rewards-zh.html">FLT空投：2023年参与过web3的开发能领</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>I ran into Fluence’s FLT-DROP: an airdrop for people who actually shipped Web3 code. When I wrote this it was worth on the order of <strong>$600</strong>.</p>
+<p>Nothing earth-shattering if you live in Web3, but fun for a part-time dabbler — I poked at ICP and put together a small <a href="https://github.com/NewbMiao/dvote">on-chain voting repo</a>, which was enough to count.</p>
+<p>Here is how I claimed it (first real Web3 wallet for me; picking the wrong chain for fees was painful).</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>偶然发现一个参与过web3开发能领的空投：FLT-DROP，目前价值600刀左右。</p>
+<p>这个可能在web3开发里不算啥新鲜事，对于一个只是玩票过web3的开发还是比较有意思的（之前研究ICP时写过一个<a href="https://github.com/NewbMiao/dvote">web3投票</a>的github repo，算是浅浅的参与了下web3）。</p>
+<p>那就记录下如何领到空投吧（毕竟第一次弄web3钱包，转错了网络还是很折腾的）</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/flt-dev-rewards.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/flt-dev-rewards-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/flt-dev-rewards.html" data-id="cuidgoa0IGDsSydWZH_bFzoWZ" class="article-share-link" data-i18n="share">Share</a>
+
+      
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T13:10:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-arc-swap-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-arc-swap">
+  
+  <div class="article-meta">
+    <a href="/rust-arc-swap.html" class="article-date">
+  <time datetime="2024-05-31T10:08:39.000Z" itemprop="datePublished">2024-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-arc-swap.html">arc-swap — atomic Arc swaps vs RwLock for config</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-arc-swap-zh.html">Rust工具集之arc-swap</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>In Rust, config that threads read while another thread updates it often shows up as <code>Arc&lt;RwLock&lt;T&gt;&gt;</code>. You can also reach for <code>arc-swap</code>. What’s the difference?</p>
+<p>Typical shape: one thread updates config while others keep reading—they should see the new snapshot without restarting the process.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><p>在<code>Rust</code>中常有配置读写的操作，一般可以用<code>Arc&lt;RwLock&lt;T&gt;&gt;</code>来实现，也可以用<code>arc-swap</code>来。有什么不同？</p>
+<p>下面拿一个例子来说明下</p>
+<p>假设有个配置，会有一个read thread不断获取配置，配置更新时要实时反映出来。</p>
+<!-- **文章目录** -->
+<!-- [TOC] --></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-arc-swap.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-arc-swap-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-arc-swap.html" data-id="cuid2W3Vi_qCBhLKHlRIF35Z_" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arc-swap/" rel="tag">arc-swap</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-sealed-trait-2-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-sealed-trait-2">
+  
+  <div class="article-meta">
+    <a href="/rust-sealed-trait-2.html" class="article-date">
+  <time datetime="2024-04-25T01:50:36.000Z" itemprop="datePublished">2024-04-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-sealed-trait-2.html">Sealed traits in oauth2-rs — closing the typestate loophole</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-sealed-trait-2-zh.html">Rust设计模式：sealed trait续篇</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>The <a href="/rust-sealed-trait.html">first sealed-trait post</a> showed the mechanic in isolation. Here is why it shows up in <a href="https://github.com/ramosbugs/oauth2-rs">oauth2-rs</a>: <strong>endpoint state</strong> in the client API. That design only works if callers cannot add their own state types.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>之前写<code>sealed trait</code>时没提他在<code>oauth2-rs</code>中怎么用, 为什么用，这个其实在状态接口设计中很有用，今天展开聊聊。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-sealed-trait-2.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-sealed-trait-2-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-sealed-trait-2.html" data-id="cuidkTiSS9MQC-If6pYsqneZQ" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sealed-trait/" rel="tag">sealed-trait</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-typestate-pattern-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-typestate-pattern">
+  
+  <div class="article-meta">
+    <a href="/rust-typestate-pattern.html" class="article-date">
+  <time datetime="2024-04-24T06:00:19.000Z" itemprop="datePublished">2024-04-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-typestate-pattern.html">Rust typestate — compile-time checks for OAuth2 client setup</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-typestate-pattern-zh.html">Rust设计模式：typestate</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p><strong>Typestate</strong> encodes lifecycle state in the type system.</p>
+<p>oauth2-rs uses it for a concrete pain point: OAuth2 clients need <code>auth_url</code>, <code>token_url</code>, <code>introspect_url</code>, and friends wired up before auth calls make sense. If <code>token_url</code> is missing, exchanging an authorization code for a token fails at <strong>runtime</strong>.</p>
+<p>Forgot to call <code>set_token_url</code>? You find out when you fetch a token—not when you build the client.</p>
+<p>Typestate pushes that mistake to <strong>compile time</strong>.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>今天聊聊<code>typestate</code>模式。</p>
+<p>新版<code>oauth2-rs</code>使用这个模式是想解决一个问题。</p>
+<p>在<code>Oauth2</code>中，一般需要提前配置好<code>auth_url</code>, <code>token_url</code>, <code>introspect_url</code>等，才能调用后续的鉴权相关功能。比如没有<code>token_url</code>配置好，你就无法成功拿授权码（<code>code</code>）获取<code>token</code>。</p>
+<p>但如果用户忘了配置，那就会在调用获取<code>token</code>时才得到运行时错误。</p>
+<p>能不能在编译时就把错误暴露出来，让用户提前感知问题？</p>
+<p>这就是<code>typestate</code>模式能很好解决的问题。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-typestate-pattern.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-typestate-pattern-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-typestate-pattern.html" data-id="cuidFYknsicOi_oOIfi_jcihd" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/typestate/" rel="tag">typestate</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+    
+
+<article id="post-rust/rust-sealed-trait-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-sealed-trait">
+  
+  <div class="article-meta">
+    <a href="/rust-sealed-trait.html" class="article-date">
+  <time datetime="2024-04-22T09:26:42.000Z" itemprop="datePublished">2024-04-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          <h1 class="locale-list-title" itemprop="name" data-locale-title="en">
+            <a class="article-title" href="/rust-sealed-trait.html">Rust sealed traits — limiting who can implement your trait</a>
+          </h1>
+          <h1 class="locale-list-title is-hidden" itemprop="name" data-locale-title="zh">
+            <a class="article-title" href="/rust-sealed-trait-zh.html">Rust设计模式：sealed trait</a>
+          </h1>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div class="locale-list-excerpt" data-locale-excerpt="en"><p>I was bumping dependencies on an older <a href="https://github.com/NewbMiao/axum-koans/">OAuth2 axum koan</a> project; the newer <a href="https://github.com/ramosbugs/oauth2-rs">oauth2-rs</a> uses <strong>sealed traits</strong> in a way that’s easy to miss if you only read the public API.</p></div>
+          <div class="locale-list-excerpt is-hidden" data-locale-excerpt="zh"><!-- **文章目录** -->
+<!-- [TOC] -->
+
+<p>最近升级之前写的一个<a href="https://github.com/NewbMiao/axum-koans/">oauth2相关</a>的依赖时， 发现新版<a href="https://github.com/ramosbugs/oauth2-rs">oauth2-rs</a>有些实现pattern很有意思，可以展开看看。</p>
+<p>今天先看下<code>sealed trait</code>。</p></div>
+        
+        
+          <p class="article-more-link">
+            
+            <a class="locale-more-link" data-locale-more="en" href="/rust-sealed-trait.html#more">Read More</a>
+            <a class="locale-more-link is-hidden" data-locale-more="zh" href="/rust-sealed-trait-zh.html#more">Read More</a>
+            
+          </p>
+        
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-sealed-trait.html" data-id="cuidcwNn_yW6C4QoOyvHAS33e" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sealed-trait/" rel="tag">sealed-trait</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-19T16:00:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/">Next »</a>
+    </nav>
+  
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,2080 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://newbmiao.github.io/what-matters-in-aiops.html</loc>
+    
+    <lastmod>2026-11-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/what-matters-in-aiops-zh.html</loc>
+    
+    <lastmod>2026-11-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/js-batch-merge-reduce-vs-concat-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-acl-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-basis-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-cron-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-daemon-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-process-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-quota-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-slice-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-func-and-virtual-doc-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-barrier-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-condvar-2-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-condvar-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-semaphore-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-atomic-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/advanced-go-concurrency-patterns-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-test-profile-and-benchmark-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/fanIn-and-fanOut-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-cell-and-refcell-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/ownership-of-rc-and-arc-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-quick-start-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-comprehensions-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-bundle-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-use-opa-cli-elegantly-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/mac-tool-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/shadowsocks-polipo-vps.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/summary-of-2020.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-channel-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-send-and-sync-trait-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/php-assignment-and-reference-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-use-php-signal-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-interface-de-virtualize-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-string-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-struct-memory-align-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-map-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-interface-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go_mutex_insight-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tech-behind-authentication-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/one-8-bytes-optimization-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/recursive-ordone-issue-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/terraform-with-tfpolicy-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/random-element-of-array-js-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/remember-once-mysql-optimize-operations-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/use-limit-subquery-in-mysql-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-value-in-heap-and-stack-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/html5-drag-api-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/build-your-git-server-on-linux-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/js-data-structure-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/js-function-closure-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/use-luhm-to-validate-bank-card-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/some-misuse-of-php-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/use-fastcgi_finish_request-speed-up-your-page-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-call-a-function-with-unsure-number-params-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/flt-dev-rewards-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/the-drama-of-updating-protobuf-go-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-source-analysis-of-memory-alloc-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-value-layout-in-memory-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-memory-model-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/mysql-common-function-accumulation-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/mysql-compare-version-string-zh.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/js-batch-merge-reduce-vs-concat.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/html5-drag-api.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/js-data-structure.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-call-a-function-with-unsure-number-params.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/js-function-closure.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/random-element-of-array-js.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-use-php-signal.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/some-misuse-of-php.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/use-fastcgi_finish_request-speed-up-your-page.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/php-assignment-and-reference.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/use-luhm-to-validate-bank-card.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/mac-tool.html</loc>
+    
+    <lastmod>2026-11-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-build-ringbuffer-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-arc-swap-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/does-terraform-matter-to-devops-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/iac-loves-simple-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/flt-dev-rewards.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/mysql-common-function-accumulation.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/mysql-compare-version-string.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/remember-once-mysql-optimize-operations.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/use-limit-subquery-in-mysql.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/regex-notes.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/regex-notes-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tips-convert-doc-table-to-excel.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tips-convert-doc-table-to-excel-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tips-use-gdb-elegantly-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tips-use-gdb-elegantly.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/advanced-go-concurrency-patterns.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-source-analysis-of-memory-alloc.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/build-your-git-server-on-linux.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-acl.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-bash.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-cron.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-basis.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-daemon.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-process.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/niaoge-linux-desktop-guide-notes-quota.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-bundle.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-func-and-virtual-doc.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-comprehensions.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-use-opa-cli-elegantly.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-quick-start.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/opa-test-profile-and-benchmark.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-async-future.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-async-future-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-async-multi-future-concurrency.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-async-multi-future-concurrency-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-rayon-parallel.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-rayon-parallel-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-tokio-task-tracing.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-tower-service.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-tokio-task-tracing-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-tower-service-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/seeing-code-as-debt-not-value-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/seeing-code-as-debt-not-value.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-interface.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-map.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-struct-memory-align.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/auth-manage-via-keycloak.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/auth-manage-via-keycloak-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/master-rust-ownership-from-scratch.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/master-rust-ownership-from-scratch-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/ownership-of-rc-and-arc.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-arc-swap.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-cell-and-refcell.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-send-and-sync-trait.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-atomic.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/devops-subnets-preview-tool.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/devops-subnets-preview-tool-zh.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tech-behind-authentication.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/terraform-with-tfpolicy.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/does-terraform-matter-to-devops.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/iac-loves-simple.html</loc>
+    
+    <lastmod>2026-11-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/fanIn-and-fanOut.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go_mutex_insight.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-memory-model.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-value-in-heap-and-stack.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-build-ringbuffer.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/go-value-layout-in-memory.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/the-drama-of-updating-protobuf-go.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/cache-rust-dependencies-with-docker-build.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-lambda-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-lambda.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sealed-trait-2-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sealed-trait.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sealed-trait-2.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sealed-trait-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-barrier.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-channel.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-condvar.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-condvar-2.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-sync-semaphore.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/cache-rust-dependencies-with-docker-build-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-typestate-pattern-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/rust-typestate-pattern.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2-way-of-or-done-pattern.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-for-range.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/2-way-of-or-done-pattern-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-interface-de-virtualize.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-for-range-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-reflect-handle-unexport-field.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-slice.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-reflect-handle-unexport-field-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-string.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-understanding-mutex.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/dig101-golang-understanding-mutex-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-modify-a-pointer-of-go-inside.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/how-to-modify-a-pointer-of-go-inside-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/one-8-bytes-optimization.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/one-example-to-learn-cond.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/one-example-to-learn-cond-zh.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/recursive-ordone-issue.html</loc>
+    
+    <lastmod>2026-11-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/404.html</loc>
+    
+    <lastmod>2023-06-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  <url>
+    <loc>https://newbmiao.github.io/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-concurrency/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-fan-patterns/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/happens-before/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-mutex/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/heap-and-stack/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/ringbuffer/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/protobuf/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/subnetting/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/terraform/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/keycloak/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/tfpolicy/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/aiops/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/opa-bundle/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rego-comprehensions/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/opa-virtual-doc/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/opa-local-dev/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/opa-rbac/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/opa-benchmark/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/axum/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/token-exchange/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/cargo-docker/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-ownership/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-rc-arc/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/arc-swap/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-async/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-cell-refcell/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/aws-lambda/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rayon/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/sealed-trait/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/send-sync/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-barrier/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-atomic/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/mpsc-channel/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-condvar/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-semaphore/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/tokio-console/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/rust-tower/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/typestate/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/macos-tooling/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/regex/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/shadowsocks-vps/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/doc-table-excel/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/gdb/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/mysql-optimize/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/mysql-subquery/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/or-done/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-for-range/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-interface/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-map/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-reflect/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-slice/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-string/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-struct/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/memory-align/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-pointer-deref/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/size-class/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/go-cond/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/html5-drag/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/array-random/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/php-signal/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/tags/php-reference/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/go/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/devops/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/web/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/linux/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/opa/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/rust/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/thoughts/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/tool/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://newbmiao.github.io/categories/database/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+</urlset>

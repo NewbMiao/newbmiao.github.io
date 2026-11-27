@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+  window.__SITE_LOCALES = {"en":{"archive":"Archives","categories":"Categories","recent_posts":"Recent Posts","tags":"Tags","tagcloud":"Tag Cloud","links":"Links","excerpt_link":"Read More","share":"Share","search":"Search","prev":"Prev","next":"Next","comment":"Comments","comments":"Comments","contents":"Contents","page":"Page %d","menu":"Menu","rss":"RSS","showsidebar":"Show Sidebar","hidesidebar":"Hide Sidebar","updated":"Updated","totop":"Back to top","older":"Older","newer":"Newer","copyright_contact":"Questions? Leave a comment below or email: ","copyright_permalink":"Permalink:"},"zh":{"archive":"归档","categories":"分类","recent_posts":"近期文章","tags":"标签","tagcloud":"标签云","links":"友情链接","excerpt_link":"阅读全文","share":"分享到","search":"搜索","prev":"上一页","next":"下一页","comment":"文章评论","comments":"评论","contents":"文章目录","page":"第 %d 页","menu":"菜单","rss":"RSS 订阅","showsidebar":"显示侧边栏","hidesidebar":"隐藏侧边栏","updated":"更新日期","totop":"返回顶部","older":"上一篇","newer":"下一篇","copyright_contact":"如有疑问，请文末留言交流或邮件：","copyright_permalink":"本文链接："}};
+  window.__SITE_LOCALE_DEFAULT = 'en';
+  
+  window.__postLangSwitch = {
+    targetLang: 'zh',
+    url: '/rust-tower-service-zh.html'
+  };
+  
+  (function() {
+    try {
+      var def = window.__SITE_LOCALE_DEFAULT || 'en';
+      var loc = localStorage.getItem('siteLocale') || def;
+      document.documentElement.lang = loc === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.setAttribute('data-site-locale', loc);
+    } catch (e) {}
+  })();
+</script>
+  
+  <title>Tower Service and Layer — HTTP middleware chains with hyper | newbmiao</title>
+  <meta name="google-site-verification" content="A8QO7FHnalsXITu6e-kujzOkYt0WXQIRKJbhKWinfyc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  <meta name="keywords" itemprop="keywords" content="rust,tower,hyper,service" />
+  
+  
+  <meta name="description" content="How tower’s Service and Layer traits compose Logger, Timeout, and hyper handlers.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tower Service and Layer — HTTP middleware chains with hyper">
+<meta property="og:url" content="https://newbmiao.github.io/rust-tower-service.html">
+<meta property="og:site_name" content="newbmiao">
+<meta property="og:description" content="How tower’s Service and Layer traits compose Logger, Timeout, and hyper handlers.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://newbmiao.github.io/images/rust/tower-service.webp">
+<meta property="article:published_time" content="2024-02-03T10:25:19.000Z">
+<meta property="article:modified_time" content="2026-11-20T12:30:00.000Z">
+<meta property="article:author" content="newbmiao">
+<meta property="article:tag" content="rust-tower">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://newbmiao.github.io/images/rust/tower-service.webp">
+  
+
+<link rel="canonical" href="https://newbmiao.github.io/rust-tower-service.html">
+
+
+<link rel="alternate" hreflang="en" href="https://newbmiao.github.io/rust-tower-service.html">
+<link rel="alternate" hreflang="zh-CN" href="https://newbmiao.github.io/rust-tower-service-zh.html">
+<link rel="alternate" hreflang="x-default" href="https://newbmiao.github.io/rust-tower-service.html">
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Tower Service and Layer — HTTP middleware chains with hyper","description":"How tower’s Service and Layer traits compose Logger, Timeout, and hyper handlers.","url":"https://newbmiao.github.io/rust-tower-service.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://newbmiao.github.io/rust-tower-service.html"},"datePublished":"2024-02-03T10:25:19.000Z","dateModified":"2026-11-20T12:30:00.000Z","author":{"@type":"Person","name":"newbmiao"},"publisher":{"@type":"Organization","name":"newbmiao","url":"https://newbmiao.github.io/"},"inLanguage":"en","keywords":"rust-tower"}</script>
+
+  
+    <link rel="alternate" href="/atom.xml" title="newbmiao" type="application/atom+xml">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header" data-pagefind-ignore="all">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">newbmiao</a>
+      </h1>
+      
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">start from a newb...(https://newbmiao.github.io)</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/categories/rust/">Rust</a>
+        
+          <a class="main-nav-link" href="/categories/go/">Go</a>
+        
+          <a class="main-nav-link" href="/categories/opa/">OPA</a>
+        
+          <a class="main-nav-link" href="/categories/devops/">DevOps</a>
+        
+          <a class="main-nav-link" href="https://terraform-on-azure.pages.dev/">Terraform On Azure</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+<nav id="site-lang-switch" class="site-lang-switch" aria-label="Language">
+  <a class="site-lang-btn" data-locale="en" href="/rust-tower-service.html">EN</a>
+  <span class="site-lang-sep" aria-hidden="true">|</span>
+  <a class="site-lang-btn" data-locale="zh" href="/rust-tower-service.html">中文</a>
+</nav>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search" aria-label="Search" data-i18n="search" data-i18n-attr="title aria-label" href="#"></a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main">
+
+<article id="post-rust/rust-tower-service-en" class="article article-type-post" itemscope itemprop="blogPost" data-post-lang="en" data-lang-pair="rust-tower-service">
+  
+  <span class="pagefind-lang-filters" hidden aria-hidden="true">
+    <span data-pagefind-filter="lang:en"></span>
+    <span data-pagefind-meta="lang">en</span>
+  </span>
+  
+  <div class="article-meta">
+    <a href="/rust-tower-service.html" class="article-date">
+  <time datetime="2024-02-03T10:25:19.000Z" itemprop="datePublished">2024-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/rust/">rust</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+          
+  
+    <h1 class="article-title" itemprop="name" data-pagefind-meta="title">
+      Tower Service and Layer — HTTP middleware chains with hyper
+    </h1>
+  
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody" data-pagefind-body>
+      
+	
+        <div id="toc" class="toc-article">
+         <h3 data-i18n="contents">Contents</h3>
+         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-bare-handler"><span class="toc-number">1.</span> <span class="toc-text">A bare handler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-trait"><span class="toc-number">2.</span> <span class="toc-text">Service trait</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Logger-middleware"><span class="toc-number">3.</span> <span class="toc-text">A Logger middleware</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Layer-trait"><span class="toc-number">4.</span> <span class="toc-text">Layer trait</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hyper%E2%80%99s-Service-trait"><span class="toc-number">5.</span> <span class="toc-text">hyper’s Service trait</span></a></li></ol>
+        </div>
+        
+<script src="/js/toc.js"></script>
+
+        
+        <p>When people talk about Rust HTTP middleware, <strong>Tower</strong> comes up fast.</p>
+<p>Tower is protocol-agnostic middleware plumbing; <strong><code>Service</code></strong> and <strong><code>Layer</code></strong> are how you stack Logger, timeout, and handler layers.</p>
+<span id="more"></span>
+
+<h2 id="A-bare-handler"><a href="#A-bare-handler" class="headerlink" title="A bare handler"></a>A bare handler</h2><p>Start from hyper’s hello-world handler:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> http_body_util::Full;</span><br><span class="line"><span class="keyword">use</span> hyper::&#123;</span><br><span class="line">    body::&#123;Bytes, Incoming&#125;,</span><br><span class="line">    server::conn::http1,</span><br><span class="line">    Request, Response,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">use</span> hyper_util::rt::TokioIo;</span><br><span class="line"><span class="keyword">use</span> std::&#123;convert::Infallible, net::SocketAddr&#125;;</span><br><span class="line"><span class="keyword">use</span> tokio::net::TcpListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">handler</span>(_: Request&lt;Incoming&gt;) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;Response&lt;Full&lt;Bytes&gt;&gt;, Infallible&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(Response::<span class="title function_ invoke__">new</span>(Full::<span class="title function_ invoke__">new</span>(Bytes::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Hello, World!&quot;</span>))))</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">main</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error + <span class="built_in">Send</span> + <span class="built_in">Sync</span>&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">addr</span> = SocketAddr::<span class="title function_ invoke__">from</span>(([<span class="number">127</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>], <span class="number">3000</span>));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">listener</span> = TcpListener::<span class="title function_ invoke__">bind</span>(addr).<span class="keyword">await</span>?;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> (stream, _) = listener.<span class="title function_ invoke__">accept</span>().<span class="keyword">await</span>?;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">io</span> = TokioIo::<span class="title function_ invoke__">new</span>(stream);</span><br><span class="line">        tokio::<span class="title function_ invoke__">spawn</span>(<span class="keyword">async</span> <span class="keyword">move</span> &#123;</span><br><span class="line">            <span class="comment">// the handler becomes a Service here</span></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">svc</span> = hyper::service::<span class="title function_ invoke__">service_fn</span>(handler);</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Err</span>(err) = http1::Builder::<span class="title function_ invoke__">new</span>().<span class="title function_ invoke__">serve_connection</span>(io, svc).<span class="keyword">await</span> &#123;</span><br><span class="line">                <span class="built_in">eprintln!</span>(<span class="string">&quot;server error: &#123;&#125;&quot;</span>, err);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>service_fn</code> turns the async fn into something that implements <strong><code>Service</code></strong>—what the server actually calls. That’s the hook middleware wraps.</p>
+<blockquote>
+<p>After hyper v1, this <code>Service</code> is not literally tower’s trait, but the shape matches. We’ll contrast the interfaces later.</p>
+</blockquote>
+<p>To add logging and a five-second timeout around the handler:</p>
+<p><img decoding="async" loading="lazy" src="/images/rust/tower-service.webp" alt="tower-service"></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">svc</span> = hyper::service::<span class="title function_ invoke__">service_fn</span>(handler);</span><br><span class="line"><span class="comment">// two layer middlewares</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">svc</span> = ServiceBuilder::<span class="title function_ invoke__">new</span>()</span><br><span class="line">    .<span class="title function_ invoke__">layer_fn</span>(Logger::new)</span><br><span class="line">    .<span class="title function_ invoke__">layer_fn</span>(|s| Timeout::<span class="title function_ invoke__">new</span>(s, std::time::Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">5</span>)))</span><br><span class="line">    .<span class="title function_ invoke__">service</span>(svc);</span><br><span class="line"><span class="comment">// ignore the adapter below for now — covered later</span></span><br><span class="line"><span class="comment">// let svc = TowerToHyperService::new(svc);</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Service-trait"><a href="#Service-trait" class="headerlink" title="Service trait"></a>Service trait</h2><p>Each middleware is another link in a chain: handle side effects, then delegate inward.</p>
+<p>Tower’s <code>Service</code>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Service</span>&lt;Request&gt; &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span>;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Error</span>;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Future</span>: Future&lt;Output = <span class="type">Result</span>&lt;<span class="keyword">Self</span>::Response, <span class="keyword">Self</span>::Error&gt;&gt;;</span><br><span class="line">    <span class="comment">// whether a call is allowed now</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">poll_ready</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, cx: &amp;<span class="keyword">mut</span> Context&lt;<span class="symbol">&#x27;_</span>&gt;) <span class="punctuation">-&gt;</span> Poll&lt;<span class="type">Result</span>&lt;(), <span class="keyword">Self</span>::Error&gt;&gt;;</span><br><span class="line">    <span class="comment">// handle the request</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">call</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, req: Request) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span>::Future;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>poll_ready</code> gates <code>call</code>. <code>call</code> returns a <code>Future</code> so slow work doesn’t block the caller’s ability to accept other requests.</p>
+<p>Why <code>Future</code> instead of <code>async fn</code> in the trait? Historical—async in traits wasn’t stable yet. Since Rust 1.75 you could write:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">trait</span> <span class="title class_">Service</span>&lt;Request&gt; &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span>;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Error</span>;</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">call</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, req: Request) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="keyword">Self</span>::Response, <span class="keyword">Self</span>::Error&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="A-Logger-middleware"><a href="#A-Logger-middleware" class="headerlink" title="A Logger middleware"></a>A Logger middleware</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> tower::Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[derive(Debug, Clone)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">Logger</span>&lt;S&gt; &#123;</span><br><span class="line">    inner: S,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span>&lt;S&gt; Logger&lt;S&gt; &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">new</span>(inner: S) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        Logger &#123; inner &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Req</span> = hyper::Request&lt;Incoming&gt;;</span><br><span class="line"><span class="keyword">impl</span>&lt;S&gt; Service&lt;Req&gt; <span class="keyword">for</span> <span class="title class_">Logger</span>&lt;S&gt;</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">    S: Service&lt;Req&gt; + <span class="built_in">Clone</span>,</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Logger wraps another Service; response/error types pass through</span></span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span> = S::Response;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Error</span> = S::Error;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Future</span> = S::Future;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">poll_ready</span>(</span><br><span class="line">        &amp;<span class="keyword">mut</span> <span class="keyword">self</span>,</span><br><span class="line">        cx: &amp;<span class="keyword">mut</span> std::task::Context&lt;<span class="symbol">&#x27;_</span>&gt;,</span><br><span class="line">    ) <span class="punctuation">-&gt;</span> std::task::Poll&lt;<span class="type">Result</span>&lt;(), <span class="keyword">Self</span>::Error&gt;&gt; &#123;</span><br><span class="line">        <span class="comment">// no extra readiness logic</span></span><br><span class="line">        <span class="keyword">self</span>.inner.<span class="title function_ invoke__">poll_ready</span>(cx)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">call</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>, req: Req) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span>::Future &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;processing request: &#123;&#125; &#123;&#125;&quot;</span>, req.<span class="title function_ invoke__">method</span>(), req.<span class="title function_ invoke__">uri</span>().<span class="title function_ invoke__">path</span>());</span><br><span class="line">        <span class="comment">// delegate to the inner Service</span></span><br><span class="line">        <span class="keyword">self</span>.inner.<span class="title function_ invoke__">call</span>(req)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Wire it manually:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">svc</span> = Logger::<span class="title function_ invoke__">new</span>(svc);</span><br></pre></td></tr></table></figure>
+
+<p>Then timeout:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">svc</span> = Timeout::<span class="title function_ invoke__">new</span>(svc, std::time::Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">5</span>));</span><br></pre></td></tr></table></figure>
+
+<p>That’s awkward—last wrapped runs first—and not chain-friendly. <strong><code>Layer</code></strong> fixes ordering and ergonomics.</p>
+<h2 id="Layer-trait"><a href="#Layer-trait" class="headerlink" title="Layer trait"></a>Layer trait</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Layer</span>&lt;S&gt; &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Service</span>;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">layer</span>(&amp;<span class="keyword">self</span>, inner: S) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span>::Service;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Implement it for <code>Logger</code>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">impl</span>&lt;S&gt; Layer&lt;S&gt; <span class="keyword">for</span> <span class="title class_">Logger</span>&lt;S&gt; &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Service</span> = Logger&lt;S&gt;;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">layer</span>(&amp;<span class="keyword">self</span>, inner: S) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span>::Service &#123;</span><br><span class="line">        Logger &#123; inner &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Then build in call order:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tower::ServiceBuilder::<span class="title function_ invoke__">new</span>()</span><br><span class="line">    .<span class="title function_ invoke__">layer</span>(LoggerLayer)</span><br><span class="line">    .<span class="title function_ invoke__">layer_fn</span>(|s| Timeout::<span class="title function_ invoke__">new</span>(s, std::time::Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">5</span>)))</span><br><span class="line">    .<span class="title function_ invoke__">service</span>(svc);</span><br></pre></td></tr></table></figure>
+
+<p><code>layer_fn</code> adapts closures into <code>Layer</code>. Middleware runs in the same order you <code>.layer()</code> it.</p>
+<h2 id="hyper’s-Service-trait"><a href="#hyper’s-Service-trait" class="headerlink" title="hyper’s Service trait"></a>hyper’s Service trait</h2><p>Hyper used to depend on tower’s <code>Service</code>. Before v1 stabilized, it switched to its own trait:</p>
+<ul>
+<li>tower wasn’t stable yet</li>
+<li>hyper wanted a thinner surface: drop <code>poll_ready</code>, and take <code>&amp;self</code> in <code>call</code> (shared state via <code>Arc&lt;Mutex&lt;_&gt;&gt;</code> if you need mutation)</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Service</span>&lt;Request&gt; &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span>;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Error</span>;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Future</span>: Future&lt;Output = <span class="type">Result</span>&lt;<span class="keyword">Self</span>::Response, <span class="keyword">Self</span>::Error&gt;&gt;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">call</span>(&amp;<span class="keyword">self</span>, req: Request) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span>::Future;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Reusing tower middleware (e.g. <code>Timeout</code>) against hyper often needs an adapter:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">svc</span> = TowerToHyperService::<span class="title function_ invoke__">new</span>(svc);</span><br></pre></td></tr></table></figure>
+
+<p>Frameworks built on hyper—<strong>Axum</strong>, <strong>Actix Web</strong>, and others—also integrate tower, so middleware written once tends to travel.</p>
+<p>Tower’s <code>Service</code>&#x2F;<code>Layer</code> split looks obvious in hindsight; getting <code>Future</code>-returning <code>call</code> right took real design work. Tokio’s write-up is worth it: <a href="https://tokio.rs/blog/2021-05-14-inventing-the-service-trait">Inventing the Service trait</a>.</p>
+<p>For a live build-through: David Pedersen’s <a href="https://www.youtube.com/watch?v=16sU1q8OeeI&t=4227s">Tower deep dive</a> (search “Tower deep dive” on Bilibili if YouTube is blocked).</p>
+
+	
+	<blockquote style="padding:10px;background: #efe none repeat scroll 0% 0%;border-left-color:green">
+	<div><span data-i18n="copyright_contact">Questions? Leave a comment below or email: </span><a href="mailto:newbvirgil@gmail.com" title="newbvirgil@gmail.com">newbvirgil@gmail.com</a></div>
+  <img class="article-wechat-promo" src="/img/newbmiao_white_all.jpg" width="50%" style="min-width:250px;margin:0px;" title="newbmiao" alt="">
+  <div><span data-i18n="copyright_permalink">Permalink:</span> <a href="https://newbmiao.github.io/rust-tower-service.html" title="https:&#x2F;&#x2F;newbmiao.github.io&#x2F;rust-tower-service.html" target="_blank" rel="noopener">https:&#x2F;&#x2F;newbmiao.github.io&#x2F;rust-tower-service.html</a></div>
+  </blockquote>
+	
+      
+    </div>
+    
+    <footer class="article-footer">
+      <a data-url="https://newbmiao.github.io/rust-tower-service.html" data-id="cuidVVPNO50zWkHbtWYO2Tlxw" class="article-share-link" data-i18n="share">Share</a>
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rust-tower/" rel="tag">rust-tower</a></li></ul>
+
+     
+     <span style="color:#999">
+&nbsp; | &nbsp;<span data-i18n="updated">Updated</span>: <time datetime="2026-11-20T12:30:00.000Z" itemprop="dateModify">2026-11-20</time>
+</span>
+
+     
+
+
+
+    </footer>
+    
+  </div>
+</article>
+
+
+  <section class="comments" id="comments">
+    
+<script src="https://utteranc.es/client.js"
+  repo="NewbMiao/newbmiao.github.io"
+  issue-term="title"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+
+ </section>
+</section>
+      
+      <aside id="sidebar">
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="recent_posts">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="what-matters-in-aiops" data-title-en="AI-Driven Terraform: Move Fast Without Losing Control" data-title-zh="AI 搞 Terraform，怎么管才不会翻车？" data-href-en="/what-matters-in-aiops.html" data-href-zh="/what-matters-in-aiops-zh.html">
+            <a href="/what-matters-in-aiops.html">AI-Driven Terraform: Move Fast Without Losing Control</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="devops-subnets-preview-tool" data-title-en="Subnets Preview — plan and split VNet subnets in the browser" data-title-zh="运维划子网很麻烦？试试这个工具" data-href-en="/devops-subnets-preview-tool.html" data-href-zh="/devops-subnets-preview-tool-zh.html">
+            <a href="/devops-subnets-preview-tool.html">Subnets Preview — plan and split VNet subnets in the browser</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="terraform-with-tfpolicy" data-title-en="Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks" data-title-zh="没学过 Sentinel / OPA？Terraform 规则这回直接换了！" data-href-en="/terraform-with-tfpolicy.html" data-href-zh="/terraform-with-tfpolicy-zh.html">
+            <a href="/terraform-with-tfpolicy.html">Terraform tfpolicy vs Sentinel and OPA for plan-time policy checks</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="does-terraform-matter-to-devops" data-title-en="Is Terraform still worth using for DevOps in 2026?" data-title-zh="这年头运维，还有人用terraform么?!" data-href-en="/does-terraform-matter-to-devops.html" data-href-zh="/does-terraform-matter-to-devops-zh.html">
+            <a href="/does-terraform-matter-to-devops.html">Is Terraform still worth using for DevOps in 2026?</a>
+          </li>
+        
+          
+          <li class="recent-post-item" data-post-lang="en" data-lang-pair="iac-loves-simple" data-title-en="Terraform VPC splits across accounts — simple HCL beats clever locals" data-title-zh="IaC：简洁 or 灵活" data-href-en="/iac-loves-simple.html" data-href-zh="/iac-loves-simple-zh.html">
+            <a href="/iac-loves-simple.html">Terraform VPC splits across accounts — simple HCL beats clever locals</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="categories">Categories</h3>
+    <div class="widget">
+      <ul class="category-list">
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/devops/">devops</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/opa/">opa</a>
+          <span class="category-list-count" data-locale-count-en="6" data-locale-count-zh="6">6</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/database/">database</a>
+          <span class="category-list-count" data-locale-count-en="4" data-locale-count-zh="4">4</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/go/">go</a>
+          <span class="category-list-count" data-locale-count-en="23" data-locale-count-zh="23">23</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/linux/">linux</a>
+          <span class="category-list-count" data-locale-count-en="7" data-locale-count-zh="7">7</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/rust/">rust</a>
+          <span class="category-list-count" data-locale-count-en="22" data-locale-count-zh="22">22</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/thoughts/">thoughts</a>
+          <span class="category-list-count" data-locale-count-en="1" data-locale-count-zh="2">1</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/tool/">tool</a>
+          <span class="category-list-count" data-locale-count-en="5" data-locale-count-zh="9">5</span>
+        </li>
+        
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/web/">web</a>
+          <span class="category-list-count" data-locale-count-en="12" data-locale-count-zh="36">12</span>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="tagcloud">Tag Cloud</h3>
+    <div class="widget tagcloud" data-pagefind-ignore>
+      <a href="/tags/go-concurrency/" style="font-size: 15px; color: #1e90ff">go-concurrency</a> <a href="/tags/go-fan-patterns/" style="font-size: 15px; color: #1e90ff">go-fan-patterns</a> <a href="/tags/happens-before/" style="font-size: 15px; color: #1e90ff">happens-before</a> <a href="/tags/go-mutex/" style="font-size: 22.5px; color: #3f97d0">go-mutex</a> <a href="/tags/heap-and-stack/" style="font-size: 15px; color: #1e90ff">heap-and-stack</a> <a href="/tags/ringbuffer/" style="font-size: 15px; color: #1e90ff">ringbuffer</a> <a href="/tags/protobuf/" style="font-size: 15px; color: #1e90ff">protobuf</a> <a href="/tags/subnetting/" style="font-size: 15px; color: #1e90ff">subnetting</a> <a href="/tags/terraform/" style="font-size: 30px; color: #5f9ea0">terraform</a> <a href="/tags/keycloak/" style="font-size: 22.5px; color: #3f97d0">keycloak</a> <a href="/tags/tfpolicy/" style="font-size: 15px; color: #1e90ff">tfpolicy</a> <a href="/tags/aiops/" style="font-size: 15px; color: #1e90ff">aiops</a> <a href="/tags/opa-bundle/" style="font-size: 15px; color: #1e90ff">opa-bundle</a> <a href="/tags/rego-comprehensions/" style="font-size: 15px; color: #1e90ff">rego-comprehensions</a> <a href="/tags/opa-virtual-doc/" style="font-size: 15px; color: #1e90ff">opa-virtual-doc</a> <a href="/tags/opa-local-dev/" style="font-size: 15px; color: #1e90ff">opa-local-dev</a> <a href="/tags/opa-rbac/" style="font-size: 15px; color: #1e90ff">opa-rbac</a> <a href="/tags/opa-benchmark/" style="font-size: 15px; color: #1e90ff">opa-benchmark</a> <a href="/tags/axum/" style="font-size: 15px; color: #1e90ff">axum</a> <a href="/tags/token-exchange/" style="font-size: 15px; color: #1e90ff">token-exchange</a> <a href="/tags/cargo-docker/" style="font-size: 15px; color: #1e90ff">cargo-docker</a> <a href="/tags/rust-ownership/" style="font-size: 15px; color: #1e90ff">rust-ownership</a> <a href="/tags/rust-rc-arc/" style="font-size: 15px; color: #1e90ff">rust-rc-arc</a> <a href="/tags/arc-swap/" style="font-size: 15px; color: #1e90ff">arc-swap</a> <a href="/tags/rust-async/" style="font-size: 22.5px; color: #3f97d0">rust-async</a> <a href="/tags/rust-cell-refcell/" style="font-size: 15px; color: #1e90ff">rust-cell-refcell</a> <a href="/tags/aws-lambda/" style="font-size: 15px; color: #1e90ff">aws-lambda</a> <a href="/tags/rayon/" style="font-size: 15px; color: #1e90ff">rayon</a> <a href="/tags/sealed-trait/" style="font-size: 22.5px; color: #3f97d0">sealed-trait</a> <a href="/tags/send-sync/" style="font-size: 15px; color: #1e90ff">send-sync</a> <a href="/tags/rust-barrier/" style="font-size: 15px; color: #1e90ff">rust-barrier</a> <a href="/tags/rust-atomic/" style="font-size: 15px; color: #1e90ff">rust-atomic</a> <a href="/tags/mpsc-channel/" style="font-size: 15px; color: #1e90ff">mpsc-channel</a> <a href="/tags/rust-condvar/" style="font-size: 22.5px; color: #3f97d0">rust-condvar</a> <a href="/tags/rust-semaphore/" style="font-size: 15px; color: #1e90ff">rust-semaphore</a> <a href="/tags/tokio-console/" style="font-size: 15px; color: #1e90ff">tokio-console</a> <a href="/tags/rust-tower/" style="font-size: 15px; color: #1e90ff">rust-tower</a> <a href="/tags/typestate/" style="font-size: 15px; color: #1e90ff">typestate</a> <a href="/tags/macos-tooling/" style="font-size: 15px; color: #1e90ff">macos-tooling</a> <a href="/tags/regex/" style="font-size: 15px; color: #1e90ff">regex</a> <a href="/tags/shadowsocks-vps/" style="font-size: 15px; color: #1e90ff">shadowsocks-vps</a> <a href="/tags/doc-table-excel/" style="font-size: 15px; color: #1e90ff">doc-table-excel</a> <a href="/tags/gdb/" style="font-size: 15px; color: #1e90ff">gdb</a> <a href="/tags/mysql-optimize/" style="font-size: 15px; color: #1e90ff">mysql-optimize</a> <a href="/tags/mysql-subquery/" style="font-size: 15px; color: #1e90ff">mysql-subquery</a> <a href="/tags/or-done/" style="font-size: 22.5px; color: #3f97d0">or-done</a> <a href="/tags/go-for-range/" style="font-size: 15px; color: #1e90ff">go-for-range</a> <a href="/tags/go-interface/" style="font-size: 22.5px; color: #3f97d0">go-interface</a> <a href="/tags/go-map/" style="font-size: 15px; color: #1e90ff">go-map</a> <a href="/tags/go-reflect/" style="font-size: 22.5px; color: #3f97d0">go-reflect</a> <a href="/tags/go-slice/" style="font-size: 15px; color: #1e90ff">go-slice</a> <a href="/tags/go-string/" style="font-size: 15px; color: #1e90ff">go-string</a> <a href="/tags/go-struct/" style="font-size: 15px; color: #1e90ff">go-struct</a> <a href="/tags/memory-align/" style="font-size: 15px; color: #1e90ff">memory-align</a> <a href="/tags/go-pointer-deref/" style="font-size: 15px; color: #1e90ff">go-pointer-deref</a> <a href="/tags/size-class/" style="font-size: 15px; color: #1e90ff">size-class</a> <a href="/tags/go-cond/" style="font-size: 15px; color: #1e90ff">go-cond</a> <a href="/tags/html5-drag/" style="font-size: 15px; color: #1e90ff">html5-drag</a> <a href="/tags/array-random/" style="font-size: 15px; color: #1e90ff">array-random</a> <a href="/tags/php-signal/" style="font-size: 15px; color: #1e90ff">php-signal</a> <a href="/tags/php-reference/" style="font-size: 15px; color: #1e90ff">php-reference</a>
+    </div>
+  </div>
+
+  
+   	
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title" data-i18n="links">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li class="locale-link-item" data-title-en="Subnets Preview" data-title-zh="子网划分工具">
+            <a class="locale-link-name" href="https://subnets-preview.pages.dev/" target="_blank" rel="noopener">Subnets Preview</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="Terraform on Azure" data-title-zh="Azure 上的 Terraform">
+            <a class="locale-link-name" href="https://terraform-on-azure.pages.dev/" target="_blank" rel="noopener">Terraform on Azure</a>
+          </li>
+        
+          <li class="locale-link-item" data-title-en="HU Xiaoxu" data-title-zh="胡小旭的博客">
+            <a class="locale-link-name" href="http://blog.ihuxu.com/" target="_blank" rel="noopener">HU Xiaoxu</a>
+          </li>
+        
+          <li class="locale-link-item locale-link-hidden" data-title-en="" data-title-zh="腾讯云优惠券">
+            <a class="locale-link-name" href="https://curl.qcloud.com/OEZz5KSh" target="_blank" rel="noopener">腾讯云优惠券</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+   	<div class="widget-wrap widget-toc" style="display: none">
+  <h3 class="widget-title" data-i18n="contents">Contents</h3>
+  <div class="container widget" style="padding: 15px 20px;">
+  </div>
+</div>
+
+  
+</aside>
+
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 newbmiao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+      .
+      Hosted by <a href="https://github.com/newbmiao" target="_blank" style="font-weight: bold">GitHub Pages</a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/categories/rust/" class="mobile-nav-link">Rust</a>
+  
+    <a href="/categories/go/" class="mobile-nav-link">Go</a>
+  
+    <a href="/categories/opa/" class="mobile-nav-link">OPA</a>
+  
+    <a href="/categories/devops/" class="mobile-nav-link">DevOps</a>
+  
+    <a href="https://terraform-on-azure.pages.dev/" class="mobile-nav-link">Terraform On Azure</a>
+  
+</nav>
+  
+<div id="search-form-wrap" class="pagefind-search-wrap" aria-hidden="true">
+  <div class="pagefind-search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+  
+
+<script>
+  window.__MERMAID_BOOT__ = {
+    src: 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js',
+    options: {"startOnLoad":false}
+  };
+</script>
+<div id="totop">
+<a title="Back to top" data-i18n="totop" data-i18n-attr="title"><img src="/img/scrollup.png" alt="" loading="eager" decoding="async"/></a>
+</div>
+
+
+<script src="/js/site-locale.js"></script>
+
+
+<script src="/js/mermaid-loader.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  window.__PAGEFIND_BOOT__ = {
+    css: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/css/ui.css',
+    moduleUrl: 'https://cdn.jsdelivr.net/npm/@pagefind/default-ui@1.6.0/npm_dist/mjs/ui-core.mjs',
+    bundlePath: '/pagefind/',
+    translations: {
+      en: {
+        placeholder: 'Search this site…',
+        clear_search: 'Clear',
+        load_more: 'Load more',
+        search_label: 'Search',
+        filters_label: 'Filters',
+        zero_results: 'No results',
+        many_results: '[COUNT] results',
+        one_result: '1 result',
+        alt_search: 'No results for [SEARCH]',
+        search_suggestion: 'Try a different search',
+      },
+      zh: {
+        placeholder: '搜索本站…',
+        clear_search: '清除',
+        load_more: '加载更多',
+        search_label: '搜索',
+        filters_label: '筛选',
+        zero_results: '没有匹配结果',
+        many_results: '[COUNT] 条结果',
+        one_result: '1 条结果',
+        alt_search: '没有找到 [SEARCH] 相关结果',
+        search_suggestion: '试试其他关键词',
+      },
+    },
+  };
+</script>
+</div>
+</body>
+</html>
+
